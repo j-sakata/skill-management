@@ -1,0 +1,132 @@
+// for HTML
+@import url('https://fonts.googleapis.com/css2?family=BIZ+UDPGothic&display=swap');
+
+.v-application {
+  font-family: 'BIZ UDPGothic' !important;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  border-radius: 2px;
+  box-shadow: 0 0 2px #ccc inset;
+}
+::-webkit-scrollbar-thumb, ::-webkit-scrollbar-corner {
+  border-radius: 2px;
+  background: $color-scroll;
+}
+
+// for Vuetify
+
+.v-toolbar__title {
+  font-size: 1.0rem;
+  width: 180px;
+  text-overflow: clip;
+}
+
+.v-data-table table thead th {
+  white-space: nowrap;
+}
+
+.v-data-table table tfoot th {
+	position: sticky;
+	bottom: 0;
+  color: rgba(0, 0, 0, 0.8);
+	background: #fff;
+  white-space: nowrap;
+}
+
+.v-data-table table tbody tr:nth-child(odd) {
+	background: #fafafa;
+}
+
+// For Project
+
+// Text Typography
+
+.l-text-ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.l-text-pre {
+  white-space: pre;
+}
+
+.l-text-pre-line {
+  white-space: pre-line;
+}
+
+.l-text-sm-1 {
+  font-size: 90% !important;
+}
+
+.l-text-sm-2 {
+  font-size: 80% !important;
+}
+
+.l-text-sm-3 {
+  font-size: 70% !important;
+}
+
+.l-text-lg-1 {
+  font-size: 110% !important;
+}
+.l-text-lg-2 {
+  font-size: 120% !important;
+}
+.l-text-lg-3 {
+  font-size: 130% !important;
+}
+
+.l-text-lh-17 {
+  line-height: 1.7rem;
+}
+.l-text-lh-16 {
+  line-height: 1.6rem;
+}
+.l-text-lh-15 {
+  line-height: 1.5rem;
+}
+.l-text-lh-14 {
+  line-height: 1.4rem;
+}
+.l-text-lh-13 {
+  line-height: 1.3rem;
+}
+.l-text-lh-12 {
+  line-height: 1.2rem;
+}
+
+.l-selectable-only {
+  cursor: pointer;
+}
+
+.l-selectable {
+  cursor: pointer;
+  &:hover {
+    background-color: $color-selected;
+  }
+}
+
+.l-selected {
+  background-color: $color-selected !important;
+}
+
+.l-header-tab {
+  color: $color-header;
+}
+
+.l-img-copy-guard {
+  user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  -webkit-user-select:none;
+  -khtml-user-select:none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -webkit-touch-callout: none;
+}
