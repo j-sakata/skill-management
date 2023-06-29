@@ -15,6 +15,7 @@ class CreateExperienceContentsTable extends Migration
     {
         Schema::create('experience_contents', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('experience_id')->constrained('experiences');
             $table->date('started_at');
             $table->date('ended_at');
             $table->string('industry');

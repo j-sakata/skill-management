@@ -16,10 +16,6 @@ class CreateExperiencesTable extends Migration
         Schema::create('experiences', function (Blueprint $table) {
             $table->id();
             $table->string('user_id');
-            $table->foreignId('experience_summary_id')->constrained('experience_summaries');
-            $table->foreignId('knowledge_summary_id')->constrained('knowledge_summaries');
-            $table->foreignId('experience_content_id')->constrained('experience_contents');
-            $table->foreignId('technical_skill_id')->constrained('technical_skills');
             $table->timestamps();
         });
     }

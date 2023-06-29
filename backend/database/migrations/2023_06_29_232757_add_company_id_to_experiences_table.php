@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKnowledgeSummariesTable extends Migration
+class AddCompanyIdToExperiencesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateKnowledgeSummariesTable extends Migration
      */
     public function up()
     {
-        Schema::create('knowledge_summaries', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('experience_id')->constrained('experiences');
-            $table->text('knowledge');
-            $table->timestamps();
+        Schema::table('experiences', function (Blueprint $table) {
+            $table->foreignId('company_id')->constrained('companies');
         });
     }
 
@@ -28,6 +25,8 @@ class CreateKnowledgeSummariesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('knowledge_summaries');
+        Schema::table('experiences', function (Blueprint $table) {
+            $table->dropColumn('company_id');
+        });
     }
 }

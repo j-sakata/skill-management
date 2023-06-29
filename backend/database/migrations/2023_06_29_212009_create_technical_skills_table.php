@@ -15,6 +15,7 @@ class CreateTechnicalSkillsTable extends Migration
     {
         Schema::create('technical_skills', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('experience_id')->constrained('experiences');
             $table->integer('skill_id');
             $table->timestamps();
         });
