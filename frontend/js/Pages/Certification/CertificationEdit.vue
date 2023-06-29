@@ -136,6 +136,9 @@ export default {
   data() {
     return {
       form: this.initItem(),
+      datepicker: {
+        menu: false
+      }
     }
   },
   watch: {
@@ -165,7 +168,7 @@ export default {
         expiration: this.selected.expiration,
         memo: this.selected.memo,
         category: this.selected.category,
-        sub_category: this.selected.sub_category
+        sub_category: this.selected.sub_category,
       });
     },
     checkCreate() {
@@ -197,7 +200,10 @@ export default {
     },
     hide() {
       this.$emit("hide")
-    }
+    },
+    saveDatepicker (date) {
+      this.$refs.menu.save(date)
+    },
   }
 }
 </script>

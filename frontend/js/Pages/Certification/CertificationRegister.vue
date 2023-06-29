@@ -75,6 +75,49 @@
       </v-row>
       <v-row dense>
         <v-col>
+          <v-menu
+            ref="menu"
+            v-model="datepicker.menu"
+            :close-on-content-click="false"
+            transition="scale-transition"
+            offset-y
+            min-width="auto"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="form.acquisition.acquisition_date"
+                label="取得日"
+                prepend-icon="mdi-calendar"
+                readonly
+                v-bind="attrs"
+                v-on="on"
+              ></v-text-field>
+            </template>
+            <v-date-picker
+              v-model="form.acquisition.acquisition_date"
+              :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)"
+              min="1950-01-01"
+              no-title
+              @change="saveDatepicker"
+            ></v-date-picker>
+          </v-menu>
+        </v-col>
+        <v-col cols="2" class="pb-0 ma-0">
+          <v-text-field
+            v-model="form.acquisition.score"
+            label="スコア"
+            counter="30"
+            maxlength="30"
+            hide-details="auto"
+            dense
+            outlined
+            persistent-placeholder
+            :error-messages="errorField('community_name')"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row dense>
+        <v-col>
           <v-textarea
             v-model="form.memo"
             label="備考"
@@ -136,6 +179,9 @@ export default {
   data() {
     return {
       form: this.initItem(),
+      datepicker: {
+        menu: false
+      }
     }
   },
   watch: {
@@ -165,7 +211,11 @@ export default {
         expiration: null,
         memo: null,
         category: "NATIONAL",
-        sub_category: "IT"
+        sub_category: "IT",
+        acquisition: {
+          acquisition_date: null,
+          score: null
+        }
       });
     },
     checkCreate() {
@@ -197,7 +247,10 @@ export default {
     },
     hide() {
       this.$emit("hide")
-    }
+    },
+    saveDatepicker (date) {
+      this.$refs.menu.save(date)
+    },
   }
 }
 </script>

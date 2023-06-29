@@ -3,6 +3,7 @@
 namespace App\Actions\Certification;
 
 use App\Models\Certification;
+use App\Models\CertificationAcquisition;
 use Illuminate\Support\Facades\Validator;
 
 class UpdateCertification
@@ -30,6 +31,28 @@ class UpdateCertification
         'category' => $input['category'],
         'sub_category' => $input['sub_category'],
       ])->save();
+
+      return $success();
+    }
+
+    /**
+     * Update registered certification.
+     *
+     * @param  array  $input
+     * @return $validationFails, $success
+     */
+    public function change(array $input, $validationFails, $success)
+    {
+      $validator = $this->validate($input);
+
+      if ($validator->fails()) {
+        return $validationFails($validator->errors());
+      }
+
+        CertificationAcquisition::find($input['id'])->fill([
+          'acquisition_date' => $input['acquisition']['acquisition_date'],
+          'score'=> $input['acquisition']['score']
+        ])->save();
 
       return $success();
     }

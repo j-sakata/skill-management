@@ -5,6 +5,7 @@ import Vue from 'vue';
 import vuetify from './Plugins/vuetify'
 import { App as InertiaApp, plugin as InertiaPlugin } from '@inertiajs/inertia-vue';
 import 'vuetify/dist/vuetify.min.css';
+import '@mdi/font/css/materialdesignicons.css';
 Vue.use(InertiaPlugin);
 
 // Localize With Extension Day.js

@@ -22,13 +22,13 @@ class CertificationController extends Controller
      */
     public function index()
     {
-        $certifications = Certification::where('user_id', Auth::id())->get()->toArray();
+        $certifications = Certification::where('user_id', Auth::id())->with('acquisition')->get()->toArray();
         $user_id = Auth::id();
         return Inertia::render('Certification/CertificationList', ['certifications' => $certifications, 'user_id' => $user_id]);
     }
 
     /**
-     * Create a new user.
+     * Create a new certification.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Inertia\Response
@@ -45,14 +45,37 @@ class CertificationController extends Controller
             },
             function() use($log_massage) {
                 Log::info($log_massage);
-                return $this->index();
+                return redirect()->route('certification');
+            },
+        );
+    }
+
+    /**
+     * add a new certification.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Inertia\Response
+     */
+    public function add(Request $request)
+    {
+        $creator = app(CreateCertification::class);
+        $log_massage = "取得資格を登録する [{$request->user_id}]";
+
+        return $creator->add($request->all(),
+            function($error) use($log_massage) {
+                Log::error($log_massage);
+                return Inertia::render('Certification/CertificationList', ['error' => $error]);
+            },
+            function() use($log_massage) {
+                Log::info($log_massage);
+                return redirect()->route('certification');
             },
         );
     }
 
 
     /**
-     * Update the given user's name or email.
+     * Update the given certification.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Inertia\Response
@@ -69,14 +92,37 @@ class CertificationController extends Controller
             },
             function() use($log_massage) {
                 Log::info($log_massage);
-                return $this->index();
+                return redirect()->route('certification');
+            },
+        );
+    }
+
+    /**
+     * Update the given certification.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Inertia\Response
+     */
+    public function change(Request $request)
+    {
+        $creator = app(UpdateCertification::class);
+        $log_massage = "取得資格を変更する [{$request->user_id}]";
+
+        return $creator->change($request->all(),
+            function($error) use($log_massage) {
+                Log::error($log_massage);
+                return Inertia::render('Certification/CertificationList', ['error' => $error]);
+            },
+            function() use($log_massage) {
+                Log::info($log_massage);
+                return redirect()->route('certification');
             },
         );
     }
 
 
     /**
-     * Delete the given user.
+     * Delete the given certificationer.
      *
      * @param  string  $id
      * @return \Inertia\Response
@@ -93,7 +139,7 @@ class CertificationController extends Controller
             },
             function() use($log_massage) {
                 Log::info($log_massage);
-                return $this->index();
+                return redirect()->route('certification');
             },
         );
     }

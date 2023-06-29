@@ -3,7 +3,6 @@
 namespace App\Actions\Certification;
 
 use App\Models\Certification;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class CreateCertification
@@ -23,7 +22,7 @@ class CreateCertification
         return $validationFails($validator->errors());
       }
 
-      Certification::create([
+      $certification = Certification::create([
           'user_id' => $input['user_id'],
           'name' => $input['name'],
           'certification_number' => $input['certification_number'],
@@ -31,6 +30,33 @@ class CreateCertification
           'memo' => $input['memo'],
           'category' => $input['category'],
           'sub_category' => $input['sub_category'],
+      ]);
+      $certification->acquisition()->create([
+        'acquisition_date' => $input['acquisition']['acquisition_date'],
+        'score'=> $input['acquisition']['score']
+      ]);
+
+      return $success();
+    }
+
+    /**
+     * Add a newly registered certification.
+     *
+     * @param  array  $input
+     * @return $validationFails, $success
+     */
+    public function add(array $input, $validationFails, $success)
+    {
+      $validator = $this->validate($input);
+
+      if ($validator->fails()) {
+        return $validationFails($validator->errors());
+      }
+
+      $certification = Certification::find($input['id']);
+      $certification->acquisition()->create([
+        'acquisition_date' => $input['acquisition']['acquisition_date'],
+        'score'=> $input['acquisition']['score']
       ]);
 
       return $success();

@@ -33,9 +33,11 @@ Route::group(['prefix' => 'login'],  function () {
 Route::group(['middleware' => ['auth:sanctum', 'auth.authority']],  function () {
 
   Route::group(['prefix' => 'certification'],  function () {
-    Route::get('/',  [CertificationController::class, 'index'])->name('user');
+    Route::get('/',  [CertificationController::class, 'index'])->name('certification');
     Route::post('create',  [CertificationController::class, 'create']);
+    Route::post('add',  [CertificationController::class, 'add']);
     Route::post('update',  [CertificationController::class, 'update']);
+    Route::post('change',  [CertificationController::class, 'change']);
     Route::get('delete/{id}',  [CertificationController::class, 'delete']);
   });
 });

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\CustomModel;
+use App\Models\CertificationAcquisition;
 
 class Certification extends CustomModel
 {
@@ -15,4 +16,9 @@ class Certification extends CustomModel
         'category',
         'sub_category'
     ];
+
+    public function acquisition()
+    {
+        return $this->hasMany(CertificationAcquisition::class);
+    }
 }
