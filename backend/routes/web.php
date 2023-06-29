@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\CertificationController;
+use App\Http\Controllers\ExperienceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +23,8 @@ Route::get('/', function (Request $request) {
     return redirect("/login");
   };
 });
+
+// Auth
 Route::group(['prefix' => 'login'],  function () {
   Route::get('/', [LoginController::class, 'index'])->name('login');
   Route::get('check', [LoginController::class, 'check']);
@@ -29,9 +32,9 @@ Route::group(['prefix' => 'login'],  function () {
   Route::post('out', [LoginController::class, 'logout']);
 });
 
-// Auth
-Route::group(['middleware' => ['auth:sanctum', 'auth.authority']],  function () {
 
+Route::group(['middleware' => ['auth:sanctum', 'auth.authority']],  function () {
+  // certification
   Route::group(['prefix' => 'certification'],  function () {
     Route::get('/',  [CertificationController::class, 'index'])->name('certification');
     Route::post('create',  [CertificationController::class, 'create']);
@@ -39,5 +42,15 @@ Route::group(['middleware' => ['auth:sanctum', 'auth.authority']],  function () 
     Route::post('update',  [CertificationController::class, 'update']);
     Route::post('change',  [CertificationController::class, 'change']);
     Route::get('delete/{id}',  [CertificationController::class, 'delete']);
+  });
+
+  // experience
+  Route::group(['prefix' => 'experience'],  function () {
+    Route::get('/',  [ExperienceController::class, 'index'])->name('experience');
+    Route::post('create',  [ExperienceController::class, 'create']);
+    Route::post('add',  [ExperienceController::class, 'add']);
+    Route::post('update',  [ExperienceController::class, 'update']);
+    Route::post('change',  [ExperienceController::class, 'change']);
+    Route::get('delete/{id}',  [ExperienceController::class, 'delete']);
   });
 });
