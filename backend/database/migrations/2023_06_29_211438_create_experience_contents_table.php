@@ -19,13 +19,14 @@ class CreateExperienceContentsTable extends Migration
             $table->date('started_at');
             $table->date('ended_at');
             $table->string('industry');
-            $table->string('system_name');
+            $table->string('project_name');
             $table->text('project_summary');
             $table->string('phase');
             $table->text('description');
             $table->text('achievement');
             $table->integer('member_count');
-            $table->string('position');
+            $table->string('position')->nullable();
+            $table->string('company_name');
             $table->timestamps();
         });
     }
