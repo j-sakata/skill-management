@@ -2,7 +2,105 @@
   <v-container fluid>
     <v-card class="ma-2" outlined v-if="selected">
 			<v-card-text class="pb-1">
-				未実装
+				<v-expansion-panels
+					hover
+				>
+					<v-expansion-panel>
+						<v-expansion-panel-header>
+							基本情報
+						</v-expansion-panel-header>
+						<v-expansion-panel-content>
+							<v-row dense>
+								<v-col>
+									<div class="l-text-sm-2">プロジェクト名</div>
+									<div>{{ selected.experience_content.project_name }}</div>
+								</v-col>
+							</v-row>
+							<v-row dense>
+								<v-col cols="6">
+									<div class="l-text-sm-2">業界</div>
+									<div>{{ selected.experience_content.industry }}</div>
+								</v-col>
+								<v-col cols="6">
+									<div class="l-text-sm-2">期間</div>
+									<div>{{ selected.experience_content.started_at }} ～ {{ selected.experience_content.ended_at }}</div>
+								</v-col>
+							</v-row>
+							<v-row dense>
+								<v-col>
+									<div class="l-text-sm-2">規模</div>
+									<div>全 {{ selected.experience_content.member_count }} 人</div>
+								</v-col>
+								<v-col>
+									<div class="l-text-sm-2">役職</div>
+									<div>{{ selected.experience_content.position }}</div>
+								</v-col>
+							</v-row>
+							<v-row dense>
+								<v-col>
+									<div class="l-text-sm-2">（派遣先）企業名</div>
+									<div>{{ selected.experience_content.company_name }}</div>
+								</v-col>
+							</v-row>
+						</v-expansion-panel-content>
+					</v-expansion-panel>
+					<v-expansion-panel>
+						<v-expansion-panel-header>
+							活動内容
+						</v-expansion-panel-header>
+						<v-expansion-panel-content>
+							<v-row dense>
+								<v-col>
+									<div class="l-text-sm-2">プロジェクト概要</div>
+									<div>{{ selected.experience_content.project_summary }}</div>
+								</v-col>
+							</v-row>
+							<v-row dense>
+								<v-col>
+									<div class="l-text-sm-2">担当フェーズ</div>
+									<div>{{ selected.experience_content.phase }}</div>
+								</v-col>
+							</v-row>
+							<v-row dense>
+								<v-col>
+									<div class="l-text-sm-2">業務内容</div>
+									<div>{{ selected.experience_content.description }}</div>
+								</v-col>
+							</v-row>
+							<v-row dense>
+								<v-col>
+									<div class="l-text-sm-2">実績・取り組み</div>
+									<div>{{ selected.experience_content.achievement }}</div>
+								</v-col>
+							</v-row>
+						</v-expansion-panel-content>
+					</v-expansion-panel>
+					<v-expansion-panel>
+						<v-expansion-panel-header>
+							開発環境
+						</v-expansion-panel-header>
+						<v-expansion-panel-content>
+							<v-row dense>
+								<v-col>
+									<div class="l-text-sm-2">言語</div>
+									<div>{{ selected.technical_skill }}</div>
+								</v-col>
+							</v-row>
+							<v-row dense>
+								<v-col>
+									<div class="l-text-sm-2">OS</div>
+									<div>{{ selected.technical_skill }}</div>
+								</v-col>
+							</v-row>
+							<v-row dense>
+								<v-col>
+									<div class="l-text-sm-2">DB</div>
+									<div>{{ selected.technical_skill}}</div>
+								</v-col>
+							</v-row>
+						</v-expansion-panel-content>
+					</v-expansion-panel>
+				</v-expansion-panels>
 			</v-card-text>
 			<v-divider></v-divider>
 			<v-card-actions class="grey lighten-4 pa-1">

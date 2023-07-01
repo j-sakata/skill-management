@@ -29,21 +29,15 @@ class DatabaseSeeder extends Seeder
         Experience::create(['user_id' => 'j-sakata']);
         $experience1 = Experience::find(1);
         $experience1->experience_summary()->create(['summary' => 'test1']);
-        $experience1->experience_summary()->create(['summary' => 'test2']);
         $experience1->knowledge_summary()->create(['knowledge' => 'test1']);
-        $experience1->knowledge_summary()->create(['knowledge' => 'test2']);
         $experience1->experience_content()->create(['started_at' => now(), 'ended_at' => now(), 'industry' => '〇〇業界', 'project_name' => '〇〇システム', 'project_summary' => 'test', 'phase' => 'test', 'description' => 'test', 'achievement' => 'test', 'member_count' => 5, 'position' => 'test', 'company_name' => 'test']);
-        $experience1->experience_content()->create(['started_at' => now(), 'ended_at' => now(), 'industry' => '〇〇業界2', 'project_name' => '〇〇システム2', 'project_summary' => 'test2', 'phase' => 'test2', 'description' => 'test2', 'achievement' => 'test2', 'member_count' => 5, 'position' => 'test2', 'company_name' => 'test2']);
         $experience1->technical_skill()->create(['skill_id' => 1]);
         $experience1->technical_skill()->create(['skill_id' => 2]);
 
         $experience2 = Experience::latest('id')->first();
         $experience2->experience_summary()->create(['summary' => 'test1']);
-        $experience2->experience_summary()->create(['summary' => 'test2']);
         $experience2->knowledge_summary()->create(['knowledge' => 'test1']);
-        $experience2->knowledge_summary()->create(['knowledge' => 'test2']);
         $experience2->experience_content()->create(['started_at' => now(), 'ended_at' => now(), 'industry' => '〇〇業界3', 'project_name' => '〇〇システム3', 'project_summary' => 'test', 'phase' => 'test', 'description' => 'test', 'achievement' => 'test', 'member_count' => 5, 'position' => 'test', 'company_name' => 'test3']);
-        $experience2->experience_content()->create(['started_at' => now(), 'ended_at' => now(), 'industry' => '〇〇業界4', 'project_name' => '〇〇システム4', 'project_summary' => 'test2', 'phase' => 'test2', 'description' => 'test2', 'achievement' => 'test2', 'member_count' => 5, 'position' => 'test2', 'company_name' => 'test4']);
         $experience2->technical_skill()->create(['skill_id' => 1]);
         $experience2->technical_skill()->create(['skill_id' => 2]);
 

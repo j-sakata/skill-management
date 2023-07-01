@@ -16,17 +16,17 @@ class Experience extends CustomModel
 
     public function experience_summary()
     {
-        return $this->hasMany(ExperienceSummary::class);
+        return $this->hasOne(ExperienceSummary::class);
     }
 
     public function knowledge_summary()
     {
-        return $this->hasMany(KnowledgeSummary::class);
+        return $this->hasOne(KnowledgeSummary::class);
     }
 
     public function experience_content()
     {
-        return $this->hasMany(ExperienceContent::class);
+        return $this->hasOne(ExperienceContent::class);
     }
 
     public function technical_skill()

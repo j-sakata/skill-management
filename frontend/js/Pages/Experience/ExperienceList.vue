@@ -65,7 +65,7 @@
                   color="indigo darken-2"
                   dark
                   x-small
-                  @click="addDate()"
+                  @click="showTechnicalSkill()"
                 >
                   view more...
                 </v-btn>
@@ -227,13 +227,7 @@ export default {
       const experienceContent = this.experiences.map(e => {
         return e.experience_content
       })
-      const result = []
-      experienceContent.forEach(e => {
-        for (let j = 0; j < e.length ; j++) {
-          result.push(e[j])
-        }
-      })
-      return result
+      return experienceContent
     },
     technicalSkillItems() {
       const technicalSkill = this.experiences.map(e => {
@@ -253,8 +247,14 @@ export default {
       this.selected = this.experiences[0]
     },
     select(item) {
-      this.selected = item
-    }
+      const experience = this.experiences.find(e => {
+        return e.id === item.experience_id
+      })
+      this.selected = experience
+    },
+    showTechnicalSkill(){
+
+    },
   }
 }
 </script>
