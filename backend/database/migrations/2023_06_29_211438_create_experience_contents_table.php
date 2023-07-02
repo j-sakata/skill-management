@@ -27,6 +27,7 @@ class CreateExperienceContentsTable extends Migration
             $table->integer('member_count');
             $table->string('position')->nullable();
             $table->string('company_name');
+            $table->integer('contract_type');
             $table->timestamps();
         });
     }

@@ -18,7 +18,8 @@ class ExperienceContent extends CustomModel
         'achievement',
         'member_count',
         'position',
-        'company_name'
+        'company_name',
+        'contract_type'
     ];
 
     public function experience()

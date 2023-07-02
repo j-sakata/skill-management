@@ -30,14 +30,14 @@ class DatabaseSeeder extends Seeder
         $experience1 = Experience::find(1);
         $experience1->experience_summary()->create(['summary' => 'test1']);
         $experience1->knowledge_summary()->create(['knowledge' => 'test1']);
-        $experience1->experience_content()->create(['started_at' => now(), 'ended_at' => now(), 'industry' => '〇〇業界', 'project_name' => '〇〇システム', 'project_summary' => 'test', 'phase' => 'test', 'description' => 'test', 'achievement' => 'test', 'member_count' => 5, 'position' => 'test', 'company_name' => 'test']);
+        $experience1->experience_content()->create(['started_at' => now(), 'ended_at' => now(), 'industry' => '〇〇業界', 'project_name' => '〇〇システム', 'project_summary' => 'test', 'phase' => 'test', 'description' => 'test', 'achievement' => 'test', 'member_count' => 5, 'position' => 'test', 'company_name' => 'test', 'contract_type' => 1]);
         $experience1->technical_skill()->create(['skill_id' => 1]);
         $experience1->technical_skill()->create(['skill_id' => 2]);
 
         $experience2 = Experience::latest('id')->first();
         $experience2->experience_summary()->create(['summary' => 'test1']);
         $experience2->knowledge_summary()->create(['knowledge' => 'test1']);
-        $experience2->experience_content()->create(['started_at' => now(), 'ended_at' => now(), 'industry' => '〇〇業界3', 'project_name' => '〇〇システム3', 'project_summary' => 'test', 'phase' => 'test', 'description' => 'test', 'achievement' => 'test', 'member_count' => 5, 'position' => 'test', 'company_name' => 'test3']);
+        $experience2->experience_content()->create(['started_at' => now(), 'ended_at' => now(), 'industry' => '〇〇業界3', 'project_name' => '〇〇システム3', 'project_summary' => 'test', 'phase' => 'test', 'description' => 'test', 'achievement' => 'test', 'member_count' => 5, 'position' => 'test', 'company_name' => 'test3', 'contract_type' => 3]);
         $experience2->technical_skill()->create(['skill_id' => 1]);
         $experience2->technical_skill()->create(['skill_id' => 2]);
 
