@@ -105,10 +105,8 @@
 
 <script>
 import ViewBasic from "@/Shared/view-basic";
-import Layout from '@/Layout/Layout.vue';
 export default {
   name: 'certification-detail',
-  layout: Layout,
   mixins: [ ViewBasic ],
   props:{
     selected: { type: Object, default: {} }

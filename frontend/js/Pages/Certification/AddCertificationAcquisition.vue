@@ -83,10 +83,8 @@
 
 <script>
 import ViewBasic from "@/Shared/view-basic";
-import Layout from '@/Layout/Layout.vue';
 export default {
   name: 'add-certification-acquisition',
-  layout: Layout,
   mixins: [ ViewBasic ],
   props:{
     active: { type: Boolean, default: false },
