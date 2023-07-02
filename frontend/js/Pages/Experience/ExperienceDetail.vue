@@ -1,15 +1,22 @@
+<style>
+	.v-expansion-panel-content{
+		max-height:310px;
+	}
+</style>
 <template>
   <v-container fluid>
-    <v-card class="ma-2" outlined v-if="selected">
-			<v-card-text class="pb-1">
+    <v-card class="ma-2" outlined v-if="selected" max-height="580">
+			<v-card-text>
 				<v-expansion-panels
 					hover
+					accordion
+					v-model="panel"
 				>
 					<v-expansion-panel>
 						<v-expansion-panel-header>
 							基本情報
 						</v-expansion-panel-header>
-						<v-expansion-panel-content>
+						<v-expansion-panel-content class="overflow-y-auto">
 							<v-row dense>
 								<v-col>
 									<div class="l-text-sm-2">プロジェクト名</div>
@@ -17,11 +24,13 @@
 								</v-col>
 							</v-row>
 							<v-row dense>
-								<v-col cols="6">
+								<v-col>
 									<div class="l-text-sm-2">業界</div>
 									<div>{{ selected.experience_content.industry }}</div>
 								</v-col>
-								<v-col cols="6">
+							</v-row>
+							<v-row dense>
+								<v-col>
 									<div class="l-text-sm-2">期間</div>
 									<div>{{ selected.experience_content.started_at }} ～ {{ selected.experience_content.ended_at }}</div>
 								</v-col>
@@ -37,7 +46,11 @@
 								</v-col>
 							</v-row>
 							<v-row dense>
-								<v-col>
+								<v-col cols="6">
+									<div class="l-text-sm-2">契約形態</div>
+									<div>{{ selected.experience_content.contract_type }}</div>
+								</v-col>
+								<v-col cols="6">
 									<div class="l-text-sm-2">（派遣先）企業名</div>
 									<div>{{ selected.experience_content.company_name }}</div>
 								</v-col>
@@ -48,7 +61,7 @@
 						<v-expansion-panel-header>
 							活動内容
 						</v-expansion-panel-header>
-						<v-expansion-panel-content>
+						<v-expansion-panel-content class="overflow-y-auto">
 							<v-row dense>
 								<v-col>
 									<div class="l-text-sm-2">プロジェクト概要</div>
@@ -79,7 +92,7 @@
 						<v-expansion-panel-header>
 							開発環境
 						</v-expansion-panel-header>
-						<v-expansion-panel-content>
+						<v-expansion-panel-content class="overflow-y-auto">
 							<v-row dense>
 								<v-col>
 									<div class="l-text-sm-2">言語</div>
@@ -111,9 +124,10 @@
 							dark
 							block
 							small
-							@click="addDate()"
+							:disabled="panel==null"
+							@click="edit(panel)"
 						>
-							取得日追加
+							変更
 						</v-btn>
 					</v-col>
 				</v-row>
@@ -124,21 +138,20 @@
 
 <script>
 import ViewBasic from "@/Shared/view-basic";
-import Layout from '@/Layout/Layout.vue';
 export default {
   name: 'experience-detail',
-  layout: Layout,
   mixins: [ ViewBasic ],
   props:{
     selected: { type: Object, default: {} }
   },
   data() {
     return {
-		headers: [
-			{text: "取得日", value: "acquisition_date"},
-			{text: "スコア", value: "score"},
-			{text: '', value: 'action', sortable: false}
-		]
+			headers: [
+				{text: "取得日", value: "acquisition_date"},
+				{text: "スコア", value: "score"},
+				{text: '', value: 'action', sortable: false}
+			],
+			panel: 0,
     }
   },
   computed: {
@@ -147,14 +160,8 @@ export default {
 		reverseDate(array) {
 			return Array.prototype.reverse.call(array);
 		},
-		edit() {
-			this.$emit("edit");
-		},
-		addDate() {
-			this.$emit("add");
-		},
-		editItem (item) {
-			this.$emit("change", item)
+		edit(item) {
+			this.$emit("edit", item);
 		},
 		deleteItem (id) {
 		},
