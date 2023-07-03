@@ -45,7 +45,7 @@
           <v-col class="pa-0 ma-0">
             <v-data-table
               :headers="experienceHeaders"
-              :items="listItems"
+              :items="experienceContentItems"
               class="elevation-1"
               @click:row="select"
               dense
@@ -60,7 +60,23 @@
           </v-col>
         </v-row>
         <!-- 職務要約モード -->
-        <v-row no-gutters v-if="mode.keyName == 'jodSummary'">職務要約</v-row>
+        <v-row no-gutters v-if="mode.keyName == 'jodSummary'">
+          <v-col class="pa-0 ma-0">
+            <v-data-table
+              :headers="experienceSummaryHeaders"
+              :items="experienceSummaryItems"
+              class="elevation-1"
+              @click:row="select"
+              dense
+              height=230
+            >
+              <template v-slot:items="props">
+                <td>{{ props.item.title }}</td>
+                <td>{{ props.item.status }}</td>
+              </template>
+            </v-data-table>
+          </v-col>
+        </v-row>
         <!-- 活かせる経験・知識モード -->
         <v-row no-gutters v-if="mode.keyName == 'jobKnowledge'">活かせる経験・知識</v-row>
         <!-- 自己PRモード -->
@@ -86,7 +102,7 @@
                   view more...
                 </v-btn>
               </v-toolbar>
-              <v-tabs vertical dense color="indigo lighten-1" class="overflow-y-auto">
+              <v-tabs vertical color="indigo lighten-1" class="overflow-y-auto" height="193">
                 <v-tab>
                   言語/API
                 </v-tab>
@@ -97,8 +113,30 @@
                   OS、クラウド等
                 </v-tab>
                 <v-tab>
+                  ルータ、NW技術等
+                </v-tab>
+                <v-tab>
                   プロジェクト支援
                 </v-tab>
+                <v-tab-item>
+                  <v-card flat>
+                    <v-card-text>
+                      <v-data-table
+                        :headers="technicalHeaders"
+                        :items="technicalSkillItems"
+                        class="elevation-1"
+                        @click:row="select"
+                        dense
+                        items-per-page=4
+                        hide-default-footer
+                      >
+                        <template v-slot:items="props">
+                          <td>{{ props.item.skill_id }}</td>
+                        </template>
+                      </v-data-table>
+                    </v-card-text>
+                  </v-card>
+                </v-tab-item>
                 <v-tab-item>
                   <v-card flat>
                     <v-card-text>
@@ -232,6 +270,7 @@ export default {
   components: { ExperienceDetail, ExperienceEdit },
   props:{
     experiences: { type: Object, default: {} },
+    skill_master: { type: Object, default: {} },
     user_id: { type: String }
   },
   data() {
@@ -255,6 +294,10 @@ export default {
         {text: "業界", value: "industry"},
         {text: "企業名", value: "company_name"},
       ],
+      experienceSummaryHeaders: [
+        {text: "タイトル", value: "title"},
+        {text: "状態", value: "status"},
+      ],
       technicalHeaders: [
         {text: "技術", value: "skill_id"},
       ]
@@ -265,11 +308,23 @@ export default {
     this.setModeName()
   },
   computed: {
-    listItems() {
+    experienceContentItems() {
       const experienceContent = this.experiences.map(e => {
         return e.experience_content
       })
       return experienceContent
+    },
+    experienceSummaryItems() {
+      const experienceSummary = this.experiences.map(e => {
+        return e.experience_summary
+      })
+      const result = []
+      experienceSummary.forEach(e => {
+        for (let j = 0; j < e.length ; j++) {
+          result.push(e[j])
+        }
+      })
+      return result
     },
     technicalSkillItems() {
       const technicalSkill = this.experiences.map(e => {

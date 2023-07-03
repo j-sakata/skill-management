@@ -8,7 +8,8 @@ use App\Models\Experience;
 class KnowledgeSummary extends CustomModel
 {
     protected $fillable = [
-        'knowledge'
+        'knowledge',
+        'category'
     ];
 
     public function experience()

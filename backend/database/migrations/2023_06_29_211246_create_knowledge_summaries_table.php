@@ -16,7 +16,8 @@ class CreateKnowledgeSummariesTable extends Migration
         Schema::create('knowledge_summaries', function (Blueprint $table) {
             $table->id();
             $table->foreignId('experience_id')->constrained('experiences');
-            $table->text('knowledge');
+            $table->string('knowledge');
+            $table->integer('category');
             $table->timestamps();
         });
     }

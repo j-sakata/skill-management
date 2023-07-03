@@ -11,17 +11,18 @@ use App\Models\TechnicalSkill;
 class Experience extends CustomModel
 {
     protected $fillable = [
-        'user_id'
+        'user_id',
+        'company_name'
     ];
 
     public function experience_summary()
     {
-        return $this->hasOne(ExperienceSummary::class);
+        return $this->hasMany(ExperienceSummary::class);
     }
 
     public function knowledge_summary()
     {
-        return $this->hasOne(KnowledgeSummary::class);
+        return $this->hasMany(KnowledgeSummary::class);
     }
 
     public function experience_content()

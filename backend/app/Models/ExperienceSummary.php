@@ -8,7 +8,9 @@ use App\Models\Experience;
 class ExperienceSummary extends CustomModel
 {
     protected $fillable = [
-        'summary'
+        'title',
+        'summary',
+        'status'
     ];
 
     public function experience()

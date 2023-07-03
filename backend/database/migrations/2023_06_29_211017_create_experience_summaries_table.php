@@ -16,7 +16,9 @@ class CreateExperienceSummariesTable extends Migration
         Schema::create('experience_summaries', function (Blueprint $table) {
             $table->id();
             $table->foreignId('experience_id')->constrained('experiences');
+            $table->string('title');
             $table->text('summary');
+            $table->integer('status');
             $table->timestamps();
         });
     }

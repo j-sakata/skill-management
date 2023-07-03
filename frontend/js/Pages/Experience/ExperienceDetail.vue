@@ -28,6 +28,10 @@
 									<div class="l-text-sm-2">業界</div>
 									<div>{{ selected.experience_content.industry }}</div>
 								</v-col>
+								<v-col>
+									<div class="l-text-sm-2">所属会社</div>
+									<div>{{ selected.company_name }}</div>
+								</v-col>
 							</v-row>
 							<v-row dense>
 								<v-col>
