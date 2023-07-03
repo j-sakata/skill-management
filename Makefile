@@ -44,6 +44,7 @@ migrate:
 	docker-compose exec app php artisan migrate
 fresh:
 	docker-compose exec app php artisan migrate:fresh --seed
+	@make dml
 seed:
 	docker-compose exec app php artisan db:seed
 cache:
@@ -81,3 +82,5 @@ db:
 	docker-compose exec db bash
 sql:
 	docker-compose exec db bash -c 'mysql -u $$MYSQL_USER -p$$MYSQL_PASSWORD $$MYSQL_DATABASE'
+dml:
+	docker-compose exec db bash -c 'mysql -u $$MYSQL_ROOT_USER -p$$MYSQL_PASSWORD --local_infile=1 $$MYSQL_DATABASE -e"source /tmp/dml/import_inital_data.sql;"'
