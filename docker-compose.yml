@@ -97,10 +97,14 @@ services:
         target: /var/lib/mysql
         volume:
           nocopy: true
+      - type: bind
+        source: ./infra/docker/mysql/dml
+        target: /tmp/dml
     environment:
       - MYSQL_DATABASE=${DB_NAME}
       - MYSQL_USER=${DB_USER}
       - MYSQL_PASSWORD=${DB_PASS}
+      - MYSQL_ROOT_USER=${DB_ROOT_USER}
       - MYSQL_ROOT_PASSWORD=${DB_PASS}
 
   phpmyadmin:
