@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use Google_Client;
 use Google_Service_Calendar;
 use DateTime;
+use DateTimeZone;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -105,8 +106,10 @@ class DashboardController extends Controller
         if (!empty($events)) {
             foreach ($events as $event) {
                 // 終日予定はdate、時刻指定はdateTimeにデータが入り、もう片方にはNULLが入っている
-                $start = new DateTime(!is_null($event->start->date)?$event->start->date:$event->start->dateTime);
-                $end   = new DateTime(!is_null($event->end->date)?$event->end->date:$event->end->dateTime);
+                $start = new DateTime(!is_null($event->start->date) ? $event->start->date : $event->start->dateTime, new DateTimeZone('UTC'));
+                $end = new DateTime(!is_null($event->end->date) ? $event->end->date : $event->end->dateTime, new DateTimeZone('UTC'));
+                $start->setTimeZone(new DateTimeZone('Asia/Tokyo'));
+                $end->setTimeZone(new DateTimeZone('Asia/Tokyo'));
                 $schedules[$start->format('Y-m-d')][] = [
                     'start' => $start->format('Y-m-d H:i:s'),
                     'end' => $end->format('Y-m-d H:i:s'),
