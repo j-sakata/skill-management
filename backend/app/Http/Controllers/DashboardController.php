@@ -59,7 +59,7 @@ class DashboardController extends Controller
             // $data->itemには日本の祝日カレンダーの"予定"が入ってきます
             foreach ($data->items as $row) {
                 // [予定の日付 => 予定のタイトル]
-                $results[$row->start->date] = $row->summary;
+                $holidays[$row->start->date] = $row->summary;
             }
         }
         return $holidays;
