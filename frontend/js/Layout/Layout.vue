@@ -16,25 +16,13 @@
       v-if="logined"
     >
       <v-toolbar-title>Skill mgmt.</v-toolbar-title>
-      <v-tabs v-model="indexMenu" align-with-title >
-        <v-tab>
-          <inertia-link href="/dashboard" as="button">ダッシュボード</inertia-link>
-        </v-tab>
-        <v-tab>
-          <inertia-link href="/certification" as="button">資格</inertia-link>
-        </v-tab>
-        <v-tab>
-          <inertia-link href="/experience" as="button">業務経歴</inertia-link>
-        </v-tab>
-        <v-tab>
-          <inertia-link href="/target" as="button">到達目標</inertia-link>
-        </v-tab>
-        <v-tab>
-          <inertia-link href="/company" as="button">企業</inertia-link>
-        </v-tab>
-        <v-tab>
-          <inertia-link href="/system" as="button">システム</inertia-link>
-        </v-tab>
+      <v-tabs v-model="indexMenu" align-with-title show-arrows>
+        <v-tab @click="moveScreen('/dashboard')">ダッシュボード</v-tab>
+        <v-tab @click="moveScreen('/certification')">資格</v-tab>
+        <v-tab @click="moveScreen('/experience')">業務経歴</v-tab>
+        <v-tab @click="moveScreen('/target')">到達目標</v-tab>
+        <v-tab @click="moveScreen('/company')">企業</v-tab>
+        <v-tab @click="moveScreen('/system')">システム</v-tab>
       </v-tabs>
       <v-spacer></v-spacer>
       <div class="l-profile">{{user.name}}</div>
@@ -99,7 +87,8 @@ export default {
   created() {
     Ajax.get("/login/check", {}, check => {
       this.logined = check.logined;
-    }, this.actionFalse)
+    }, this.actionFalse);
+    this.setIndexMenu();
   },
   computed: {
     colorMessage() {
@@ -136,6 +125,25 @@ export default {
     changePassword() {
       this.message("未実装", [], Level.INFO)
     },
+    setIndexMenu() {
+      const pathName = location.pathname;
+      if (pathName === "/dashboard") {
+        this.indexMenu = 0;
+      } else if (pathName === "/certification") {
+        this.indexMenu = 1;
+      } else if (pathName === "/experience") {
+        this.indexMenu = 2;
+      } else if (pathName === "/target") {
+        this.indexMenu = 3;
+      } else if (pathName === "/company") {
+        this.indexMenu = 4;
+      } else if (pathName === "/system") {
+        this.indexMenu = 5;
+      }
+    },
+    moveScreen(path) {
+      Inertia.get(path);
+    }
   }
 }
 </script>
