@@ -1,11 +1,21 @@
 <template>
   <v-container fluid>
+    <v-dialog v-model="modal.register" eager min-height="700px" width="900px" persistent scrollable>
+      <experience-register
+        :active="modal.register"
+        :user_id="user_id"
+        @hide="modal.register = false"
+        :registerType="mode.keyName"
+        @send="receive($event)"
+      ></experience-register>
+    </v-dialog>
     <v-dialog v-model="modal.edit" eager min-height="700px" width="900px" persistent scrollable>
       <experience-edit
         :active="modal.edit"
         :editType="editType"
         :selected="selected"
         @hide="modal.edit = false"
+        :skill_master="skill_master"
         @send="receive($event)"
       ></experience-edit>
     </v-dialog>
@@ -118,96 +128,20 @@
                 <v-tab>
                   プロジェクト支援
                 </v-tab>
-                <v-tab-item>
+                <v-tab-item v-for="n in 5" :key="n">
                   <v-card flat>
                     <v-card-text>
                       <v-data-table
                         :headers="technicalHeaders"
-                        :items="technicalSkillItems"
+                        :items="technicalSkillItems(n)"
                         class="elevation-1"
-                        @click:row="select"
                         dense
+                        disable-sort
                         items-per-page=4
                         hide-default-footer
                       >
                         <template v-slot:items="props">
-                          <td>{{ props.item.skill_id }}</td>
-                        </template>
-                      </v-data-table>
-                    </v-card-text>
-                  </v-card>
-                </v-tab-item>
-                <v-tab-item>
-                  <v-card flat>
-                    <v-card-text>
-                      <v-data-table
-                        :headers="technicalHeaders"
-                        :items="technicalSkillItems"
-                        class="elevation-1"
-                        @click:row="select"
-                        dense
-                        items-per-page=4
-                        hide-default-footer
-                      >
-                        <template v-slot:items="props">
-                          <td>{{ props.item.skill_id }}</td>
-                        </template>
-                      </v-data-table>
-                    </v-card-text>
-                  </v-card>
-                </v-tab-item>
-                <v-tab-item>
-                  <v-card flat>
-                    <v-card-text>
-                      <v-data-table
-                        :headers="technicalHeaders"
-                        :items="technicalSkillItems"
-                        class="elevation-1"
-                        @click:row="select"
-                        dense
-                        items-per-page=4
-                        hide-default-footer
-                      >
-                        <template v-slot:items="props">
-                          <td>{{ props.item.skill_id }}</td>
-                        </template>
-                      </v-data-table>
-                    </v-card-text>
-                  </v-card>
-                </v-tab-item>
-                <v-tab-item>
-                  <v-card flat>
-                    <v-card-text>
-                      <v-data-table
-                        :headers="technicalHeaders"
-                        :items="technicalSkillItems"
-                        class="elevation-1"
-                        @click:row="select"
-                        dense
-                        items-per-page=4
-                        hide-default-footer
-                      >
-                        <template v-slot:items="props">
-                          <td>{{ props.item.skill_id }}</td>
-                        </template>
-                      </v-data-table>
-                    </v-card-text>
-                  </v-card>
-                </v-tab-item>
-                <v-tab-item>
-                  <v-card flat>
-                    <v-card-text>
-                      <v-data-table
-                        :headers="technicalHeaders"
-                        :items="technicalSkillItems"
-                        class="elevation-1"
-                        @click:row="select"
-                        dense
-                        items-per-page=4
-                        hide-default-footer
-                      >
-                        <template v-slot:items="props">
-                          <td>{{ props.item.skill_id }}</td>
+                          <td>{{ props.item.name }}</td>
                         </template>
                       </v-data-table>
                     </v-card-text>
@@ -251,6 +185,8 @@
       <v-col cols="6">
         <experience-detail
           :selected="selected"
+          :skillMaster="skill_master"
+          :detailType="mode.keyName"
           @edit="edit"
         ></experience-detail>
       </v-col>
@@ -263,11 +199,12 @@ import ViewBasic from "@/Shared/view-basic";
 import Layout from '@/Layout/Layout.vue';
 import ExperienceDetail from "@/Pages/Experience/ExperienceDetail.vue";
 import ExperienceEdit from "@/Pages/Experience/ExperienceEdit.vue";
+import ExperienceRegister from "@/Pages/Experience/ExperienceRegister.vue";
 export default {
   name: 'experience-list',
   layout: Layout,
   mixins: [ ViewBasic ],
-  components: { ExperienceDetail, ExperienceEdit },
+  components: { ExperienceDetail, ExperienceEdit, ExperienceRegister },
   props:{
     experiences: { type: Object, default: {} },
     skill_master: { type: Object, default: {} },
@@ -299,7 +236,7 @@ export default {
         {text: "状態", value: "status"},
       ],
       technicalHeaders: [
-        {text: "技術", value: "skill_id"},
+        {text: "技術", value: "name"},
       ]
     }
   },
@@ -309,29 +246,12 @@ export default {
   },
   computed: {
     experienceContentItems() {
-      const experienceContent = this.experiences.map(e => {
-        return e.experience_content
-      })
-      return experienceContent
+      return this.experiences.map(e => e.experience_content)
     },
     experienceSummaryItems() {
-      const experienceSummary = this.experiences.map(e => {
-        return e.experience_summary
-      })
       const result = []
+      const experienceSummary = this.experiences.map(e => e.experience_summary)
       experienceSummary.forEach(e => {
-        for (let j = 0; j < e.length ; j++) {
-          result.push(e[j])
-        }
-      })
-      return result
-    },
-    technicalSkillItems() {
-      const technicalSkill = this.experiences.map(e => {
-        return e.technical_skill
-      })
-      const result = []
-      technicalSkill.forEach(e => {
         for (let j = 0; j < e.length ; j++) {
           result.push(e[j])
         }
@@ -362,18 +282,25 @@ export default {
       var keyList = ["jobCareer", "jodSummary", "jobKnowledge", "character"]
       var valueList = ["職務経歴", "職務要約", "活かせる経験・知識", "自己PR"]
 
-      this.mode.key = keyList.filter(e => {
-        return e !== this.mode.keyName
-      })
-      this.mode.value = valueList.filter(e => {
-        return e !== this.mode.valueName
-      })
+      this.mode.key = keyList.filter(e => e !== this.mode.keyName)
+      this.mode.value = valueList.filter(e => e !== this.mode.valueName)
     },
     changeMode(number) {
       this.mode.keyName = this.mode.key[number]
       this.mode.valueName = this.mode.value[number]
       this.setModeName()
-    }
+    },
+    technicalSkillItems(n) {
+      // ユーザーのテクニカルスキルを同階層の配列に格納する
+      const result = []
+      const technicalSkill = this.experiences.map(e => e.technical_skill)
+      technicalSkill.forEach(e => {
+        for (let j = 0; j < e.length ; j++) {
+          result.push(e[j])
+        }
+      })
+      return this.skill_master.filter(e => e.category === n && result.map(s => s.skill_id).includes(e.id))
+    },
   }
 }
 </script>

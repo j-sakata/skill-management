@@ -8,6 +8,7 @@ use App\Models\Experience;
 class TechnicalSkill extends CustomModel
 {
     protected $fillable = [
+        'experience_id',
         'skill_id',
     ];
 

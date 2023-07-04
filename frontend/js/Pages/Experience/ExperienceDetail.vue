@@ -6,7 +6,7 @@
 <template>
   <v-container fluid>
     <v-card class="ma-2" outlined v-if="selected" max-height="580">
-			<v-card-text>
+			<v-card-text v-if="detailType === 'jobCareer'">
 				<v-expansion-panels
 					hover
 					accordion
@@ -99,25 +99,46 @@
 						<v-expansion-panel-content class="overflow-y-auto">
 							<v-row dense>
 								<v-col>
-									<div class="l-text-sm-2">言語</div>
-									<div>{{ selected.technical_skill }}</div>
+									<div class="l-text-sm-2">言語/API</div>
+									<div>{{ getSkillName(1) }}</div>
 								</v-col>
 							</v-row>
 							<v-row dense>
 								<v-col>
-									<div class="l-text-sm-2">OS</div>
-									<div>{{ selected.technical_skill }}</div>
+									<div class="l-text-sm-2">フレームワーク</div>
+									<div>{{ getSkillName(2) }}</div>
 								</v-col>
 							</v-row>
 							<v-row dense>
 								<v-col>
-									<div class="l-text-sm-2">DB</div>
-									<div>{{ selected.technical_skill}}</div>
+									<div class="l-text-sm-2">OS、クラウド等</div>
+									<div>{{ getSkillName(3) }}</div>
+								</v-col>
+							</v-row>
+							<v-row dense>
+								<v-col>
+									<div class="l-text-sm-2">ルータ、NW技術等</div>
+									<div>{{ getSkillName(4) }}</div>
+								</v-col>
+							</v-row>
+							<v-row dense>
+								<v-col>
+									<div class="l-text-sm-2">プロジェクト支援</div>
+									<div>{{ getSkillName(5) }}</div>
 								</v-col>
 							</v-row>
 						</v-expansion-panel-content>
 					</v-expansion-panel>
 				</v-expansion-panels>
+			</v-card-text>
+			<v-card-text v-if="detailType === 'jodSummary'">
+				職務要約/TBD
+			</v-card-text>
+			<v-card-text v-if="detailType === 'jobKnowledge'">
+				活かせる経験・知識/TBD
+			</v-card-text>
+			<v-card-text v-if="detailType === 'character'">
+				自己PR/TBD
 			</v-card-text>
 			<v-divider></v-divider>
 			<v-card-actions class="grey lighten-4 pa-1">
@@ -146,7 +167,9 @@ export default {
   name: 'experience-detail',
   mixins: [ ViewBasic ],
   props:{
-    selected: { type: Object, default: {} }
+    selected: { type: Object, default: {} },
+		skillMaster: { type: Object, default: {} },
+		detailType: { type: String }
   },
   data() {
     return {
@@ -167,8 +190,17 @@ export default {
 		edit(item) {
 			this.$emit("edit", item);
 		},
-		deleteItem (id) {
+		skillIdList() {
+			return this.selected.technical_skill.map(e => e.skill_id)
 		},
+		technicalSkill(category) {
+			const skillIdList = this.skillIdList()
+			return this.skillMaster.filter(e => e.category == category && skillIdList.includes(e.id))
+		},
+		getSkillName(category) {
+			const list = this.technicalSkill(category);
+			return list.map(e => e.name).join('、')
+		}
   }
 }
 </script>

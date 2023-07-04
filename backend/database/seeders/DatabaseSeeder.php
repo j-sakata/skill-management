@@ -41,7 +41,10 @@ class DatabaseSeeder extends Seeder
         $experience2->knowledge_summary()->create(['knowledge' => 'test1', 'category' => 3]);
         $experience2->experience_content()->create(['started_at' => now(), 'ended_at' => now(), 'industry' => '〇〇業界3', 'project_name' => '〇〇システム3', 'project_summary' => 'test', 'phase' => 'test', 'description' => 'test', 'achievement' => 'test', 'member_count' => 5, 'position' => 'test', 'company_name' => 'test3', 'contract_type' => 3]);
         $experience2->technical_skill()->create(['skill_id' => 1]);
-        $experience2->technical_skill()->create(['skill_id' => 2]);
+        $experience2->technical_skill()->create(['skill_id' => 20]);
+        $experience2->technical_skill()->create(['skill_id' => 40]);
+        $experience2->technical_skill()->create(['skill_id' => 56]);
+        $experience2->technical_skill()->create(['skill_id' => 63]);
 
         Company::create(['user_id' => 'j-sakata', 'name' => 'test Co.', 'entered_at' => now()]);
     }

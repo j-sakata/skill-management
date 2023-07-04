@@ -48,9 +48,7 @@ Route::group(['middleware' => ['auth:sanctum', 'auth.authority']],  function () 
   Route::group(['prefix' => 'experience'],  function () {
     Route::get('/',  [ExperienceController::class, 'index'])->name('experience');
     Route::post('create',  [ExperienceController::class, 'create']);
-    Route::post('add',  [ExperienceController::class, 'add']);
     Route::post('update',  [ExperienceController::class, 'update']);
-    Route::post('change',  [ExperienceController::class, 'change']);
     Route::get('delete/{id}',  [ExperienceController::class, 'delete']);
   });
 });

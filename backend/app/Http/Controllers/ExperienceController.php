@@ -38,7 +38,7 @@ class ExperienceController extends Controller
     public function create(Request $request)
     {
         $creator = app(CreateExperience::class);
-        $log_massage = "取得資格を登録する [{$request->user_id}]";
+        $log_massage = "職務履歴を登録する [{$request->user_id}]";
 
         return $creator->create($request->all(),
             function($error) use($log_massage) {
@@ -51,30 +51,6 @@ class ExperienceController extends Controller
             },
         );
     }
-
-    /**
-     * add a new experience.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Inertia\Response
-     */
-    public function add(Request $request)
-    {
-        $creator = app(CreateExperience::class);
-        $log_massage = "取得資格を登録する [{$request->user_id}]";
-
-        return $creator->add($request->all(),
-            function($error) use($log_massage) {
-                Log::error($log_massage);
-                return Inertia::render('Experience/ExperienceList', ['error' => $error]);
-            },
-            function() use($log_massage) {
-                Log::info($log_massage);
-                return redirect()->route('experience');
-            },
-        );
-    }
-
 
     /**
      * Update the given experience.
@@ -98,30 +74,6 @@ class ExperienceController extends Controller
             },
         );
     }
-
-    /**
-     * Update the given experience.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Inertia\Response
-     */
-    public function change(Request $request)
-    {
-        $creator = app(UpdateExperience::class);
-        $log_massage = "取得資格を変更する [{$request->user_id}]";
-
-        return $creator->change($request->all(),
-            function($error) use($log_massage) {
-                Log::error($log_massage);
-                return Inertia::render('Experience/ExperienceList', ['error' => $error]);
-            },
-            function() use($log_massage) {
-                Log::info($log_massage);
-                return redirect()->route('experience');
-            },
-        );
-    }
-
 
     /**
      * Delete the given experienceer.

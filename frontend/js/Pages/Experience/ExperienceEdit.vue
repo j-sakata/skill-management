@@ -8,7 +8,7 @@
       <v-row dense>
         <v-col class="pb-0 ma-0">
           <v-text-field
-            v-model="form.project_name"
+            v-model="form.experience_content.project_name"
             label="プロジェクト名"
             counter="30"
             maxlength="30"
@@ -24,7 +24,7 @@
       <v-row dense>
         <v-col cols="6" class="pb-0 ma-0">
           <v-text-field
-            v-model.number="form.member_count"
+            v-model.number="form.experience_content.member_count"
             label="規模"
             counter="30"
             maxlength="30"
@@ -37,7 +37,7 @@
         </v-col>
         <v-col cols="6" class="pb-0 ma-0">
           <v-text-field
-            v-model="form.position"
+            v-model="form.experience_content.position"
             label="役職"
             counter="30"
             maxlength="30"
@@ -52,7 +52,7 @@
       <v-row dense>
         <v-col cols="6" class="pb-0 ma-0">
           <v-text-field
-            v-model.number="form.contract_type"
+            v-model.number="form.experience_content.contract_type"
             label="契約形態"
             counter="30"
             maxlength="30"
@@ -65,7 +65,7 @@
         </v-col>
         <v-col cols="6" class="pb-0 ma-0">
           <v-text-field
-            v-model="form.company_name"
+            v-model="form.experience_content.company_name"
             label="（派遣先）企業名"
             counter="30"
             maxlength="30"
@@ -153,17 +153,67 @@
     <v-card-text class="pa-3 pt-5" v-if="editType == 2">
       <v-row dense>
         <v-col cols="6" class="pb-0 ma-0">
-          <v-text-field
-            v-model="editType"
-            label="資格名"
-            counter="30"
-            maxlength="30"
-            hide-details="auto"
+          <v-select
+            v-model="form.skill_api"
+            :items="skillSelect(1)"
+            :menu-props="{ maxHeight: '250' }"
+            label="言語/API"
+            multiple
             dense
-            outlined
-            persistent-placeholder
-            :error-messages="errorField('')"
-          ></v-text-field>
+            persistent-hint
+          ></v-select>
+        </v-col>
+      </v-row>
+      <v-row dense>
+        <v-col cols="6" class="pb-0 ma-0">
+          <v-select
+            v-model="form.skill_fw"
+            :items="skillSelect(2)"
+            :menu-props="{ maxHeight: '250' }"
+            label="フレームワーク"
+            multiple
+            dense
+            persistent-hint
+          ></v-select>
+        </v-col>
+      </v-row>
+      <v-row dense>
+        <v-col cols="6" class="pb-0 ma-0">
+          <v-select
+            v-model="form.skill_os"
+            :items="skillSelect(3)"
+            :menu-props="{ maxHeight: '250' }"
+            label="OS、クラウド等"
+            multiple
+            dense
+            persistent-hint
+          ></v-select>
+        </v-col>
+      </v-row>
+      <v-row dense>
+        <v-col cols="6" class="pb-0 ma-0">
+          <v-select
+            v-model="form.skill_nw"
+            :items="skillSelect(4)"
+            :menu-props="{ maxHeight: '250' }"
+            label="ルータ、NW技術等"
+            multiple
+            dense
+            persistent-hint
+          ></v-select>
+        </v-col>
+      </v-row>
+      <v-row dense>
+        <v-col cols="6" class="pb-0 ma-0">
+          <v-select
+            v-model="form.skill_pj"
+            :items="skillSelect(5)"
+            :menu-props="{ maxHeight: '250' }"
+            label="プロジェクト支援"
+            multiple
+            dense
+            persistent-hint
+          ></v-select>
         </v-col>
       </v-row>
     </v-card-text>
@@ -208,7 +258,8 @@ export default {
   props:{
     editType: { type: Number },
     active: { type: Boolean },
-    selected: { type: Object, default: {} }
+    selected: { type: Object, default: {} },
+    skill_master: { type: Object, default: {} },
   },
   data() {
     return {
@@ -231,17 +282,25 @@ export default {
     initItem() {
       if(this.editType === 0) {
         return this.$inertia.form({
-          project_name: this.selected.experience_content.project_name,
-          industry: this.selected.experience_content.industry,
-          started_at: this.selected.experience_content.started_at,
-          ended_at: this.selected.experience_content.ended_at,
-          member_count: this.selected.experience_content.member_count,
-          position: this.selected.experience_content.position,
-          contract_type: this.selected.experience_content.contract_type,
-          company_name: this.selected.experience_content.company_name,
+          edit_type: this.editType,
+          company_name: this.selected.company_name,
+          experience_content: {
+            id: this.selected.experience_content.id,
+            experience_id: this.selected.experience_content.experience_id,
+            project_name: this.selected.experience_content.project_name,
+            industry: this.selected.experience_content.industry,
+            started_at: this.selected.experience_content.started_at,
+            ended_at: this.selected.experience_content.ended_at,
+            member_count: this.selected.experience_content.member_count,
+            position: this.selected.experience_content.position,
+            contract_type: this.selected.experience_content.contract_type,
+            company_name: this.selected.experience_content.company_name,
+          }
         });
       } else if(this.editType === 1) {
         return this.$inertia.form({
+          edit_type: this.editType,
+          id: this.selected.experience_content.id,
           project_summary: this.selected.experience_content.project_summary,
           phase: this.selected.experience_content.phase,
           description: this.selected.experience_content.description,
@@ -249,14 +308,43 @@ export default {
         });
       } else {
         return this.$inertia.form({
-          skill_id: this.selected.technical_skill.skill_id,
+          edit_type: this.editType,
+          id: this.selected.id,
+          skill_api: this.technicalSkillItems(1),
+          skill_fw: this.technicalSkillItems(2),
+          skill_os: this.technicalSkillItems(3),
+          skill_nw: this.technicalSkillItems(4),
+          skill_pj: this.technicalSkillItems(5),
         });
       }
-      
     },
     hide() {
       this.$emit("hide")
     },
+    update() {
+      this.form.post("/experience/update", {
+        onSuccess: page => {
+          if (page.props.error) {
+            this.messageError("入力情報を確認してください。", page.props.error);
+          } else {
+            this.message("作成が完了しました。");
+            this.hide();
+          }
+        },
+        onError: () => {
+          this.actionFailure;
+        },
+      })
+    },
+    technicalSkillItems(n) {
+      const list = this.skill_master.filter(e => e.category === n).map(e => e.id)
+      return this.selected.technical_skill.filter(e => list.includes(e.skill_id)).map(e => e.skill_id)
+    },
+    skillSelect(n) {
+      const result = []
+      this.skill_master.filter(e => e.category === n).map(e => result.push({text: e.name, value: e.id}))
+      return result
+    }
   }
 }
 </script>
