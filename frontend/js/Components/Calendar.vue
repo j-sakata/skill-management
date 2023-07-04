@@ -5,6 +5,7 @@
 				<v-toolbar
 					flat
 					dense
+					width="600"
 				>
 					<v-btn
 						outlined
@@ -60,20 +61,20 @@
 							</v-btn>
 						</template>
 						<v-list dense>
-							<v-list-item @click="type = 'day'">
-								<v-list-item-title>日</v-list-item-title>
+							<v-list-item @click="type = 'month'">
+								<v-list-item-title>月</v-list-item-title>
 							</v-list-item>
 							<v-list-item @click="type = 'week'">
 								<v-list-item-title>週</v-list-item-title>
 							</v-list-item>
-							<v-list-item @click="type = 'month'">
-								<v-list-item-title>月</v-list-item-title>
+							<v-list-item @click="type = 'day'">
+								<v-list-item-title>日</v-list-item-title>
 							</v-list-item>
 						</v-list>
 					</v-menu>
 				</v-toolbar>
 			</v-sheet>
-			<v-sheet height="560">
+			<v-sheet height="560" width="600">
 				<v-calendar
 					ref="calendar"
 					v-model="focus"
@@ -124,7 +125,7 @@
 								small
 								@click="selectedOpen = false"
 							>
-								Cancel
+								キャンセル
 							</v-btn>
 						</v-card-actions>
 					</v-card>
@@ -137,6 +138,10 @@
 <script>
   export default {
 		name: 'calendar',
+		props: {
+			holidays: { type: Object },
+			schedules: { type: Object }
+		},
     data() {
 			return {
 				focus: '',
@@ -190,30 +195,24 @@
 
         nativeEvent.stopPropagation()
       },
-      updateRange ({ start, end }) {
+      updateRange() {
         const events = []
+				const keys = Object.keys(this.schedules)
 
-        const min = new Date(`${start.date}T00:00:00`)
-        const max = new Date(`${end.date}T23:59:59`)
-        const days = (max.getTime() - min.getTime()) / 86400000
-        const eventCount = this.rnd(days, days + 20)
+				Object.keys(this.holidays).map(key => events.push({name: this.holidays[key], start: key, end: key, color: "red" }));
 
-        for (let i = 0; i < eventCount; i++) {
-          const allDay = this.rnd(0, 3) === 0
-          const firstTimestamp = this.rnd(min.getTime(), max.getTime())
-          const first = new Date(firstTimestamp - (firstTimestamp % 900000))
-          const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000
-          const second = new Date(first.getTime() + secondTimestamp)
-
-          events.push({
-            name: this.names[this.rnd(0, this.names.length - 1)],
-            start: first,
-            end: second,
-            color: this.colors[this.rnd(0, this.colors.length - 1)],
-            timed: !allDay,
-          })
+        for (let i = 0; i < keys.length; i++) {
+					const daySchedules = this.schedules[keys[i]]
+					for(let j = 0; j < daySchedules.length; j++){
+						events.push({
+							name: daySchedules[j].title,
+							start: daySchedules[j].start,
+							end: daySchedules[j].end,
+							color: this.colors[this.rnd(0, this.colors.length - 1)],
+							timed: false,
+						})
+					}
         }
-
         this.events = events
       },
       rnd (a, b) {

@@ -75,7 +75,7 @@ export default {
       }, this.actionFailure);
     }, 1000),
     forward() {
-      Inertia.get("/certification", this.actionSucsess, this.actionFailure);
+      Inertia.get("/dashboard", this.actionSucsess, this.actionFailure);
     }
   }
 }
