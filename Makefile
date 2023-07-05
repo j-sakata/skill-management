@@ -19,7 +19,8 @@ init:
 	docker-compose exec app cp -r vendor vendor-copy
 	cmd /c if exist ${MAKEFILE_DIR}exclude\vendor-copy rmdir ${MAKEFILE_DIR}exclude\vendor-copy /s /q
 	cmd /c move ${MAKEFILE_DIR}backend\vendor-copy ${MAKEFILE_DIR}exclude
-	@make fresh
+	@make migrate
+	@make dml
 	@make yarn
 	@make yarn-dev
 remake:
@@ -43,9 +44,10 @@ app:
 migrate:
 	docker-compose exec app php artisan migrate
 fresh:
-	docker-compose exec app php artisan migrate:fresh --seed
+	docker-compose exec app php artisan migrate:fresh
 seed:
 	docker-compose exec app php artisan db:seed
+	@make dml
 cache:
 	docker-compose exec app composer dump-autoload -o
 	@make optimize
@@ -81,3 +83,5 @@ db:
 	docker-compose exec db bash
 sql:
 	docker-compose exec db bash -c 'mysql -u $$MYSQL_USER -p$$MYSQL_PASSWORD $$MYSQL_DATABASE'
+dml:
+	docker-compose exec db bash -c 'mysql -u $$MYSQL_ROOT_USER -p$$MYSQL_PASSWORD --local_infile=1 $$MYSQL_DATABASE -e"source /tmp/dml/import_inital_data.sql;"'
