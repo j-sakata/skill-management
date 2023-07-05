@@ -157,8 +157,8 @@
   export default {
 		name: 'calendar',
 		props: {
-			holidays: { type: Object, default: {} },
-			schedules: { type: Object, default: {} },
+			holidays: { type: Array, default: [] },
+			schedules: { type: Array, default: [] },
 			width: { type: Number, default: null },
 			height: { type: Number, default: null }
 		},

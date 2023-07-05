@@ -30,8 +30,8 @@ export default {
   mixins: [ ViewBasic ],
   props:{
     user_id: { type: String },
-    holidays: { type: Object, default: {} },
-    schedules: { type: Object, default: {} }
+    holidays: { type: Array, default: [] },
+    schedules: { type: Array, default: [] }
   },
   data() {
     return {

@@ -19,7 +19,8 @@ init:
 	docker-compose exec app cp -r vendor vendor-copy
 	cmd /c if exist ${MAKEFILE_DIR}exclude\vendor-copy rmdir ${MAKEFILE_DIR}exclude\vendor-copy /s /q
 	cmd /c move ${MAKEFILE_DIR}backend\vendor-copy ${MAKEFILE_DIR}exclude
-	@make fresh
+	@make migrate
+	@make dml
 	@make yarn
 	@make yarn-dev
 remake:
@@ -43,10 +44,10 @@ app:
 migrate:
 	docker-compose exec app php artisan migrate
 fresh:
-	docker-compose exec app php artisan migrate:fresh --seed
-	@make dml
+	docker-compose exec app php artisan migrate:fresh
 seed:
 	docker-compose exec app php artisan db:seed
+	@make dml
 cache:
 	docker-compose exec app composer dump-autoload -o
 	@make optimize
