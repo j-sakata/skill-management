@@ -110,12 +110,15 @@ class DashboardController extends Controller
                 $end = new DateTime(!is_null($event->end->date) ? $event->end->date : $event->end->dateTime, new DateTimeZone('UTC'));
                 $start->setTimeZone(new DateTimeZone('Asia/Tokyo'));
                 $end->setTimeZone(new DateTimeZone('Asia/Tokyo'));
-                $schedules[$start->format('Y-m-d')][] = [
+
+                $list= [
                     'start' => $start->format('Y-m-d H:i:s'),
                     'end' => $end->format('Y-m-d H:i:s'),
-                    'title' => (string)$event->summary,
-                    'description' => (string)$event->description
+                    'name' => (string)$event->summary,
+                    'description' => (string)$event->description,
+                    'color' => 'indigo lighten-1'
                 ];
+                array_push($schedules, $list);
             }
         }
         return $schedules;

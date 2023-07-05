@@ -2,13 +2,20 @@
   <v-container fluid>
     <v-row no-gutters>
       <v-col cols="9">
-        <calendar
-          :schedules="schedules"
-          :holidays="holidays"
-        ></calendar>
-      </v-col>
-      <v-col cols="3">
         未実装 demo
+      </v-col>
+      <v-spacer></v-spacer>
+      <v-col cols="auto">
+        <v-row dense>
+          <v-col>
+            <calendar
+              :schedules="schedules"
+              :holidays="holidays"
+              :width="300"
+              :height="330"
+            ></calendar>
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
   </v-container>

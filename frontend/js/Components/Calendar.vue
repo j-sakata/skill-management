@@ -1,3 +1,20 @@
+<style>
+.v-calendar-weekly__day > .v-calendar-weekly__day-label > button {
+	height: 25px;
+	width: 25px;
+}
+.v-calendar-daily_head-day > .v-calendar-daily_head-day-label > button {
+	height: 30px;
+	width: 30px;
+}
+.v-calendar .v-event-summary {
+	font-size: 10px;
+}
+.v-calendar .v-event-more {
+	font-size: 10px !important;
+}
+</style>
+
 <template>
 	<v-row class="fill-height" no-gutters>
 		<v-col>
@@ -5,11 +22,11 @@
 				<v-toolbar
 					flat
 					dense
-					width="600"
+					:width=width
 				>
 					<v-btn
 						outlined
-						small
+						x-small
 						class="mr-4"
 						color="grey darken-2"
 						@click="setToday"
@@ -23,7 +40,7 @@
 						color="grey darken-2"
 						@click="prev"
 					>
-						<v-icon small>
+						<v-icon x-small>
 							mdi-chevron-left
 						</v-icon>
 					</v-btn>
@@ -34,11 +51,11 @@
 						color="grey darken-2"
 						@click="next"
 					>
-						<v-icon small>
+						<v-icon x-small>
 							mdi-chevron-right
 						</v-icon>
 					</v-btn>
-					<v-toolbar-title v-if="$refs.calendar">
+					<v-toolbar-title v-if="$refs.calendar" class="text-body-2">
 						{{ $refs.calendar.title }}
 					</v-toolbar-title>
 					<v-spacer></v-spacer>
@@ -49,13 +66,13 @@
 						<template v-slot:activator="{ on, attrs }">
 							<v-btn
 								outlined
-								small
+								x-small
 								color="grey darken-2"
 								v-bind="attrs"
 								v-on="on"
 							>
 								<span>{{ typeToLabel[type] }}</span>
-								<v-icon right>
+								<v-icon small right>
 									mdi-menu-down
 								</v-icon>
 							</v-btn>
@@ -74,11 +91,11 @@
 					</v-menu>
 				</v-toolbar>
 			</v-sheet>
-			<v-sheet height="560" width="600">
+			<v-sheet :height=height :width=width>
 				<v-calendar
 					ref="calendar"
 					v-model="focus"
-					color="primary"
+					color="indigo lighten-3"
 					:events="events"
 					:event-color="getEventColor"
 					:type="type"
@@ -86,6 +103,7 @@
 					@click:more="viewDay"
 					@click:date="viewDay"
 					@change="updateRange"
+					x-small
 				></v-calendar>
 				<v-menu
 					v-model="selectedOpen"
@@ -139,8 +157,10 @@
   export default {
 		name: 'calendar',
 		props: {
-			holidays: { type: Object },
-			schedules: { type: Object }
+			holidays: { type: Object, default: {} },
+			schedules: { type: Object, default: {} },
+			width: { type: Number, default: null },
+			height: { type: Number, default: null }
 		},
     data() {
 			return {
@@ -154,9 +174,8 @@
 				selectedEvent: {},
 				selectedElement: null,
 				selectedOpen: false,
+				// eventsは[{}, {}]で格納すること。
 				events: [],
-				colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
-				names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
 			}
     },
     mounted () {
@@ -197,26 +216,9 @@
       },
       updateRange() {
         const events = []
-				const keys = Object.keys(this.schedules)
-
-				Object.keys(this.holidays).map(key => events.push({name: this.holidays[key], start: key, end: key, color: "red" }));
-
-        for (let i = 0; i < keys.length; i++) {
-					const daySchedules = this.schedules[keys[i]]
-					for(let j = 0; j < daySchedules.length; j++){
-						events.push({
-							name: daySchedules[j].title,
-							start: daySchedules[j].start,
-							end: daySchedules[j].end,
-							color: this.colors[this.rnd(0, this.colors.length - 1)],
-							timed: false,
-						})
-					}
-        }
+		Object.keys(this.holidays).map(key => events.push({name: this.holidays[key], start: key, end: key, color: "red" }));
+		this.schedules.forEach(e => events.push(e));
         this.events = events
-      },
-      rnd (a, b) {
-        return Math.floor((b - a + 1) * Math.random()) + a
       },
     },
   }
