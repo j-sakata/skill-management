@@ -1,1 +1,3 @@
 ﻿infra/docker/mysql/dml/skill_list.csv
+.env
+backend/json

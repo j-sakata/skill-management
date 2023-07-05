@@ -2,6 +2,7 @@ import { Level, ActionEvent } from '@/enums';
 import * as Lib from '@/Shared/plain.js';
 import Vue from 'vue';
 
+import Calendar from '@/Components/Calendar.vue';
 /**
  * View コンポーネントのベーシックな Mixin。
  * 親パネルの他、ファイルアップロードや確認ダイアログ/単純表示等、シンプルな処理が必要なときなどに利用してください。
@@ -37,6 +38,7 @@ export default {
     reply: { type: String },
   },
   components: {
+    Calendar
   },
   created() {
     this.clear();

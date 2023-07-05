@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\CertificationController;
 use App\Http\Controllers\ExperienceController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +35,11 @@ Route::group(['prefix' => 'login'],  function () {
 
 
 Route::group(['middleware' => ['auth:sanctum', 'auth.authority']],  function () {
+  // dashboard
+  Route::group(['prefix' => 'dashboard'],  function () {
+    Route::get('/',  [DashboardController::class, 'index'])->name('dashboard');
+  });
+
   // certification
   Route::group(['prefix' => 'certification'],  function () {
     Route::get('/',  [CertificationController::class, 'index'])->name('certification');

@@ -17,7 +17,7 @@
     >
       <v-toolbar-title>Skill mgmt.</v-toolbar-title>
       <v-tabs v-model="indexMenu" align-with-title show-arrows>
-        <v-tab @click="moveScreen('/dashboard')" disabled>ダッシュボード</v-tab>
+        <v-tab @click="moveScreen('/dashboard')">ダッシュボード</v-tab>
         <v-tab @click="moveScreen('/certification')">資格</v-tab>
         <v-tab @click="moveScreen('/experience')">業務経歴</v-tab>
         <v-tab @click="moveScreen('/target')" disabled>到達目標</v-tab>
