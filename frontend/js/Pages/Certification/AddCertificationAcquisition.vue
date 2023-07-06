@@ -1,6 +1,6 @@
 <template>
   <v-card flat>
-    <v-card-title class="pa-1 pl-2 blue-grey lighten-1 white--text">
+    <v-card-title class="pa-1 pl-2 indigo lighten-1 white--text">
       <span>取得日追加登録</span>
     </v-card-title>
     <v-card-text class="pa-3 pt-5">
@@ -53,7 +53,7 @@
       <v-row dense>
         <v-col cols="4">
           <v-btn
-            color="blue-grey lighten-1"
+            color="indigo lighten-1"
             block
             depressed
             outlined
@@ -66,7 +66,7 @@
         <v-col>
           <v-btn
             class="white--text"
-            color="blue-grey lighten-1"
+            color="indigo lighten-1"
             block
             depressed
             small
