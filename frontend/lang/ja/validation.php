@@ -166,6 +166,23 @@ return [
         // certification_acquisition table
         'acquisition.acquisition_date' => '取得日',
         'acquisition.score' => 'スコア',
+
+        // experience table
+        'company_name' => '会社名',
+
+        // experience_content table
+        'experience_content.project_name' => 'プロジェクト名',
+        'experience_content.industry' => '業界',
+        'experience_content.started_at' => '開始日',
+        'experience_content.ended_at' => '終了日',
+        'experience_content.member_count' => '規模',
+        'experience_content.position' => '役職',
+        'experience_content.contract_type' => '契約形態',
+        'experience_content.company_name' => '(派遣先)企業名',
+        'experience_content.project_summary' => 'プロジェクト概要',
+        'experience_content.phase' => '担当フェーズ',
+        'experience_content.description' => '業務内容',
+        'experience_content.achievement' => '実績・取り組み',
     ],
 
 ];

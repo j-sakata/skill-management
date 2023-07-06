@@ -195,11 +195,11 @@ export default {
 		},
 		technicalSkill(category) {
 			const skillIdList = this.skillIdList()
-			return this.skillMaster.filter(e => e.category == category && skillIdList.includes(e.id))
+			return this.skillMaster.filter(e => e.skill_category == category && skillIdList.includes(e.id))
 		},
 		getSkillName(category) {
 			const list = this.technicalSkill(category);
-			return list.map(e => e.name).join('、')
+			return list.map(e => e.skill_name).join('、')
 		}
   }
 }

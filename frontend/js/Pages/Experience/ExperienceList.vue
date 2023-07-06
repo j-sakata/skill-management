@@ -249,7 +249,7 @@ export default {
         {text: "状態", value: "status"},
       ],
       technicalHeaders: [
-        {text: "技術", value: "name"},
+        {text: "技術", value: "skill_name"},
       ]
     }
   },
@@ -311,7 +311,7 @@ export default {
           result.push(e[j])
         }
       })
-      return this.skill_master.filter(e => e.category === n && result.map(s => s.skill_id).includes(e.id))
+      return this.skill_master.filter(e => e.skill_category === n && result.map(s => s.skill_id).includes(e.id))
     },
     updateItem() {
       this.selected = this.experiences.find(e => e.id === this.selected.id)
