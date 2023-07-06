@@ -71,9 +71,9 @@
           dense
         >
           <template v-slot:items="props">
-            <td>{{ props.item.name }}</td>
-            <td>{{ props.item.category | certificationCategoryType }}</td>
-            <td>{{ props.item.sub_category | certificationSubCategoryType }}</td>
+            <td>{{ props.item.certification_name }}</td>
+            <td>{{ props.item.certification_category | certificationCategoryType }}</td>
+            <td>{{ props.item.certification_sub_category | certificationSubCategoryType }}</td>
             <td>{{ props.item.created_at }}</td>
           </template>
         </v-data-table>
@@ -120,9 +120,9 @@ export default {
       },
       item: {},
       headers: [
-        {text: "資格名", value: "name"},
-        {text: "区分1", value: "category"},
-        {text: "区分2", value: "sub_category"},
+        {text: "資格名", value: "certification_name"},
+        {text: "区分1", value: "certification_category"},
+        {text: "区分2", value: "certification_sub_category"},
         {text: "取得日（仮置き）", value: "created_at"}
       ]
     }

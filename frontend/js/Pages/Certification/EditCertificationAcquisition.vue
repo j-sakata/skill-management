@@ -22,6 +22,7 @@
                 readonly
                 v-bind="attrs"
                 v-on="on"
+                :error-messages="errorField('acquisition.acquisition_date')"
               ></v-text-field>
             </template>
             <v-date-picker
@@ -42,7 +43,7 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('community_name')"
+            :error-messages="errorField('acquisition.score')"
           ></v-text-field>
         </v-col>
       </v-row>

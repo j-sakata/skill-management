@@ -7,7 +7,7 @@
       <v-row dense>
         <v-col cols="8" class="pb-0 ma-0">
           <v-text-field
-            v-model="form.name"
+            v-model="form.certification_name"
             label="資格名"
             counter="30"
             maxlength="30"
@@ -15,14 +15,14 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('community_name')"
+            :error-messages="errorField('certification_name')"
           ></v-text-field>
         </v-col>
       </v-row>
       <v-row dense>
         <v-col cols="8" class="pb-0 ma-0">
           <v-text-field
-            v-model="form.certification_number"
+            v-model="form.certification_code"
             label="資格コード"
             counter="30"
             maxlength="30"
@@ -30,14 +30,14 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('community_name')"
+            :error-messages="errorField('certification_code')"
           ></v-text-field>
         </v-col>
       </v-row>
       <v-row dense>
         <v-col cols="8" class="pb-0 ma-0">
           <v-text-field
-            v-model="form.expiration"
+            v-model="form.certification_expiration"
             label="有効期限"
             counter="30"
             maxlength="30"
@@ -45,31 +45,31 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('community_name')"
+            :error-messages="errorField('certification_expiration')"
           ></v-text-field>
         </v-col>
       </v-row>
       <v-row dense class="mb-5">
         <v-col cols="6" class="pb-0 ma-0">
           <v-select
-            v-model="form.category"
+            v-model="form.certification_category"
             :items="optionsCertificationCategoryType"
             label="区分1"
             hide-details="auto"
             dense
             persistent-placeholder
-            :error-messages="errorField('community_category')"
+            :error-messages="errorField('certification_category')"
           />
         </v-col>
         <v-col cols="6" class="pb-0 ma-0">
           <v-select
-            v-model="form.sub_category"
+            v-model="form.certification_sub_category"
             :items="optionsCertificationSubCategoryType"
             label="区分2"
             hide-details="auto"
             dense
             persistent-placeholder
-            :error-messages="errorField('community_category')"
+            :error-messages="errorField('certification_sub_category')"
           />
         </v-col>
       </v-row>
@@ -91,6 +91,7 @@
                 readonly
                 v-bind="attrs"
                 v-on="on"
+                :error-messages="errorField('acquisition.acquisition_date')"
               ></v-text-field>
             </template>
             <v-date-picker
@@ -112,14 +113,14 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('community_name')"
+            :error-messages="errorField('acquisition.score')"
           ></v-text-field>
         </v-col>
       </v-row>
       <v-row dense>
         <v-col>
           <v-textarea
-            v-model="form.memo"
+            v-model="form.certification_memo"
             label="備考"
             counter="400"
             maxlength="400"
@@ -127,7 +128,7 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('community_summary')"
+            :error-messages="errorField('certification_memo')"
           ></v-textarea>
         </v-col>
       </v-row>
@@ -167,7 +168,6 @@
 
 <script>
 import ViewBasic from "@/Shared/view-basic";
-import { Ajax } from "@/Shared/plain";
 import { CertificationCategoryType, CertificationSubCategoryType } from "@/enums";
 export default {
   name: 'certification-register',
@@ -206,28 +206,17 @@ export default {
     initItem() {
       return this.$inertia.form({
         user_id: this.user_id,
-        name: null,
-        certification_number: null,
-        expiration: null,
-        memo: null,
-        category: "NATIONAL",
-        sub_category: "IT",
+        certification_name: null,
+        certification_code: null,
+        certification_expiration: null,
+        certification_memo: null,
+        certification_category: "NATIONAL",
+        certification_sub_category: "IT",
         acquisition: {
           acquisition_date: null,
           score: null
         }
       });
-    },
-    checkCreate() {
-      this.updating = true;
-      Ajax.post("/community/create/check", this.form, error => {
-        if (error) {
-          this.updating = false;
-          this.messageError("入力情報を確認してください。", error);
-        } else {
-          this.create();
-        }
-      }, this.actionFailure);
     },
     create() {
       this.form.post("/certification/create", {

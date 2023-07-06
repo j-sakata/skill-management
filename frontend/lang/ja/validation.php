@@ -154,6 +154,18 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        // certification table
+        'certification_name' => '資格名',
+        'certification_code' => '資格コード',
+        'certification_expiration' => '有効期限',
+        'certification_memo' => '備考',
+        'certification_category' => '区分1',
+        'certification_sub_category' => '区分2',
+
+        // certification_acquisition table
+        'acquisition.acquisition_date' => '取得日',
+        'acquisition.score' => 'スコア',
+    ],
 
 ];

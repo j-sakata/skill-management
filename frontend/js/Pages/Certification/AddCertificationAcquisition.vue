@@ -22,6 +22,7 @@
                 readonly
                 v-bind="attrs"
                 v-on="on"
+                :error-messages="errorField('acquisition.acquisition_date')"
               ></v-text-field>
             </template>
             <v-date-picker
@@ -33,7 +34,7 @@
             ></v-date-picker>
           </v-menu>
         </v-col>
-        <v-col cols="2" class="pb-0 ma-0">
+        <v-col class="pb-0 ma-0">
           <v-text-field
             v-model="form.acquisition.score"
             label="スコア"
@@ -43,7 +44,7 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('community_name')"
+            :error-messages="errorField('acquisition.score')"
           ></v-text-field>
         </v-col>
       </v-row>
