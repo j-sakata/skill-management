@@ -263,15 +263,15 @@ export default {
   },
   data() {
     return {
-      form: this.initItem(),
+      form: [],
     }
   },
   watch: {
     active(v) {
       if(v) {
-        this.form = this.initItem()
+        this.form = this.initItem();
       }
-    }
+    },
   },
   computed: {
     errorField() {

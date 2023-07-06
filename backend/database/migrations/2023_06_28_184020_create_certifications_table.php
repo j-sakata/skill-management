@@ -18,7 +18,7 @@ class CreateCertificationsTable extends Migration
             $table->string('user_id');
             $table->string('name');
             $table->string('certification_number')->nullable();
-            $table->integer('expiration');
+            $table->integer('expiration')->nullable();
             $table->string('memo')->nullable();
             $table->string('category');
             $table->string('sub_category');

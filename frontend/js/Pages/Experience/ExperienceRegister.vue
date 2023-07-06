@@ -211,7 +211,8 @@ export default {
   mixins: [ ViewBasic ],
   props:{
     user_id: { type: String },
-    registerType: { type: String }
+    registerType: { type: String },
+    active: { type: Boolean },
   },
   data() {
     return {
@@ -221,6 +222,13 @@ export default {
         ended_at: false
       }
     }
+  },
+  watch: {
+    active(v) {
+      if(v) {
+        this.form = this.initItem();
+      }
+    },
   },
   computed: {
     errorField() {

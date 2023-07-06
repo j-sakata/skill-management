@@ -135,7 +135,7 @@ export default {
   },
   data() {
     return {
-      form: this.initItem(),
+      form: [],
       datepicker: {
         menu: false
       }

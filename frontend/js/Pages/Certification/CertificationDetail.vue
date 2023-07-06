@@ -37,7 +37,8 @@
 					</v-col>
 					<v-col cols="3">
 						<div class="l-text-sm-2">有効期限</div>
-						<div>{{selected.expiration}}年間</div>
+						<div v-if="selected.expiration">{{selected.expiration}}年間</div>
+						<div v-else>-</div>
 					</v-col>
 					<v-col cols="3">
 						<div class="l-text-sm-2">区分1</div>

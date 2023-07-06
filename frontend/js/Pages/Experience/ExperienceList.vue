@@ -4,7 +4,6 @@
       <experience-register
         :active="modal.register"
         :user_id="user_id"
-        @hide="modal.register = false"
         :registerType="mode.keyName"
         @send="receive($event)"
       ></experience-register>
@@ -14,7 +13,7 @@
         :active="modal.edit"
         :editType="editType"
         :selected="selected"
-        @hide="modal.edit = false"
+        @hide="modal.edit = false; updateItem()"
         :skill_master="skill_master"
         @send="receive($event)"
       ></experience-edit>
@@ -22,7 +21,7 @@
     <v-row no-gutters>
       <v-col cols="6">
         <v-row no-gutters class="pa-4 pb-0">
-          <v-col cols="9">
+          <v-col>
             <v-text-field
               v-model="keyword"
               label="キーワード"
@@ -33,9 +32,12 @@
               hide-details="auto"
             ></v-text-field>
           </v-col>
+          <v-col cols="auto" class="ml-2">
+            <v-btn dense @click="search">検索</v-btn>
+          </v-col>
           <v-spacer></v-spacer>
-          <v-col cols="2">
-            <v-btn dense block @click="search">検索</v-btn>
+          <v-col cols="auto">
+            mode： {{ mode.valueName }}
           </v-col>
         </v-row>
       </v-col>
@@ -301,6 +303,9 @@ export default {
       })
       return this.skill_master.filter(e => e.category === n && result.map(s => s.skill_id).includes(e.id))
     },
+    updateItem() {
+      this.selected = this.experiences.find(e => e.id === this.selected.id)
+    }
   }
 }
 </script>

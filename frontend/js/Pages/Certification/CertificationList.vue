@@ -4,7 +4,7 @@
       <certification-register
         :active="modal.register"
         :user_id="user_id"
-        @hide="modal.register = false"
+        @hide="modal.register = false; updateItem()"
         @send="receive($event)"
       ></certification-register>
     </v-dialog>
@@ -12,7 +12,7 @@
       <certification-edit
         :active="modal.edit"
         :selected="selected"
-        @hide="modal.edit = false"
+        @hide="modal.edit = false; updateItem()"
         @send="receive($event)"
       ></certification-edit>
     </v-dialog>
@@ -20,7 +20,7 @@
       <add-certification-acquisition
         :active="modal.add"
         :selected="selected"
-        @hide="modal.add = false"
+        @hide="modal.add = false; updateItem()"
         @send="receive($event)"
       ></add-certification-acquisition>
     </v-dialog>
@@ -28,7 +28,7 @@
       <edit-certification-acquisition
         :active="modal.change"
         :item="item"
-        @hide="modal.change = false"
+        @hide="modal.change = false; updateItem()"
         @send="receive($event)"
       ></edit-certification-acquisition>
     </v-dialog>
@@ -144,6 +144,9 @@ export default {
     change(item) {
       this.item = item
       this.modal.change = true
+    },
+    updateItem() {
+      this.selected = this.certifications.find(e => e.id === this.selected.id)
     }
   }
 }
