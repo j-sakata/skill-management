@@ -22,7 +22,7 @@ services:
         volume:
           nocopy: true
       - type: bind
-        source: $PWD/../backend
+        source: ../backend
         target: /work/backend
       - type: volume
         source: psysh-store
@@ -50,7 +50,7 @@ services:
         volume:
           nocopy: true
       - type: bind
-        source: $PWD/../frontend
+        source: ../frontend
         target: /work/backend/resources
     environment:
       - DB_CONNECTION=mysql
@@ -76,10 +76,10 @@ services:
         volume:
           nocopy: true
       - type: bind
-        source: $PWD/../backend
+        source: ../backend
         target: /work/backend
       - type: bind
-        source: $PWD/../frontend
+        source: ../frontend
         target: /work/backend/resources
 
   db:
@@ -114,7 +114,7 @@ services:
     ports:
       - 8088:80
     volumes:
-      - "$PWD/../phpmyadmin/sessions:/sessions"
+      - "../phpmyadmin/sessions:/sessions"
 
   mail:
     image: mailhog/mailhog
