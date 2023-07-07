@@ -16,9 +16,6 @@ init:
 	docker-compose exec app php artisan storage:link
 	docker-compose exec web rm -rf webpack.mix.js
 	docker-compose exec web ln -s resources/webpack.mix.js webpack.mix.js
-	docker-compose exec app cp -r vendor vendor-copy
-	sudo rm -rf ${PARENT_MAKEFILE_DIR}exclude/vendor-copy
-	sudo mv ${PARENT_MAKEFILE_DIR}backend/vendor-copy ${PARENT_MAKEFILE_DIR}exclude
 	@make migrate
 	@make dml
 	@make yarn
