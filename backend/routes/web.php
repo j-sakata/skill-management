@@ -34,7 +34,7 @@ Route::group(['prefix' => 'login'],  function () {
 });
 
 
-Route::group(['middleware' => ['auth:sanctum', 'auth.authority']],  function () {
+Route::group(['middleware' => ['auth:sanctum']],  function () {
   // dashboard
   Route::group(['prefix' => 'dashboard'],  function () {
     Route::get('/',  [DashboardController::class, 'index'])->name('dashboard');
