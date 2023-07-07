@@ -1,15 +1,13 @@
-PARENT_MAKEFILE_DIR:=$(shell dirname )$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-
 up:
 	docker-compose up -d
 build:
 	docker-compose build --no-cache --force-rm
 init:
 	docker-compose up -d --build
-	mkdir ${PARENT_MAKEFILE_DIR}backend/init
-	cp -r ${PARENT_MAKEFILE_DIR}exclude/init ${PARENT_MAKEFILE_DIR}backend/
+	mkdir ../backend/init
+	cp -r ../exclude/init ../backend/
 	docker-compose exec app cp -r init/app init/framework storage
-	rm -rf ${PARENT_MAKEFILE_DIR}backend/init
+	rm -rf ../backend/init
 	docker-compose exec app chmod -R 777 storage bootstrap/cache
 	docker-compose exec app composer install
 	docker-compose exec app php artisan key:generate
