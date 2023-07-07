@@ -1,0 +1,122 @@
+version: "3.9"
+volumes:
+  php-fpm-socket:
+  db-store:
+  psysh-store:
+  storage:
+  vendor:
+  node_modules:
+  framework:
+  logs:
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ../infra/docker/php/Dockerfile
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    volumes:
+      - type: volume
+        source: php-fpm-socket
+        target: /var/run/php-fpm
+        volume:
+          nocopy: true
+      - type: bind
+        source: $PWD/../backend
+        target: /work/backend
+      - type: volume
+        source: psysh-store
+        target: /root/.config/psysh
+        volume:
+          nocopy: true
+      - type: volume
+        source: framework
+        target: /work/backend/storage/framework
+        volume:
+          nocopy: true
+      - type: volume
+        source: logs
+        target: /work/backend/storage/logs
+        volume:
+          nocopy: true
+      - type: volume
+        source: vendor
+        target: /work/backend/vendor
+        volume:
+          nocopy: true
+      - type: volume
+        source: node_modules
+        target: /work/backend/node_modules
+        volume:
+          nocopy: true
+      - type: bind
+        source: $PWD/../frontend
+        target: /work/backend/resources
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=${DB_NAME}
+      - DB_USERNAME=${DB_USER}
+      - DB_PASSWORD=${DB_PASS}
+
+  web:
+    build:
+      context: .
+      dockerfile: ../infra/docker/nginx/Dockerfile
+    ports:
+      - target: 80
+        published: ${WEB_PORT:-80}
+        protocol: tcp
+        mode: host
+    volumes:
+      - type: volume
+        source: php-fpm-socket
+        target: /var/run/php-fpm
+        volume:
+          nocopy: true
+      - type: bind
+        source: $PWD/../backend
+        target: /work/backend
+      - type: bind
+        source: $PWD/../frontend
+        target: /work/backend/resources
+
+  db:
+    build:
+      context: .
+      dockerfile: ../infra/docker/mysql/Dockerfile
+    ports:
+      - target: 3306
+        published: ${DB_PORT:-3306}
+        protocol: tcp
+        mode: host
+    volumes:
+      - type: volume
+        source: db-store
+        target: /var/lib/mysql
+        volume:
+          nocopy: true
+      - type: bind
+        source: ../infra/docker/mysql/dml
+        target: /tmp/dml
+    environment:
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASS}
+      - MYSQL_ROOT_USER=${DB_ROOT_USER}
+      - MYSQL_ROOT_PASSWORD=${DB_PASS}
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    environment:
+      - PMA_HOSTS=db
+    ports:
+      - 8088:80
+    volumes:
+      - "$PWD/../phpmyadmin/sessions:/sessions"
+
+  mail:
+    image: mailhog/mailhog
+    ports:
+      - 8025:8025
