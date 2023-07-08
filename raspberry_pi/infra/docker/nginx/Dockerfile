@@ -6,13 +6,12 @@ SHELL ["/bin/ash", "-oeux", "pipefail", "-c"]
 ENV TZ=UTC
 
 RUN apk update && \
-  apk add --update --no-cache --virtual=.build-dependencies g++
-RUN apk add nodejs
+  apk add --update --no-cache --virtual=.build-dependencies g++ && \
+  apk add nodejs
 
 COPY --from=node /opt/yarn-* /opt/yarn
 COPY --from=node /usr/local/bin/node /usr/local/bin/
 COPY --from=node /usr/local/lib/node_modules/ /usr/local/lib/node_modules/
-# nginx config file
 COPY ./infra/docker/nginx/*.conf /etc/nginx/conf.d/
 RUN ln -fs /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
   && ln -fs /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npx \
