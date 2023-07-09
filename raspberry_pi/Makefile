@@ -29,7 +29,7 @@ restart:
 	@make down
 	@make up
 destroy:
-	docker compose down --rmi all --volumes --remove-orphans
+	docker compose down --rmi all --remove-orphans
 destroy-volumes:
 	docker compose down --volumes --remove-orphans
 web:
