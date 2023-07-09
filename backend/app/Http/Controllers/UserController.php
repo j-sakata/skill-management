@@ -4,15 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Type\AuthorityType;
+use Illuminate\Contracts\Auth\Factory as Auth;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use App\Models\User;
 use App\Actions\User\CreateUser;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    /**
+     * CookieAuthenticationController constructor.
+     * @param AuthFactory $auth
+     */
+    public function __construct(
+        private Auth $auth,
+    ) {
+    }
+
     /**
      * Show the user register screen.
      *
@@ -29,15 +39,34 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return json
      */
-    public function check_user(Request $request)
+    public function check(Request $request)
     {
         $has_user = User::first()->exists();
-        $is_admin_user = User::where('user_id', $request->create_user_id)->where('password', Hash::make($request->password))->where('authority', AuthorityType::Admin->name)->exists();
-        if (!$has_user || $is_admin_user) {
-            return response()->json(['status' => 'true']);
-        } else {
-            return response()->json(['status' => 'false']);;
+        $authority = AuthorityType::Admin->name;
+        $is_admin_user = User::where('user_id', $request->user_id)->where('authority', $authority)->exists();
+
+        if (!$has_user) {
+            return response()->json(['status' => true]);
         }
+        if ($is_admin_user) {
+            $log_massage = "ログイン [{$request->user_id}]";
+            if ($this->getGuard()->attempt(['user_id' => $request->user_id, 'password' => $request->password])) {
+                $request->session()->regenerate();
+                Log::info($log_massage);
+                return response()->json(['status' => true]);
+            }
+            Log::error($log_massage);
+            return response()->json(['status' => false]);
+        }
+
+    }
+
+    /**
+     * @return StatefulGuard
+     */
+    private function getGuard(): StatefulGuard
+    {
+        return $this->auth->guard(config('auth.defaults.guard'));
     }
 
     /**

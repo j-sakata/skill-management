@@ -9,7 +9,7 @@
           <v-row no-gutters>
             <v-col>
               <v-text-field
-                v-model="create_user_id"
+                v-model="auth.user_id"
                 label="ID"
                 persistent-placeholder
                 dense
@@ -21,12 +21,13 @@
           <v-row no-gutters>
             <v-col>
               <v-text-field
-                v-model="password"
+                v-model="auth.password"
                 label="パスワード"
                 type="password"
                 persistent-placeholder
                 dense
                 outlined
+                @keydown.enter="confirm()"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -39,55 +40,82 @@
       </v-card>
     </v-dialog>
     <v-row no-gutters v-if="authorization==true">
-      <v-col cols="5" offset="3">
+      <v-col cols="6" offset="3">
         <v-card class="ma-2" outlined>
           <v-card-title>ユーザー新規登録</v-card-title>
           <v-card-text>
-            <v-text-field
-              v-model="form.user_id"
-              label="ID"
-              counter="30"
-              persistent-placeholder
-              dense
-              :error-messages="errorField('user_id')"
-            ></v-text-field>
-            <v-text-field
-              v-model="form.password"
-              label="メールアドレス"
-              type="email"
-              counter="255"
-              persistent-placeholder
-              dense
-              :error-messages="errorField('email')"
-            ></v-text-field>
-            <v-text-field
-              v-model="form.confirm_password"
-              label="確認用パスワード"
-              type="password"
-              counter="255"
-              persistent-placeholder
-              dense
-              :error-messages="errorField('password')"
-            ></v-text-field>
-            <v-select
-              v-model="form.authority"
-              :items="optionsCertificationCategoryType"
-              label="権限"
-              hide-details="auto"
-              dense
-              persistent-placeholder
-              :error-messages="errorField('authority')"
-            />
-            <v-btn
-              color="indigo darken-2"
-              class="mt-2"
-              dark
-              block
-              @click="register"
-              :loading="form.processing"
-              >
-              新規登録
-            </v-btn>
+            <v-row dense>
+              <v-col>
+                <v-text-field
+                  v-model="form.user_id"
+                  label="ID"
+                  persistent-placeholder
+                  dense
+                  :error-messages="errorField('user_id')"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="3">
+                <v-select
+                  v-model="form.authority"
+                  :items="optionAuthorityType"
+                  label="権限"
+                  hide-details="auto"
+                  dense
+                  persistent-placeholder
+                  :error-messages="errorField('authority')"
+                />
+              </v-col>
+            </v-row>
+            <v-row dense>
+              <v-col>
+                <v-text-field
+                  v-model="form.email"
+                  label="メールアドレス"
+                  type="email"
+                  persistent-placeholder
+                  dense
+                  :error-messages="errorField('email')"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row dense>
+              <v-col>
+                <v-text-field
+                  v-model="form.password"
+                  label="パスワード"
+                  type="password"
+                  persistent-placeholder
+                  dense
+                  :error-messages="errorField('password')"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row dense>
+              <v-col>
+                <v-text-field
+                  v-model="form.confirm_password"
+                  label="確認用パスワード"
+                  type="password"
+                  persistent-placeholder
+                  dense
+                  :error-messages="errorField('password')"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row dense>
+              <v-col>
+                <v-btn
+                  color="indigo darken-2"
+                  class="mt-2"
+                  dark
+                  block
+                  @click="register"
+                  :loading="form.processing"
+                  >
+                  新規登録
+                </v-btn>
+              </v-col>
+            </v-row>
           </v-card-text>
         </v-card>
       </v-col>
@@ -100,6 +128,8 @@
 
 <script>
 import ViewBasic from "@/Shared/view-basic";
+import { Ajax, Inertia } from "@/Shared/plain";
+import { AuthorityType } from "@/enums";
 import Layout from '@/Layout/Layout.vue';
 export default {
   name: 'user-register',
@@ -115,17 +145,22 @@ export default {
         authority: "General",
         password: "",
         confirm_password: "",
-        create_user_id: this.create_user_id
+        create_user_id: ""
       }),
       dialog: true,
       authorization: false,
-      create_user_id: "",
-      password: ""
+      auth: {
+        user_id: "",
+        password: "",
+      }
     }
   },
   computed: {
     errorField() {
       return field => { return this.messages.columns?.[field]; }
+    },
+    optionAuthorityType() {
+      return Object.entries(AuthorityType).map(([value, text]) => ({ text, value }));
     },
   },
   methods: {
@@ -137,8 +172,13 @@ export default {
       this.authorization = false
     },
     confirm() {
-      this.dialog = false,
-      this.authorization = true
+      Ajax.post('/user/check', this.auth, v => {
+        this.dialog = false;
+        if (v.status) {
+          this.authorization = true;
+          this.form.create_user_id = this.auth.user_id;
+        }
+      }, this.ActionFailure)
     }
   }
 }

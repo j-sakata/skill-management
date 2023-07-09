@@ -37,7 +37,7 @@ Route::group(['prefix' => 'login'],  function () {
 // UserRegister
 Route::group(['prefix' => 'user'],  function () {
   Route::get('register', [UserController::class, 'index']);
-  Route::post('check_user', [UserController::class, 'check_user']);
+  Route::post('check', [UserController::class, 'check']);
   Route::post('create', [UserController::class, 'create']);
 });
 
