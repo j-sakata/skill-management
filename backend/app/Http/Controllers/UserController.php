@@ -41,13 +41,13 @@ class UserController extends Controller
      */
     public function check(Request $request)
     {
-        $has_user = User::first()->exists();
-        $authority = AuthorityType::Admin->name;
-        $is_admin_user = User::where('user_id', $request->user_id)->where('authority', $authority)->exists();
-
-        if (!$has_user) {
+        $count_user = User::count();
+        if ($count_user == 0) {
             return response()->json(['status' => true]);
         }
+
+        $authority = AuthorityType::Admin->name;
+        $is_admin_user = User::where('user_id', $request->user_id)->where('authority', $authority)->exists();
         if ($is_admin_user) {
             $log_massage = "ログイン [{$request->user_id}]";
             if ($this->getGuard()->attempt(['user_id' => $request->user_id, 'password' => $request->password])) {
