@@ -31,8 +31,9 @@ class UserController extends Controller
      */
     public function check_user(Request $request)
     {
-        $user = User::where('user_id', $request->create_user_id)->where('password', Hash::make($request->password))->where('authority', AuthorityType::Admin->name);
-        if ($user->exists()) {
+        $has_user = User::first()->exists();
+        $is_admin_user = User::where('user_id', $request->create_user_id)->where('password', Hash::make($request->password))->where('authority', AuthorityType::Admin->name)->exists();
+        if (!$has_user || $is_admin_user) {
             return response()->json(['status' => 'true']);
         } else {
             return response()->json(['status' => 'false']);;

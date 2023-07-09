@@ -69,6 +69,15 @@
               dense
               :error-messages="errorField('password')"
             ></v-text-field>
+            <v-select
+              v-model="form.authority"
+              :items="optionsCertificationCategoryType"
+              label="権限"
+              hide-details="auto"
+              dense
+              persistent-placeholder
+              :error-messages="errorField('authority')"
+            />
             <v-btn
               color="indigo darken-2"
               class="mt-2"
@@ -103,6 +112,7 @@ export default {
       form: this.$inertia.form({
         user_id: "",
         email: "",
+        authority: "General",
         password: "",
         confirm_password: "",
         create_user_id: this.create_user_id
