@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::create([ 'user_id' => 'j-sakata', 'name' => 'サカタ', 'email' => 'j-sakata@example.com', 'password' => Hash::make('j-sakata'), 'authority' => AuthorityType::Admin->name]);
+        User::create([ 'user_id' => 'j-sakata', 'name' => 'サカタ', 'email' => 'j-sakata@example.com', 'password' => Hash::make('j-sakata'), 'authority' => AuthorityType::Admin->name, 'created_id' => 'j-sakata', 'updated_id' => 'j-sakata']);
 
         Certification::create(['user_id' => 'j-sakata', 'name' => '基本情報技術者試験', 'certification_number' => '1505', 'expiration' => '100', 'memo' => 'レベル2', 'category' => 'NATIONAL', 'sub_category' => 'IT']);
         $certification = Certification::find(1);
