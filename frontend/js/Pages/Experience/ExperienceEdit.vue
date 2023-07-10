@@ -430,7 +430,7 @@ export default {
       })
     },
     technicalSkillItems(n) {
-      const list = this.skill_master.filter(e => e.category === n).map(e => e.id)
+      const list = this.skill_master.filter(e => e.skill_category === n).map(e => e.id)
       return this.selected.technical_skill.filter(e => list.includes(e.skill_id)).map(e => e.skill_id)
     },
     saveDatepicker (date) {
@@ -438,7 +438,7 @@ export default {
     },
     skillSelect(n) {
       const result = []
-      this.skill_master.filter(e => e.category === n).map(e => result.push({text: e.name, value: e.id}))
+      this.skill_master.filter(e => e.skill_category === n).map(e => result.push({text: e.skill_name, value: e.id}))
       return result
     }
   }

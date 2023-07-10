@@ -188,6 +188,19 @@ export default {
 			return Array.prototype.reverse.call(array);
 		},
 		edit(item) {
+			if(this.detailType !== "jobCareer") {
+				switch (this.detailType) {
+					case "jodSummary":
+						item = 3
+						break
+					case "jobKnowledge":
+						item = 4
+						break
+					case "character":
+						item = 5
+						break
+				}
+			}
 			this.$emit("edit", item);
 		},
 		skillIdList() {
