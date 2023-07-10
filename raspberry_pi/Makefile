@@ -48,7 +48,7 @@ optimize:
 optimize-clear:
 	docker-compose exec app php artisan optimize:clear
 authority:
-	docker compose exec app chmod -vR 777 storage storage/logs/laravel.log bootstrap/cache
+	docker compose exec app chmod -vR 777 storage bootstrap/cache
 cache:
 	docker compose exec app composer dump-autoload -o
 	@make optimize
