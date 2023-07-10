@@ -13,8 +13,8 @@ volumes:
 services:
   app:
     build:
-      context: .
-      dockerfile: ../infra/docker/php/Dockerfile.prod
+      context: ../
+      dockerfile: ./infra/docker/php/Dockerfile
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     volumes:
@@ -24,7 +24,7 @@ services:
         volume:
           nocopy: true
       - type: bind
-        source: ../backend
+        source: ./backend
         target: /work/backend
       - type: volume
         source: psysh-store
@@ -52,7 +52,7 @@ services:
         volume:
           nocopy: true
       - type: bind
-        source: ../frontend
+        source: ./frontend
         target: /work/backend/resources
     environment:
       - DB_CONNECTION=mysql
@@ -64,8 +64,8 @@ services:
 
   web:
     build:
-      context: .
-      dockerfile: ../infra/docker/nginx/Dockerfile.prod
+      context: ../
+      dockerfile: ./infra/docker/nginx/Dockerfile.prod
     ports:
       - target: 80
         published: ${WEB_PORT:-80}
@@ -78,16 +78,16 @@ services:
         volume:
           nocopy: true
       - type: bind
-        source: ../backend
+        source: ./backend
         target: /work/backend
       - type: bind
-        source: ../frontend
+        source: ./frontend
         target: /work/backend/resources
 
   db:
     build:
-      context: .
-      dockerfile: ../infra/docker/mysql/Dockerfile.prod
+      context: ../
+      dockerfile: ./infra/docker/mysql/Dockerfile
     ports:
       - target: 3306
         published: ${DB_PORT:-3306}
@@ -100,7 +100,7 @@ services:
         volume:
           nocopy: true
       - type: bind
-        source: ../infra/docker/mysql/dml
+        source: ./infra/docker/mysql/dml
         target: /tmp/dml
     environment:
       - MYSQL_DATABASE=${DB_NAME}
