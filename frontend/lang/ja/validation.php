@@ -154,6 +154,14 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        // user table
+        'user_id' => 'ID',
+        'name' => '名前',
+        'password' => 'パスワード',
+        'authority' => '権限',
+        'email' => 'メールアドレス',
+
+    ],
 
 ];
