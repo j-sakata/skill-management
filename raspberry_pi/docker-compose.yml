@@ -24,7 +24,7 @@ services:
         volume:
           nocopy: true
       - type: bind
-        source: ./backend
+        source: ../backend
         target: /work/backend
       - type: volume
         source: psysh-store
@@ -52,7 +52,7 @@ services:
         volume:
           nocopy: true
       - type: bind
-        source: ./frontend
+        source: ../frontend
         target: /work/backend/resources
     environment:
       - DB_CONNECTION=mysql
@@ -78,10 +78,10 @@ services:
         volume:
           nocopy: true
       - type: bind
-        source: ./backend
+        source: ../backend
         target: /work/backend
       - type: bind
-        source: ./frontend
+        source: ../frontend
         target: /work/backend/resources
 
   db:
@@ -100,7 +100,7 @@ services:
         volume:
           nocopy: true
       - type: bind
-        source: ./infra/docker/mysql/dml
+        source: ../infra/docker/mysql/dml
         target: /tmp/dml
     environment:
       - MYSQL_DATABASE=${DB_NAME}
