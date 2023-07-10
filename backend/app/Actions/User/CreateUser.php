@@ -24,11 +24,13 @@ class CreateUser
 
         $user = new User();
         $user->user_id = $input['user_id'];
-        $user->password = Hash::make($input['user_id']);
+        $user->name = $input['name'];
+        $user->email = $input['email'];
+        $user->password = Hash::make($input['password']);
         $user->authority = $input['authority'];
         $user->created_id = $input['create_user_id'];
         $user->updated_id = $input['create_user_id'];
-        $user->fill($input)->save();
+        $user->save();
 
         return $success();
     }
@@ -38,7 +40,9 @@ class CreateUser
         return Validator::make($input, [
             'user_id' => ['required', 'max:30'],
             'name' => ['required', 'max:30'],
+            'password' => ['required'],
             'email' => ['required', 'email', 'max:255'],
+            'authority' => ['required'],
         ]);
     }
 }

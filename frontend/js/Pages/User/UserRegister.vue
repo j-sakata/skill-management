@@ -69,6 +69,17 @@
             <v-row dense>
               <v-col>
                 <v-text-field
+                  v-model="form.name"
+                  label="名前"
+                  persistent-placeholder
+                  dense
+                  :error-messages="errorField('name')"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row dense>
+              <v-col>
+                <v-text-field
                   v-model="form.email"
                   label="メールアドレス"
                   type="email"
@@ -109,7 +120,7 @@
                   class="mt-2"
                   dark
                   block
-                  @click="register"
+                  @click="register()"
                   :loading="form.processing"
                   >
                   新規登録
@@ -128,7 +139,7 @@
 
 <script>
 import ViewBasic from "@/Shared/view-basic";
-import { Ajax, Inertia } from "@/Shared/plain";
+import { Ajax } from "@/Shared/plain";
 import { AuthorityType } from "@/enums";
 import Layout from '@/Layout/Layout.vue';
 export default {
@@ -141,6 +152,7 @@ export default {
     return {
       form: this.$inertia.form({
         user_id: "",
+        name: "",
         email: "",
         authority: "General",
         password: "",
@@ -165,7 +177,22 @@ export default {
   },
   methods: {
     register() {
-
+      if (this.form.password !== this.form.confirm_password) {
+        return this.messageError("パスワードと確認用パスワードが異なります。")
+      }
+      this.form.post('/user/create', {
+        onSuccess: page => {
+          if (page.props.error) {
+            this.messageError("入力情報を確認してください。", page.props.error);
+          } else {
+            this.message("作成が完了しました。");
+          }
+        },
+        onError: () => {
+          this.actionFailure;
+        },
+        preserveState: true,
+      })
     },
     cancel() {
       this.dialog = false,
