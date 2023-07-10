@@ -1,4 +1,5 @@
 version: "3.9"
+
 volumes:
   php-fpm-socket:
   db-store:
@@ -8,11 +9,12 @@ volumes:
   node_modules:
   framework:
   logs:
+
 services:
   app:
     build:
       context: .
-      dockerfile: ../infra/docker/php/Dockerfile
+      dockerfile: ../infra/docker/php/Dockerfile.prod
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     volumes:
@@ -85,7 +87,7 @@ services:
   db:
     build:
       context: .
-      dockerfile: ../infra/docker/mysql/Dockerfile
+      dockerfile: ../infra/docker/mysql/Dockerfile.prod
     ports:
       - target: 3306
         published: ${DB_PORT:-3306}
