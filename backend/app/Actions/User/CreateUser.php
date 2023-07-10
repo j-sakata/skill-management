@@ -28,8 +28,8 @@ class CreateUser
         $user->email = $input['email'];
         $user->password = Hash::make($input['password']);
         $user->authority = $input['authority'];
-        $user->created_id = $input['create_user_id'];
-        $user->updated_id = $input['create_user_id'];
+        $user->created_id = $input['create_user_id'] === "" ? $input['create_user_id'] : $input['user_id'];
+        $user->updated_id = $input['create_user_id'] === "" ? $input['create_user_id'] : $input['user_id'];
         $user->save();
 
         return $success();
