@@ -17,19 +17,19 @@ class UpdateCertification
      */
     public function update(array $input, $validationFails, $success)
     {
-      $validator = $this->validate($input);
+      $validator = $this->validateUpdate($input);
 
       if ($validator->fails()) {
         return $validationFails($validator->errors());
       }
 
       Certification::find($input['id'])->fill([
-        'name' => $input['name'],
-        'certification_number' => $input['certification_number'],
-        'expiration' => $input['expiration'],
-        'memo' => $input['memo'],
-        'category' => $input['category'],
-        'sub_category' => $input['sub_category'],
+        'certification_name' => $input['certification_name'],
+        'certification_code' => $input['certification_code'],
+        'certification_expiration' => $input['certification_expiration'],
+        'certification_memo' => $input['certification_memo'],
+        'certification_category' => $input['certification_category'],
+        'certification_sub_category' => $input['certification_sub_category'],
       ])->save();
 
       return $success();
@@ -43,7 +43,7 @@ class UpdateCertification
      */
     public function change(array $input, $validationFails, $success)
     {
-      $validator = $this->validate($input);
+      $validator = $this->validateChange($input);
 
       if ($validator->fails()) {
         return $validationFails($validator->errors());
@@ -57,18 +57,26 @@ class UpdateCertification
       return $success();
     }
 
-    function validate(array $input)
+    function validateUpdate(array $input)
     {
       return Validator::make($input, [
-        // 'user_id' => ['required'],
-        // 'name' => ['required', 'max:30'],
-        // 'email' => ['required', 'email', 'max:255'],
-      ],
-      [
-        // 'name.required' => '名前を入力してください',
-        // 'name.max' => '30字以内で入力してください',
-        // 'email.required' => 'メールアドレスを入力してください',
-        // 'email.max' => '255字以内で入力してください',
+        'user_id' => ['required'],
+        'certification_name' => ['required'],
+        'certification_code' => [],
+        'certification_expiration' => ['integer'],
+        'certification_memo' => [],
+        'certification_category' => ['required'],
+        'certification_sub_category' => ['required'],
+        'acquisition.acquisition_date' => ['required', 'date'],
+        'acquisition.score' => ['integer']
+      ]);
+    }
+
+    function validateChange(array $input)
+    {
+      return Validator::make($input, [
+        'acquisition.acquisition_date' => ['required', 'date'],
+        'acquisition.score' => ['integer']
       ]);
     }
 }

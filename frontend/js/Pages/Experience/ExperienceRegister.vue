@@ -1,6 +1,6 @@
 <template>
   <v-card flat>
-    <v-card-title class="pa-1 pl-2 blue-grey lighten-1 white--text">
+    <v-card-title class="pa-1 pl-2 indigo lighten-1 white--text">
       <span>職務経歴新規登録</span>
     </v-card-title>
     <v-card-text class="pa-3 pt-5" v-if="registerType === 'jobCareer'">
@@ -15,7 +15,7 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('project_name')"
+            :error-messages="errorField('experience_content.project_name')"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -30,7 +30,7 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('community_name')"
+            :error-messages="errorField('experience_content.industry')"
           ></v-text-field>
         </v-col>
         <v-col cols="6" class="pb-0 ma-0">
@@ -43,7 +43,7 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('community_name')"
+            :error-messages="errorField('company_name')"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -65,6 +65,7 @@
                 readonly
                 v-bind="attrs"
                 v-on="on"
+                :error-messages="errorField('experience_content.started_at')"
               ></v-text-field>
             </template>
             <v-date-picker
@@ -93,6 +94,7 @@
                 readonly
                 v-bind="attrs"
                 v-on="on"
+                :error-messages="errorField('experience_content.ended_at')"
               ></v-text-field>
             </template>
             <v-date-picker
@@ -116,7 +118,7 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('community_name')"
+            :error-messages="errorField('experience_content.member_count')"
           ></v-text-field>
         </v-col>
         <v-col>
@@ -129,7 +131,7 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('community_name')"
+            :error-messages="errorField('experience_content.position')"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -144,7 +146,7 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('community_name')"
+            :error-messages="errorField('experience_content.contract_type')"
           ></v-text-field>
         </v-col>
         <v-col>
@@ -157,7 +159,7 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('community_name')"
+            :error-messages="errorField('experience_content.company_name')"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -176,7 +178,7 @@
       <v-row dense>
         <v-col cols="4">
           <v-btn
-            color="blue-grey lighten-1"
+            color="indigo lighten-1"
             block
             depressed
             outlined
@@ -189,7 +191,7 @@
         <v-col>
           <v-btn
             class="white--text"
-            color="blue-grey lighten-1"
+            color="indigo lighten-1"
             block
             depressed
             small
@@ -211,16 +213,24 @@ export default {
   mixins: [ ViewBasic ],
   props:{
     user_id: { type: String },
-    registerType: { type: String }
+    registerType: { type: String },
+    active: { type: Boolean },
   },
   data() {
     return {
-      form: this.initItem(),
+      form: [],
       datepicker: {
         started_at: false,
         ended_at: false
       }
     }
+  },
+  watch: {
+    active(v) {
+      if(v) {
+        this.form = this.initItem();
+      }
+    },
   },
   computed: {
     errorField() {
@@ -253,8 +263,8 @@ export default {
     create() {
       this.form.post("/experience/create", {
         onSuccess: page => {
-          if(page.props.errer) {
-            this.messageError("入力内容を確認してください。", page.props.errer);
+          if(page.props.error) {
+            this.messageError("入力内容を確認してください。", page.props.error);
           } else {
             this.message("作成が完了しました。");
             this.hide();

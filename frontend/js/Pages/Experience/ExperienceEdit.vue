@@ -1,6 +1,6 @@
 <template>
   <v-card flat>
-    <v-card-title class="pa-1 pl-2 blue-grey lighten-1 white--text">
+    <v-card-title class="pa-1 pl-2 indigo lighten-1 white--text">
       <span>職務経歴変更</span>
     </v-card-title>
     <!-- 基本情報 -->
@@ -16,11 +16,98 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('')"
+            :error-messages="errorField('experience_content.project_name')"
           ></v-text-field>
         </v-col>
       </v-row>
-
+      <v-row dense>
+        <v-col cols="6" class="pb-0 ma-0">
+          <v-text-field
+            v-model="form.experience_content.industry"
+            label="業界"
+            counter="30"
+            maxlength="30"
+            hide-details="auto"
+            dense
+            outlined
+            persistent-placeholder
+            :error-messages="errorField('experience_content.industry')"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="6" class="pb-0 ma-0">
+          <v-text-field
+            v-model="form.company_name"
+            label="所属会社"
+            counter="30"
+            maxlength="30"
+            hide-details="auto"
+            dense
+            outlined
+            persistent-placeholder
+            :error-messages="errorField('company_name')"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row dense>
+        <v-col>
+          <v-menu
+            ref="menu"
+            v-model="datepicker.started_at"
+            :close-on-content-click="false"
+            transition="scale-transition"
+            offset-y
+            min-width="auto"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="form.experience_content.started_at"
+                label="開始日"
+                prepend-icon="mdi-calendar"
+                readonly
+                v-bind="attrs"
+                v-on="on"
+                :error-messages="errorField('experience_content.started_at')"
+              ></v-text-field>
+            </template>
+            <v-date-picker
+              v-model="form.experience_content.started_at"
+              :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)"
+              min="1950-01-01"
+              no-title
+              @change="saveDatepicker"
+            ></v-date-picker>
+          </v-menu>
+        </v-col>
+        <v-col>
+          <v-menu
+            ref="menu"
+            v-model="datepicker.ended_at"
+            :close-on-content-click="false"
+            transition="scale-transition"
+            offset-y
+            min-width="auto"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="form.experience_content.ended_at"
+                label="終了日"
+                prepend-icon="mdi-calendar"
+                readonly
+                v-bind="attrs"
+                v-on="on"
+                :error-messages="errorField('experience_content.ended_at')"
+              ></v-text-field>
+            </template>
+            <v-date-picker
+              v-model="form.experience_content.ended_at"
+              :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)"
+              min="1950-01-01"
+              no-title
+              @change="saveDatepicker"
+            ></v-date-picker>
+          </v-menu>
+        </v-col>
+      </v-row>
       <v-row dense>
         <v-col cols="6" class="pb-0 ma-0">
           <v-text-field
@@ -32,7 +119,7 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('')"
+            :error-messages="errorField('experience_content.member_count')"
           ></v-text-field>
         </v-col>
         <v-col cols="6" class="pb-0 ma-0">
@@ -45,7 +132,7 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('')"
+            :error-messages="errorField('experience_content.position')"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -60,7 +147,7 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('')"
+            :error-messages="errorField('experience_content.contract_type')"
           ></v-text-field>
         </v-col>
         <v-col cols="6" class="pb-0 ma-0">
@@ -73,7 +160,7 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('')"
+            :error-messages="errorField('experience_content.company_name')"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -83,7 +170,7 @@
       <v-row dense>
         <v-col>
           <v-textarea
-            v-model="form.project_summary"
+            v-model="form.experience_content.project_summary"
             label="プロジェクト概要"
             counter="200"
             maxlength="200"
@@ -93,14 +180,14 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('project_summary')"
+            :error-messages="errorField('experience_content.project_summary')"
           ></v-textarea>
         </v-col>
       </v-row>
       <v-row dense>
         <v-col>
           <v-textarea
-            v-model="form.phase"
+            v-model="form.experience_content.phase"
             label="担当フェーズ"
             counter="200"
             maxlength="200"
@@ -110,14 +197,14 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('phase')"
+            :error-messages="errorField('experience_content.phase')"
           ></v-textarea>
         </v-col>
       </v-row>
       <v-row dense>
         <v-col>
           <v-textarea
-            v-model="form.description"
+            v-model="form.experience_content.description"
             label="業務内容"
             counter="200"
             maxlength="200"
@@ -127,14 +214,14 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('description')"
+            :error-messages="errorField('experience_content.description')"
           ></v-textarea>
         </v-col>
       </v-row>
       <v-row dense>
         <v-col>
           <v-textarea
-            v-model="form.achievement"
+            v-model="form.experience_content.achievement"
             label="実績・取り組み"
             counter="200"
             maxlength="200"
@@ -144,12 +231,12 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('achievement')"
+            :error-messages="errorField('experience_content.achievement')"
           ></v-textarea>
         </v-col>
       </v-row>
     </v-card-text>
-    <!-- 環境開発 -->
+    <!-- 開発環境 -->
     <v-card-text class="pa-3 pt-5" v-if="editType == 2">
       <v-row dense>
         <v-col cols="6" class="pb-0 ma-0">
@@ -222,7 +309,7 @@
       <v-row dense>
         <v-col cols="4">
           <v-btn
-            color="blue-grey lighten-1"
+            color="indigo lighten-1"
             block
             depressed
             outlined
@@ -235,7 +322,7 @@
         <v-col>
           <v-btn
             class="white--text"
-            color="blue-grey lighten-1"
+            color="indigo lighten-1"
             block
             depressed
             small
@@ -263,15 +350,19 @@ export default {
   },
   data() {
     return {
-      form: this.initItem(),
+      form: [],
+      datepicker: {
+        started_at: false,
+        ended_at: false
+      }
     }
   },
   watch: {
     active(v) {
       if(v) {
-        this.form = this.initItem()
+        this.form = this.initItem();
       }
-    }
+    },
   },
   computed: {
     errorField() {
@@ -300,11 +391,13 @@ export default {
       } else if(this.editType === 1) {
         return this.$inertia.form({
           edit_type: this.editType,
-          id: this.selected.experience_content.id,
-          project_summary: this.selected.experience_content.project_summary,
-          phase: this.selected.experience_content.phase,
-          description: this.selected.experience_content.description,
-          achievement: this.selected.experience_content.achievement,
+          experience_content: {
+            id: this.selected.experience_content.id,
+            project_summary: this.selected.experience_content.project_summary,
+            phase: this.selected.experience_content.phase,
+            description: this.selected.experience_content.description,
+            achievement: this.selected.experience_content.achievement,
+          }
         });
       } else {
         return this.$inertia.form({
@@ -337,12 +430,15 @@ export default {
       })
     },
     technicalSkillItems(n) {
-      const list = this.skill_master.filter(e => e.category === n).map(e => e.id)
+      const list = this.skill_master.filter(e => e.skill_category === n).map(e => e.id)
       return this.selected.technical_skill.filter(e => list.includes(e.skill_id)).map(e => e.skill_id)
+    },
+    saveDatepicker (date) {
+      this.$refs.menu.save(date)
     },
     skillSelect(n) {
       const result = []
-      this.skill_master.filter(e => e.category === n).map(e => result.push({text: e.name, value: e.id}))
+      this.skill_master.filter(e => e.skill_category === n).map(e => result.push({text: e.skill_name, value: e.id}))
       return result
     }
   }

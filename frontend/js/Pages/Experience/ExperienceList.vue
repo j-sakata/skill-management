@@ -4,8 +4,8 @@
       <experience-register
         :active="modal.register"
         :user_id="user_id"
-        @hide="modal.register = false"
         :registerType="mode.keyName"
+        @hide="modal.register = false"
         @send="receive($event)"
       ></experience-register>
     </v-dialog>
@@ -14,15 +14,23 @@
         :active="modal.edit"
         :editType="editType"
         :selected="selected"
-        @hide="modal.edit = false"
         :skill_master="skill_master"
+        @hide="modal.edit = false; updateItem()"
         @send="receive($event)"
       ></experience-edit>
+    </v-dialog>
+    <v-dialog v-model="modal.skillList" eager min-height="700px" width="900px" persistent scrollable>
+      <technical-skill-list
+        :technicalSkill="technicalSkill"
+        :skill_master="skill_master"
+        @hide="modal.skillList = false"
+        @send="receive($event)"
+      ></technical-skill-list>
     </v-dialog>
     <v-row no-gutters>
       <v-col cols="6">
         <v-row no-gutters class="pa-4 pb-0">
-          <v-col cols="9">
+          <v-col>
             <v-text-field
               v-model="keyword"
               label="キーワード"
@@ -33,9 +41,12 @@
               hide-details="auto"
             ></v-text-field>
           </v-col>
+          <v-col cols="auto" class="ml-2">
+            <v-btn dense @click="search">検索</v-btn>
+          </v-col>
           <v-spacer></v-spacer>
-          <v-col cols="2">
-            <v-btn dense block @click="search">検索</v-btn>
+          <v-col cols="auto">
+            mode： {{ mode.valueName }}
           </v-col>
         </v-row>
       </v-col>
@@ -107,7 +118,7 @@
                   color="indigo darken-2"
                   dark
                   x-small
-                  @click="showTechnicalSkill()"
+                  @click="modal.skillList = true"
                 >
                   view more...
                 </v-btn>
@@ -200,11 +211,12 @@ import Layout from '@/Layout/Layout.vue';
 import ExperienceDetail from "@/Pages/Experience/ExperienceDetail.vue";
 import ExperienceEdit from "@/Pages/Experience/ExperienceEdit.vue";
 import ExperienceRegister from "@/Pages/Experience/ExperienceRegister.vue";
+import TechnicalSkillList from "@/Pages/Experience/TechnicalSkillList.vue";
 export default {
   name: 'experience-list',
   layout: Layout,
   mixins: [ ViewBasic ],
-  components: { ExperienceDetail, ExperienceEdit, ExperienceRegister },
+  components: { ExperienceDetail, ExperienceEdit, ExperienceRegister, TechnicalSkillList },
   props:{
     experiences: { type: Object, default: {} },
     skill_master: { type: Object, default: {} },
@@ -219,6 +231,7 @@ export default {
       modal: {
         register: false,
         edit: false,
+        skillList: false
       },
       mode: {
         keyName: null,
@@ -236,7 +249,7 @@ export default {
         {text: "状態", value: "status"},
       ],
       technicalHeaders: [
-        {text: "技術", value: "name"},
+        {text: "技術", value: "skill_name"},
       ]
     }
   },
@@ -258,6 +271,9 @@ export default {
       })
       return result
     },
+    technicalSkill() {
+      return this.experiences.map(e => e.technical_skill)
+    }
   },
   methods: {
     init() {
@@ -275,9 +291,6 @@ export default {
       this.editType = item
       this.modal.edit = true
     },
-    showTechnicalSkill(){
-
-    },
     setModeName() {
       var keyList = ["jobCareer", "jodSummary", "jobKnowledge", "character"]
       var valueList = ["職務経歴", "職務要約", "活かせる経験・知識", "自己PR"]
@@ -293,14 +306,16 @@ export default {
     technicalSkillItems(n) {
       // ユーザーのテクニカルスキルを同階層の配列に格納する
       const result = []
-      const technicalSkill = this.experiences.map(e => e.technical_skill)
-      technicalSkill.forEach(e => {
+      this.technicalSkill.forEach(e => {
         for (let j = 0; j < e.length ; j++) {
           result.push(e[j])
         }
       })
-      return this.skill_master.filter(e => e.category === n && result.map(s => s.skill_id).includes(e.id))
+      return this.skill_master.filter(e => e.skill_category === n && result.map(s => s.skill_id).includes(e.id))
     },
+    updateItem() {
+      this.selected = this.experiences.find(e => e.id === this.selected.id)
+    }
   }
 }
 </script>
