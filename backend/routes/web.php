@@ -6,6 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\CertificationController;
 use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +20,7 @@ use App\Http\Controllers\DashboardController;
 */
 
 Route::get('/', function (Request $request) {
-  if($request->root() === "http://localhost:8080")
+  if($request->path() === "/")
   {
     return redirect("/login");
   };
@@ -33,14 +34,21 @@ Route::group(['prefix' => 'login'],  function () {
   Route::post('out', [LoginController::class, 'logout']);
 });
 
+// UserRegister
+Route::group(['prefix' => 'user'],  function () {
+  Route::get('register', [UserController::class, 'index']);
+  Route::post('check', [UserController::class, 'check']);
+  Route::post('create', [UserController::class, 'create']);
+});
 
-Route::group(['middleware' => ['auth:sanctum', 'auth.authority']],  function () {
+
+Route::group(['middleware' => ['auth:sanctum']],  function () {
   // dashboard
   Route::group(['prefix' => 'dashboard'],  function () {
     Route::get('/',  [DashboardController::class, 'index'])->name('dashboard');
   });
 
-  // certification
+  // Certification
   Route::group(['prefix' => 'certification'],  function () {
     Route::get('/',  [CertificationController::class, 'index'])->name('certification');
     Route::post('create',  [CertificationController::class, 'create']);
@@ -50,7 +58,7 @@ Route::group(['middleware' => ['auth:sanctum', 'auth.authority']],  function () 
     Route::get('delete/{id}',  [CertificationController::class, 'delete']);
   });
 
-  // experience
+  // Experience
   Route::group(['prefix' => 'experience'],  function () {
     Route::get('/',  [ExperienceController::class, 'index'])->name('experience');
     Route::post('create',  [ExperienceController::class, 'create']);

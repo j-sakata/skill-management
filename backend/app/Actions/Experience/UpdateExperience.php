@@ -3,8 +3,6 @@
 namespace App\Actions\Experience;
 
 use App\Models\Experience;
-use App\Models\ExperienceSummary;
-use App\Models\KnowledgeSummary;
 use App\Models\ExperienceContent;
 use App\Models\TechnicalSkill;
 use Illuminate\Support\Facades\Validator;
@@ -26,8 +24,8 @@ class UpdateExperience
       if ($validator->fails()) {
         return $validationFails($validator->errors());
       }
-
-      if($edit_type === 0) {
+      // 基本情報
+      if ($edit_type === 0) {
         Experience::find($input['experience_content']['experience_id'])->fill([
         'company_name' => $input['company_name']
       ])->save();
@@ -41,13 +39,15 @@ class UpdateExperience
           'contract_type' => $input['experience_content']['contract_type'],
           'company_name' => $input['experience_content']['company_name'],
         ])->save();
-      } elseif($edit_type === 1) {
+        // 活動内容
+      } elseif ($edit_type === 1) {
         ExperienceContent::find($input['id'])->fill([
-          'project_summary' => $input['project_summary'],
-          'phase' => $input['phase'],
-          'description' => $input['description'],
-          'achievement' => $input['achievement']
+          'project_summary' => $input['experience_content']['project_summary'],
+          'phase' => $input['experience_content']['phase'],
+          'description' => $input['experience_content']['description'],
+          'achievement' => $input['experience_content']['achievement']
         ])->save();
+        // 開発環境
       } else {
         $list = array_merge($input['skill_api'], $input['skill_fw'], $input['skill_os'], $input['skill_nw'], $input['skill_pj']);
         foreach($list as $value) {
@@ -64,18 +64,31 @@ class UpdateExperience
       return $success();
     }
 
-    function validate(array $input)
+    function validate(array $input, int $edit_type)
     {
-      return Validator::make($input, [
-        // 'user_id' => ['required'],
-        // 'name' => ['required', 'max:30'],
-        // 'email' => ['required', 'email', 'max:255'],
-      ],
-      [
-        // 'name.required' => '名前を入力してください',
-        // 'name.max' => '30字以内で入力してください',
-        // 'email.required' => 'メールアドレスを入力してください',
-        // 'email.max' => '255字以内で入力してください',
-      ]);
+      switch($edit_type) {
+        case 0:
+          $list = [
+            'company_name' => ['required'],
+            'experience_content.project_name' => ['required'],
+            'experience_content.industry' => ['required'],
+            'experience_content.started_at' => ['required'],
+            'experience_content.ended_at' => [],
+            'experience_content.member_count' => ['required', 'integer'],
+            'experience_content.position' => [],
+            'experience_content.contract_type' => ['required'],
+            'experience_content.company_name' => ['required'],
+          ];
+          break;
+        case 1:
+          $list = [
+            'experience_content.project_summary' => [],
+            'experience_content.phase' => [],
+            'experience_content.description' => [],
+            'experience_content.achievement' => []
+          ];
+          break;
+      };
+      return Validator::make($input, $list);
     }
 }

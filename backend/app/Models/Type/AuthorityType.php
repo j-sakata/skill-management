@@ -10,6 +10,7 @@ enum AuthorityType
     public function label(): string
     {
         return match($this) {
+            // name => value
             self::Admin => '管理者',
             self::General => '一般',
         };

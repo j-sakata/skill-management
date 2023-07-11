@@ -43,17 +43,15 @@ class CreateExperience
     function validate(array $input)
     {
       return Validator::make($input, [
-        // 'user_id' => ['required', 'max:30'],
-        // 'name' => ['required', 'max:30'],
-        // 'email' => ['required', 'email', 'max:255'],
-      ],
-      [
-        // 'user_id.required' => 'IDを入力してください',
-        // 'user_id.max' => '30字以内で入力してください',
-        // 'name.required' => '名前を入力してください',
-        // 'name.max' => '30字以内で入力してください',
-        // 'email.required' => 'メールアドレスを入力してください',
-        // 'email.max' => '255字以内で入力してください',
+        'company_name' => ['required'],
+        'experience_content.project_name' => ['required'],
+        'experience_content.industry' => ['required'],
+        'experience_content.started_at' => ['required'],
+        'experience_content.ended_at' => [],
+        'experience_content.member_count' => ['required', 'integer'],
+        'experience_content.position' => [],
+        'experience_content.contract_type' => ['required'],
+        'experience_content.company_name' => ['required'],
       ]);
     }
 }

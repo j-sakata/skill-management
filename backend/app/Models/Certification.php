@@ -8,13 +8,13 @@ use App\Models\CertificationAcquisition;
 class Certification extends CustomModel
 {
     protected $fillable = [
-        'name',
+        'certification_name',
         'user_id',
         'certification_number',
-        'expiration',
-        'memo',
-        'category',
-        'sub_category'
+        'certification_expiration',
+        'certification_memo',
+        'certification_category',
+        'certification_sub_category'
     ];
 
     public function acquisition()

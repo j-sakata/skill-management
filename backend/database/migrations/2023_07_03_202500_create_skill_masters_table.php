@@ -15,9 +15,9 @@ class CreateSkillMastersTable extends Migration
     {
         Schema::create('skill_masters', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('status');
-            $table->integer('category');
+            $table->string('skill_name');
+            $table->integer('skill_status');
+            $table->integer('skill_category');
             $table->timestamps();
         });
     }

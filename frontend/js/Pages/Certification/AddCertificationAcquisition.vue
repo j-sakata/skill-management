@@ -1,6 +1,6 @@
 <template>
   <v-card flat>
-    <v-card-title class="pa-1 pl-2 blue-grey lighten-1 white--text">
+    <v-card-title class="pa-1 pl-2 indigo lighten-1 white--text">
       <span>取得日追加登録</span>
     </v-card-title>
     <v-card-text class="pa-3 pt-5">
@@ -22,6 +22,7 @@
                 readonly
                 v-bind="attrs"
                 v-on="on"
+                :error-messages="errorField('acquisition.acquisition_date')"
               ></v-text-field>
             </template>
             <v-date-picker
@@ -33,7 +34,7 @@
             ></v-date-picker>
           </v-menu>
         </v-col>
-        <v-col cols="2" class="pb-0 ma-0">
+        <v-col class="pb-0 ma-0">
           <v-text-field
             v-model="form.acquisition.score"
             label="スコア"
@@ -43,7 +44,7 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('community_name')"
+            :error-messages="errorField('acquisition.score')"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -53,7 +54,7 @@
       <v-row dense>
         <v-col cols="4">
           <v-btn
-            color="blue-grey lighten-1"
+            color="indigo lighten-1"
             block
             depressed
             outlined
@@ -66,7 +67,7 @@
         <v-col>
           <v-btn
             class="white--text"
-            color="blue-grey lighten-1"
+            color="indigo lighten-1"
             block
             depressed
             small
@@ -92,7 +93,7 @@ export default {
   },
   data() {
     return {
-      form: this.initItem(),
+      form: [],
       datepicker: {
         menu: false
       }

@@ -28,6 +28,12 @@ export const ActionStatusType = {
 }
 
 // プロジェクト定数
+// 権限
+export const AuthorityType = {
+  Admin: "管理者",
+  General: "一般",
+}
+
 // 資格区分1
 export const CertificationCategoryType = {
   NATIONAL: "国家資格",

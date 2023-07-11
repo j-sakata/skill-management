@@ -85,10 +85,13 @@ export default {
     }
   },
   created() {
-    Ajax.get("/login/check", {}, check => {
-      this.logined = check.logined;
-    }, this.actionFalse);
-    this.setIndexMenu();
+    const pathname = location.pathname;
+    if (pathname !== "/user/register") {
+      Ajax.get("/login/check", {}, check => {
+        this.logined = check.logined;
+      }, this.actionFalse);
+      this.setIndexMenu();
+    }
   },
   computed: {
     colorMessage() {

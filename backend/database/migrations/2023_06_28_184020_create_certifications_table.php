@@ -16,12 +16,12 @@ class CreateCertificationsTable extends Migration
         Schema::create('certifications', function (Blueprint $table) {
             $table->id();
             $table->string('user_id');
-            $table->string('name');
-            $table->string('certification_number')->nullable();
-            $table->integer('expiration');
-            $table->string('memo')->nullable();
-            $table->string('category');
-            $table->string('sub_category');
+            $table->string('certification_name');
+            $table->string('certification_code')->nullable();
+            $table->integer('certification_expiration')->nullable();
+            $table->string('certification_memo')->nullable();
+            $table->string('certification_category');
+            $table->string('certification_sub_category');
             $table->timestamps();
         });
     }

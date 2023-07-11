@@ -188,6 +188,19 @@ export default {
 			return Array.prototype.reverse.call(array);
 		},
 		edit(item) {
+			if(this.detailType !== "jobCareer") {
+				switch (this.detailType) {
+					case "jodSummary":
+						item = 3
+						break
+					case "jobKnowledge":
+						item = 4
+						break
+					case "character":
+						item = 5
+						break
+				}
+			}
 			this.$emit("edit", item);
 		},
 		skillIdList() {
@@ -195,11 +208,11 @@ export default {
 		},
 		technicalSkill(category) {
 			const skillIdList = this.skillIdList()
-			return this.skillMaster.filter(e => e.category == category && skillIdList.includes(e.id))
+			return this.skillMaster.filter(e => e.skill_category == category && skillIdList.includes(e.id))
 		},
 		getSkillName(category) {
 			const list = this.technicalSkill(category);
-			return list.map(e => e.name).join('、')
+			return list.map(e => e.skill_name).join('、')
 		}
   }
 }

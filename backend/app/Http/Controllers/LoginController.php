@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Type\AuthorityType;
 use Exception;
 use Illuminate\Contracts\Auth\Factory as Auth;
 use Illuminate\Contracts\Auth\StatefulGuard;
@@ -49,12 +48,6 @@ final class LoginController extends Controller
         $validator = Validator::make($request->all(), [
             'user_id' => ['required', 'max:30'],
             'password' => ['required', 'max:255'],
-        ],
-        [
-            'user_id.required' => 'IDを入力してください',
-            'user_id.max' => '30字以内で入力してください',
-            'password.required' =>  'パスワードを入力してください' ,
-            'password.max' => '255字以内で入力してください',
         ]);
 
         $log_massage = "ログイン [{$request->user_id}]";
@@ -63,9 +56,9 @@ final class LoginController extends Controller
             return Inertia::render('Login', ['error' => $validator->errors()]);
         }
 
-        if ($this->getGuard()->attempt(['user_id' => $request->user_id, 'password' => $request->password, 'authority' => AuthorityType::Admin->name])) {
+        if ($this->getGuard()->attempt(['user_id' => $request->user_id, 'password' => $request->password])) {
             $request->session()->regenerate();
-            $user = User::select('user_id', 'name', 'init_password')->find($request->user_id);
+            $user = User::select('user_id', 'name')->find($request->user_id);
             Log::info($log_massage);
             return Inertia::render('Login', ['data' => $user]);
         }

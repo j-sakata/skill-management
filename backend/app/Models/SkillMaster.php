@@ -3,13 +3,12 @@
 namespace App\Models;
 
 use App\Models\CustomModel;
-use App\Models\TechnicalSkill;
 
 class SkillMaster extends CustomModel
 {
     protected $fillable = [
-        'name',
-        'status',
-        'category'
+        'skill_name',
+        'skill_status',
+        'skill_category'
     ];
 }

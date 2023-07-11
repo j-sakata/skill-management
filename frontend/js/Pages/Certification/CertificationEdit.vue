@@ -1,13 +1,13 @@
 <template>
   <v-card flat>
-    <v-card-title class="pa-1 pl-2 blue-grey lighten-1 white--text">
+    <v-card-title class="pa-1 pl-2 indigo lighten-1 white--text">
       <span>取得資格変更</span>
     </v-card-title>
     <v-card-text class="pa-3 pt-5">
       <v-row dense>
         <v-col cols="8" class="pb-0 ma-0">
           <v-text-field
-            v-model="form.name"
+            v-model="form.certification_name"
             label="資格名"
             counter="30"
             maxlength="30"
@@ -15,14 +15,14 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('community_name')"
+            :error-messages="errorField('certification_name')"
           ></v-text-field>
         </v-col>
       </v-row>
       <v-row dense>
         <v-col cols="8" class="pb-0 ma-0">
           <v-text-field
-            v-model="form.certification_number"
+            v-model="form.certification_code"
             label="資格コード"
             counter="30"
             maxlength="30"
@@ -30,14 +30,14 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('community_name')"
+            :error-messages="errorField('certification_code')"
           ></v-text-field>
         </v-col>
       </v-row>
       <v-row dense>
         <v-col cols="8" class="pb-0 ma-0">
           <v-text-field
-            v-model="form.expiration"
+            v-model="form.certification_expiration"
             label="有効期限"
             counter="30"
             maxlength="30"
@@ -45,38 +45,38 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('community_name')"
+            :error-messages="errorField('certification_expiration')"
           ></v-text-field>
         </v-col>
       </v-row>
       <v-row dense class="mb-5">
         <v-col cols="6" class="pb-0 ma-0">
           <v-select
-            v-model="form.category"
+            v-model="form.certification_category"
             :items="optionsCertificationCategoryType"
             label="区分1"
             hide-details="auto"
             dense
             persistent-placeholder
-            :error-messages="errorField('community_category')"
+            :error-messages="errorField('certification_category')"
           />
         </v-col>
         <v-col cols="6" class="pb-0 ma-0">
           <v-select
-            v-model="form.sub_category"
+            v-model="form.certification_sub_category"
             :items="optionsCertificationSubCategoryType"
             label="区分2"
             hide-details="auto"
             dense
             persistent-placeholder
-            :error-messages="errorField('community_category')"
+            :error-messages="errorField('certification_sub_category')"
           />
         </v-col>
       </v-row>
       <v-row dense>
         <v-col>
           <v-textarea
-            v-model="form.memo"
+            v-model="form.certification_memo"
             label="備考"
             counter="400"
             maxlength="400"
@@ -84,7 +84,7 @@
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('community_summary')"
+            :error-messages="errorField('certification_memo')"
           ></v-textarea>
         </v-col>
       </v-row>
@@ -94,7 +94,7 @@
       <v-row dense>
         <v-col cols="4">
           <v-btn
-            color="blue-grey lighten-1"
+            color="indigo lighten-1"
             block
             depressed
             outlined
@@ -107,7 +107,7 @@
         <v-col>
           <v-btn
             class="white--text"
-            color="blue-grey lighten-1"
+            color="indigo lighten-1"
             block
             depressed
             small
@@ -135,7 +135,7 @@ export default {
   },
   data() {
     return {
-      form: this.initItem(),
+      form: [],
       datepicker: {
         menu: false
       }
@@ -163,24 +163,13 @@ export default {
     initItem() {
       return this.$inertia.form({
         id: this.selected.id,
-        name: this.selected.name,
-        certification_number: this.selected.certification_number,
-        expiration: this.selected.expiration,
-        memo: this.selected.memo,
-        category: this.selected.category,
-        sub_category: this.selected.sub_category,
+        certification_name: this.selected.certification_name,
+        certification_code: this.selected.certification_code,
+        certification_expiration: this.selected.certification_expiration,
+        certification_memo: this.selected.certification_memo,
+        certification_category: this.selected.certification_category,
+        certification_sub_category: this.selected.certification_sub_category,
       });
-    },
-    checkCreate() {
-      this.updating = true;
-      Ajax.post("/community/create/check", this.form, error => {
-        if (error) {
-          this.updating = false;
-          this.messageError("入力情報を確認してください。", error);
-        } else {
-          this.create();
-        }
-      }, this.actionFailure);
     },
     update() {
       this.form.post("/certification/update", {
