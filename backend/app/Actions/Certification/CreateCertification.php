@@ -73,7 +73,7 @@ class CreateCertification
         'certification_category' => ['required'],
         'certification_sub_category' => ['required'],
         'acquisition.acquisition_date' => ['required', 'date'],
-        'acquisition.score' => ['integer']
+        'acquisition.score' => ['nullable', 'integer']
       ]);
     }
 
@@ -81,7 +81,7 @@ class CreateCertification
     {
       return Validator::make($input, [
         'acquisition.acquisition_date' => ['required', 'date'],
-        'acquisition.score' => ['integer']
+        'acquisition.score' => ['nullable', 'integer']
       ]);
     }
 }
