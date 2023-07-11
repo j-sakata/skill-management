@@ -5,11 +5,11 @@
 				<v-row dense>
 					<v-col>
 						<div class="l-text-sm-2">資格名</div>
-						<div>{{selected.name}}</div>
+						<div>{{selected.certification_name}}</div>
 					</v-col>
 					<v-col cols="2">
 						<div class="l-text-sm-2">状態（有効/無効）</div>
-						<div>{{selected.memo}}</div>
+						<div>{{selected.certification_memo}}</div>
 					</v-col>
 					<div fixed right>
 						<v-menu left bottom>
@@ -33,19 +33,20 @@
 				<v-row dense>
 					<v-col cols="3">
 						<div class="l-text-sm-2">資格コード</div>
-						<div>{{selected.certification_number}}</div>
+						<div>{{selected.certification_code}}</div>
 					</v-col>
 					<v-col cols="3">
 						<div class="l-text-sm-2">有効期限</div>
-						<div>{{selected.expiration}}年間</div>
+						<div v-if="selected.certification_expiration">{{selected.certification_expiration}}年間</div>
+						<div v-else>-</div>
 					</v-col>
 					<v-col cols="3">
 						<div class="l-text-sm-2">区分1</div>
-						<div>{{selected.category}}</div>
+						<div>{{selected.certification_category}}</div>
 					</v-col>
 					<v-col cols="3">
 						<div class="l-text-sm-2">区分2</div>
-						<div>{{selected.sub_category}}</div>
+						<div>{{selected.certification_sub_category}}</div>
 					</v-col>
 				</v-row>
 				<v-row dense>
@@ -79,7 +80,7 @@
 				<v-row dense>
 					<v-col>
 						<div class="l-text-sm-2">備考</div>
-						<div>{{selected.memo}}</div>
+						<div>{{selected.certification_memo}}</div>
 					</v-col>
 				</v-row>
 			</v-card-text>

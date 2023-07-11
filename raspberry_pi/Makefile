@@ -25,6 +25,7 @@ stop:
 	docker compose stop
 down:
 	docker compose down --remove-orphans
+	sudo shutdown -h now
 restart:
 	@make down
 	@make up

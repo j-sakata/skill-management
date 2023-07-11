@@ -4,7 +4,7 @@
       <certification-register
         :active="modal.register"
         :user_id="user_id"
-        @hide="modal.register = false"
+        @hide="modal.register = false; updateItem()"
         @send="receive($event)"
       ></certification-register>
     </v-dialog>
@@ -12,7 +12,7 @@
       <certification-edit
         :active="modal.edit"
         :selected="selected"
-        @hide="modal.edit = false"
+        @hide="modal.edit = false; updateItem()"
         @send="receive($event)"
       ></certification-edit>
     </v-dialog>
@@ -20,7 +20,7 @@
       <add-certification-acquisition
         :active="modal.add"
         :selected="selected"
-        @hide="modal.add = false"
+        @hide="modal.add = false; updateItem()"
         @send="receive($event)"
       ></add-certification-acquisition>
     </v-dialog>
@@ -28,7 +28,7 @@
       <edit-certification-acquisition
         :active="modal.change"
         :item="item"
-        @hide="modal.change = false"
+        @hide="modal.change = false; updateItem()"
         @send="receive($event)"
       ></edit-certification-acquisition>
     </v-dialog>
@@ -71,9 +71,9 @@
           dense
         >
           <template v-slot:items="props">
-            <td>{{ props.item.name }}</td>
-            <td>{{ props.item.category | certificationCategoryType }}</td>
-            <td>{{ props.item.sub_category | certificationSubCategoryType }}</td>
+            <td>{{ props.item.certification_name }}</td>
+            <td>{{ props.item.certification_category | certificationCategoryType }}</td>
+            <td>{{ props.item.certification_sub_category | certificationSubCategoryType }}</td>
             <td>{{ props.item.created_at }}</td>
           </template>
         </v-data-table>
@@ -120,9 +120,9 @@ export default {
       },
       item: {},
       headers: [
-        {text: "資格名", value: "name"},
-        {text: "区分1", value: "category"},
-        {text: "区分2", value: "sub_category"},
+        {text: "資格名", value: "certification_name"},
+        {text: "区分1", value: "certification_category"},
+        {text: "区分2", value: "certification_sub_category"},
         {text: "取得日（仮置き）", value: "created_at"}
       ]
     }
@@ -144,6 +144,9 @@ export default {
     change(item) {
       this.item = item
       this.modal.change = true
+    },
+    updateItem() {
+      this.selected = this.certifications.find(e => e.id === this.selected.id)
     }
   }
 }
