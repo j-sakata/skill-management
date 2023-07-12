@@ -108,3 +108,4 @@ services:
       - MYSQL_PASSWORD=${DB_PASS}
       - MYSQL_ROOT_USER=${DB_ROOT_USER}
       - MYSQL_ROOT_PASSWORD=${DB_PASS}
+    command: --default_authentication_plugin=mysql_native_password
