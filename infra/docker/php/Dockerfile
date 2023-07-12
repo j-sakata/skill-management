@@ -17,6 +17,8 @@ COPY --from=composer:2.0 /usr/bin/composer /usr/bin/composer
 RUN apt-get update && \
   apt-get -y install git libicu-dev libonig-dev libzip-dev unzip locales && \
   apt-get clean && \
+  # mysqldump用
+  apt-get install -y default-mysql-client && \
   rm -rf /var/lib/apt/lists/* && \
   locale-gen ja_JP.UTF-8 && \
   localedef -f UTF-8 -i ja_JP ja_JP.UTF-8 && \
