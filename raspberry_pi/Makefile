@@ -24,6 +24,7 @@ remake:
 stop:
 	docker compose stop
 down:
+	docker compose exec app php artisan backup:run --disable-notifications --only-db
 	docker compose down --remove-orphans
 	sudo shutdown -h now
 restart:
