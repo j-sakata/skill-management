@@ -22,7 +22,7 @@
         <v-tab @click="moveScreen('/experience')">業務経歴</v-tab>
         <v-tab @click="moveScreen('/target')" disabled>到達目標</v-tab>
         <v-tab @click="moveScreen('/company')" disabled>企業</v-tab>
-        <v-tab @click="moveScreen('/system')" disabled>システム</v-tab>
+        <v-tab @click="moveScreen('/admin/system')">システム</v-tab>
       </v-tabs>
       <v-spacer></v-spacer>
       <div class="l-profile">{{user.name}}</div>
@@ -140,7 +140,7 @@ export default {
         this.indexMenu = 3;
       } else if (pathName === "/company") {
         this.indexMenu = 4;
-      } else if (pathName === "/system") {
+      } else if (pathName === "/admin/system") {
         this.indexMenu = 5;
       }
     },
