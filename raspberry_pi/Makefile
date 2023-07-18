@@ -75,9 +75,9 @@ sql:
 dml:
 	docker compose exec db bash -c 'mysql -u $$MYSQL_ROOT_USER -p$$MYSQL_PASSWORD --local_infile=1 $$MYSQL_DATABASE -e"source /tmp/dml/import_inital_data.sql;"'
 version-up:
-    docker compose exec app composer update
-    docker compose down --remove-orphans
-    docker compose up -d --build
-    @make yarn
-    @make yarn-dev
-    @make migrate
+	docker compose exec app composer update
+	docker compose down --remove-orphans
+	docker compose up -d --build
+	@make yarn
+	@make yarn-dev
+	@make migrate
