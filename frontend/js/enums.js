@@ -56,3 +56,17 @@ export const SkillCategoryType = {
   4: "ルータ、NW技術等",
   5: "プロジェクト支援"
 }
+
+// 契約形態
+export const ContractType = {
+  1: "請負",
+  2: "準委任(SES)",
+  3: "派遣",
+  4: "社内"
+}
+
+// 状態
+export const StatusType = {
+  0: "無効",
+  1: "有効",
+}

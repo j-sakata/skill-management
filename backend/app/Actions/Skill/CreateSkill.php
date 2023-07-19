@@ -21,11 +21,11 @@ class CreateSkill
             return $validationFails($validator->errors());
         }
 
-        $user = new SkillMaster();
-        $user->skill_name = $input['skill_name'];
-        $user->skill_status = $input['skill_status'];
-        $user->skill_category = $input['skill_category'];
-        $user->save();
+        SkillMaster::create([
+            'skill_name' => $input['skill_name'],
+            'skill_status' => $input['skill_status'],
+            'skill_category' => $input['skill_category'],
+        ]);
 
         return $success();
     }

@@ -60,15 +60,12 @@ class UpdateCertification
     function validateUpdate(array $input)
     {
       return Validator::make($input, [
-        'user_id' => ['required'],
         'certification_name' => ['required'],
         'certification_code' => [],
-        'certification_expiration' => ['integer'],
+        'certification_expiration' => ['nullable', 'integer'],
         'certification_memo' => [],
         'certification_category' => ['required'],
         'certification_sub_category' => ['required'],
-        'acquisition.acquisition_date' => ['required', 'date'],
-        'acquisition.score' => ['integer']
       ]);
     }
 
@@ -76,7 +73,7 @@ class UpdateCertification
     {
       return Validator::make($input, [
         'acquisition.acquisition_date' => ['required', 'date'],
-        'acquisition.score' => ['integer']
+        'acquisition.score' => ['nullable', 'integer']
       ]);
     }
 }

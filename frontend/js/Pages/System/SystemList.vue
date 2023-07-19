@@ -39,15 +39,27 @@
               :items="technicalSkillItems(n)"
               class="elevation-1"
               hide-default-footer
+              :items-per-page="1000"
+              height="550"
             >
-              <template v-slot:[`item.action`]="{ item }">
-                <v-icon
-                  small
-                  class="mr-2"
-                  @click="edit(item)"
-                >
-                  mdi-pencil
-                </v-icon>
+              <template
+                v-slot:body="{ items }"
+              >
+                <tbody>
+                  <tr v-for="item in items" :key="item.skill_name" >
+                    <td>{{ item.skill_name }}</td>
+                    <td>{{ item.skill_status | statusType }}</td>
+                    <td>
+                      <v-icon
+                        small
+                        class="mr-2"
+                        @click="edit(item)"
+                      >
+                        mdi-pencil
+                      </v-icon>
+                    </td>
+                  </tr>
+                </tbody>
               </template>
             </v-data-table>
           </v-col>

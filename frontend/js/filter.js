@@ -11,7 +11,9 @@ import dayjs from "dayjs"
 import {
   CertificationCategoryType,
   CertificationSubCategoryType,
-  SkillCategoryType
+  SkillCategoryType,
+  ContractType,
+  StatusType
 } from "@/enums";
 
 // 日付を「/」区切りのフォーマットへ変換します。
@@ -44,5 +46,15 @@ export function certificationSubCategoryType(type) {
 
 export function skillCategoryType(type) {
   const lbl = SkillCategoryType[type]
+  return lbl ? lbl : "-"
+}
+
+export function contractType(type) {
+  const lbl = ContractType[type]
+  return lbl ? lbl : "-"
+}
+
+export function statusType(type) {
+  const lbl = StatusType[type]
   return lbl ? lbl : "-"
 }

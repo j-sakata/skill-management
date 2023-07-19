@@ -68,7 +68,7 @@ class CreateCertification
         'user_id' => ['required'],
         'certification_name' => ['required'],
         'certification_code' => [],
-        'certification_expiration' => ['integer'],
+        'certification_expiration' => ['nullable', 'integer'],
         'certification_memo' => [],
         'certification_category' => ['required'],
         'certification_sub_category' => ['required'],
