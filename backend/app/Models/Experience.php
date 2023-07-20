@@ -7,6 +7,7 @@ use App\Models\ExperienceSummary;
 use App\Models\KnowledgeSummary;
 use App\Models\ExperienceContent;
 use App\Models\TechnicalSkill;
+use App\Models\ExperiencePhase;
 
 class Experience extends CustomModel
 {
@@ -33,5 +34,10 @@ class Experience extends CustomModel
     public function technical_skill()
     {
         return $this->hasMany(TechnicalSkill::class);
+    }
+
+    public function experience_phase()
+    {
+        return $this->hasManyThrough(ExperiencePhase::class, ExperienceContent::class);
     }
 }

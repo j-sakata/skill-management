@@ -21,7 +21,6 @@ class CreateExperienceContentsTable extends Migration
             $table->string('industry');
             $table->string('project_name');
             $table->text('project_summary')->nullable();
-            $table->string('phase')->nullable();
             $table->text('description')->nullable();
             $table->text('achievement')->nullable();
             $table->integer('member_count');

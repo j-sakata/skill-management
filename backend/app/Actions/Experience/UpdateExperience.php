@@ -43,7 +43,6 @@ class UpdateExperience
       } elseif ($edit_type === 1) {
         ExperienceContent::find($input['id'])->fill([
           'project_summary' => $input['experience_content']['project_summary'],
-          'phase' => $input['experience_content']['phase'],
           'description' => $input['experience_content']['description'],
           'achievement' => $input['experience_content']['achievement']
         ])->save();
@@ -92,7 +91,6 @@ class UpdateExperience
         case 1:
           $list = [
             'experience_content.project_summary' => [],
-            'experience_content.phase' => [],
             'experience_content.description' => [],
             'experience_content.achievement' => []
           ];
