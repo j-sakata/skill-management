@@ -18,6 +18,17 @@
             :error-messages="errorField('skill_name')"
           ></v-text-field>
         </v-col>
+        <v-col cols="" class="pb-0 ma-0">
+          <v-select
+            v-model.number="form.skill_status"
+            :items="optionsStatusType"
+            label="状態"
+            hide-details="auto"
+            dense
+            persistent-placeholder
+            :error-messages="errorField('skill_status')"
+          />
+        </v-col>
       </v-row>
 			<v-row dense>
 				<v-col cols="6" class="pb-0 ma-0">
@@ -68,7 +79,7 @@
 
 <script>
 import ViewBasic from "@/Shared/view-basic";
-import { SkillCategoryType } from "@/enums";
+import { SkillCategoryType, StatusType } from "@/enums";
 export default {
   name: 'edit-skill',
   mixins: [ ViewBasic ],
@@ -94,6 +105,12 @@ export default {
     },
 		optionsSkillCategoryType() {
       return Object.entries(SkillCategoryType).map(([index, text]) => {
+        const value = Number(index)
+        return { text, value }
+      });
+    },
+    optionsStatusType() {
+      return Object.entries(StatusType).map(([index, text]) => {
         const value = Number(index)
         return { text, value }
       });
