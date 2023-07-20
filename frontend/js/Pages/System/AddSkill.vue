@@ -92,7 +92,10 @@ export default {
       return field => { return this.messages.columns?.[field]; }
     },
 		optionsSkillCategoryType() {
-      return Object.entries(SkillCategoryType).map(([value, text]) => ({ text, value }));
+      return Object.entries(SkillCategoryType).map(([index, text]) => {
+        const value = Number(index)
+        { text, value }
+      });
     },
   },
   methods: {

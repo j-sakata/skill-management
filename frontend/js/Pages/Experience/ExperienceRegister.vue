@@ -233,7 +233,10 @@ export default {
   },
   computed: {
     optionsContractType() {
-      return Object.entries(ContractType).map(([value, text]) => ({ text, value }));
+      return Object.entries(ContractType).map(([index, text]) => {
+        const value = Number(index)
+        return { text, value }
+      });
     },
     errorField() {
       return field => { return this.messages.columns?.[field]; }
@@ -251,7 +254,7 @@ export default {
           ended_at: null,
           member_count: null,
           position: null,
-          contract_type: 1,
+          contract_type: null,
           company_name: null,
         }
       });

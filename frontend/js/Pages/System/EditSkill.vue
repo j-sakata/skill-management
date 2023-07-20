@@ -58,7 +58,7 @@
             :loading="updating"
             @click="create()"
           >
-            作成
+            編集
           </v-btn>
         </v-col>
       </v-row>
@@ -93,7 +93,10 @@ export default {
       return field => { return this.messages.columns?.[field]; }
     },
 		optionsSkillCategoryType() {
-      return Object.entries(SkillCategoryType).map(([value, text]) => ({ text, value }));
+      return Object.entries(SkillCategoryType).map(([index, text]) => {
+        const value = Number(index)
+        return { text, value }
+      });
     },
   },
   methods: {
@@ -111,7 +114,7 @@ export default {
           if (page.props.error) {
             this.messageError("入力情報を確認してください。", page.props.error);
           } else {
-            this.message("作成が完了しました。");
+            this.message("編集が完了しました。");
             this.hide();
           }
         },
