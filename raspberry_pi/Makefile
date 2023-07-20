@@ -46,9 +46,9 @@ seed:
 	docker compose exec app php artisan db:seed
 	@make dml
 optimize:
-	docker-compose exec app php artisan optimize
+	docker compose exec app php artisan optimize
 optimize-clear:
-	docker-compose exec app php artisan optimize:clear
+	docker compose exec app php artisan optimize:clear
 authority:
 	docker compose exec app chmod -vR 777 storage bootstrap/cache
 cache:
@@ -61,7 +61,7 @@ cache-clear:
 	@make optimize-clear
 	docker compose exec app php artisan event:clear
 npm:
-	docker-compose exec web npm install
+	docker compose exec web npm install
 npm-dev:
 	docker compose exec web npm run dev
 yarn:
