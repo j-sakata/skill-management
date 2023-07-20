@@ -20,7 +20,7 @@
         </v-col>
       </v-row>
       <v-row dense>
-        <v-col cols="8" class="pb-0 ma-0">
+        <v-col cols="6" class="pb-0 ma-0">
           <v-text-field
             v-model="form.certification_code"
             label="資格コード"
@@ -33,9 +33,7 @@
             :error-messages="errorField('certification_code')"
           ></v-text-field>
         </v-col>
-      </v-row>
-      <v-row dense>
-        <v-col cols="8" class="pb-0 ma-0">
+        <v-col cols="6" class="pb-0 ma-0">
           <v-text-field
             v-model="form.certification_expiration"
             label="有効期限"
@@ -52,7 +50,7 @@
       <v-row dense class="mb-5">
         <v-col cols="6" class="pb-0 ma-0">
           <v-select
-            v-model="form.certification_category"
+            v-model.number="form.certification_category"
             :items="optionsCertificationCategoryType"
             label="区分1"
             hide-details="auto"
@@ -63,7 +61,7 @@
         </v-col>
         <v-col cols="6" class="pb-0 ma-0">
           <v-select
-            v-model="form.certification_sub_category"
+            v-model.number="form.certification_sub_category"
             :items="optionsCertificationSubCategoryType"
             label="区分2"
             hide-details="auto"
@@ -196,10 +194,16 @@ export default {
       return field => { return this.messages.columns?.[field]; }
     },
     optionsCertificationCategoryType() {
-      return Object.entries(CertificationCategoryType).map(([value, text]) => ({ text, value }));
+      return Object.entries(CertificationCategoryType).map(([index, text]) => {
+        const value = Number(index);
+        return { text, value }
+      });
     },
     optionsCertificationSubCategoryType() {
-      return Object.entries(CertificationSubCategoryType).map(([value, text]) => ({ text, value }));
+      return Object.entries(CertificationSubCategoryType).map(([index, text]) => {
+        const value = Number(index);
+        return { text, value }
+      });
     },
   },
   methods: {

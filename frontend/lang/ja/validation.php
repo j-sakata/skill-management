@@ -190,6 +190,10 @@ return [
         'experience_content.phase' => '担当フェーズ',
         'experience_content.description' => '業務内容',
         'experience_content.achievement' => '実績・取り組み',
+
+        // skill_master table
+        'skill_name' => '技術要素名',
+        'skill_category' => 'カテゴリー'
     ],
 
 ];

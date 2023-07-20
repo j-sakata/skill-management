@@ -137,17 +137,15 @@
       </v-row>
       <v-row dense>
         <v-col>
-          <v-text-field
+          <v-select
             v-model.number="form.experience_content.contract_type"
+            :items="optionsContractType"
             label="契約形態"
-            counter="30"
-            maxlength="30"
             hide-details="auto"
             dense
-            outlined
             persistent-placeholder
             :error-messages="errorField('experience_content.contract_type')"
-          ></v-text-field>
+          />
         </v-col>
         <v-col>
           <v-text-field
@@ -208,6 +206,7 @@
 
 <script>
 import ViewBasic from "@/Shared/view-basic";
+import { ContractType } from "@/enums";
 export default {
   name: 'experience-register',
   mixins: [ ViewBasic ],
@@ -233,6 +232,12 @@ export default {
     },
   },
   computed: {
+    optionsContractType() {
+      return Object.entries(ContractType).map(([index, text]) => {
+        const value = Number(index)
+        return { text, value }
+      });
+    },
     errorField() {
       return field => { return this.messages.columns?.[field]; }
     },
@@ -249,7 +254,7 @@ export default {
           ended_at: null,
           member_count: null,
           position: null,
-          contract_type: 1,
+          contract_type: null,
           company_name: null,
         }
       });

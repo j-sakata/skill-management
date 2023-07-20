@@ -11,7 +11,7 @@ class UpdateExperience
 {
 
     /**
-     * Update registered certification.
+     * Update registered experience.
      *
      * @param  array  $input
      * @return $validationFails, $success
@@ -59,6 +59,14 @@ class UpdateExperience
             ]);
           }
         }
+        $db_register_skill_id = array_column(TechnicalSkill::where('experience_id', $input['id'])->get()->toArray(), 'skill_id');
+        $diff_list = array_diff($db_register_skill_id, $list);
+        if(!empty($diff_list)) {
+          foreach($diff_list as $skill_id) {
+            // チェックが外されたスキルを削除する
+            TechnicalSkill::where('experience_id', $input['id'])->where('skill_id', $skill_id)->delete();
+          }
+        }
       }
 
       return $success();
@@ -66,6 +74,7 @@ class UpdateExperience
 
     function validate(array $input, int $edit_type)
     {
+      $list = [];
       switch($edit_type) {
         case 0:
           $list = [

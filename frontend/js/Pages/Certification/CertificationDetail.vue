@@ -7,10 +7,10 @@
 						<div class="l-text-sm-2">資格名</div>
 						<div>{{selected.certification_name}}</div>
 					</v-col>
-					<v-col cols="2">
+					<!-- <v-col cols="2">
 						<div class="l-text-sm-2">状態（有効/無効）</div>
 						<div>{{selected.certification_memo}}</div>
-					</v-col>
+					</v-col> -->
 					<div fixed right>
 						<v-menu left bottom>
 							<template v-slot:activator="{ on, attrs }">
@@ -33,20 +33,21 @@
 				<v-row dense>
 					<v-col cols="3">
 						<div class="l-text-sm-2">資格コード</div>
-						<div>{{selected.certification_code}}</div>
+						<div v-if="selected.certification_code">{{selected.certification_code}}</div>
+						<div v-else>-</div>
 					</v-col>
 					<v-col cols="3">
 						<div class="l-text-sm-2">有効期限</div>
-						<div v-if="selected.certification_expiration">{{selected.certification_expiration}}年間</div>
+						<div v-if="selected.certification_expiration">{{ hasCertificationExpiration(selected.certification_expiration) }}</div>
 						<div v-else>-</div>
 					</v-col>
 					<v-col cols="3">
 						<div class="l-text-sm-2">区分1</div>
-						<div>{{selected.certification_category}}</div>
+						<div>{{selected.certification_category | certificationCategoryType}}</div>
 					</v-col>
 					<v-col cols="3">
 						<div class="l-text-sm-2">区分2</div>
-						<div>{{selected.certification_sub_category}}</div>
+						<div>{{selected.certification_sub_category | certificationSubCategoryType}}</div>
 					</v-col>
 				</v-row>
 				<v-row dense>
@@ -57,22 +58,29 @@
 							:items="reverseDate(selected.acquisition)"
 							dense
 						>
-							<!-- https://qiita.com/pokoTan2525/items/c698457d2473dab0868f -->
-							<template v-slot:[`item.action`]="{ item }">
-								<v-icon
-									small
-									class="mr-2"
-									@click="editItem(item)"
-								>
-									mdi-pencil
-								</v-icon>
-								<v-icon
-									small
-									disabled
-									@click="deleteItem(item)"
-								>
-									mdi-delete
-								</v-icon>
+							<template v-slot:body="{ items }">
+								<tbody>
+									<tr v-for="item in items" :key="item.acquisition_date" >
+										<td>{{ item.acquisition_date }}</td>
+										<td>{{ hasScore(item.score) }}</td>
+										<td>
+											<v-icon
+												small
+												class="mr-2"
+												@click="editItem(item)"
+											>
+												mdi-pencil
+											</v-icon>
+											<v-icon
+												small
+												disabled
+												@click="deleteItem(item)"
+											>
+												mdi-delete
+											</v-icon>
+										</td>
+									</tr>
+								</tbody>
 							</template>
 						</v-data-table>
 					</v-col>
@@ -122,6 +130,12 @@ export default {
     }
   },
   computed: {
+		hasCertificationExpiration() {
+			return year => { return year ? year + "年間" : "-" }
+		},
+		hasScore() {
+			return score => { return score ? score : "-" }
+		}
   },
   methods: {
 		reverseDate(array) {

@@ -72,11 +72,6 @@
               dense
               height=230
             >
-              <template v-slot:items="props">
-                <td>{{ props.item.project_name }}</td>
-                <td>{{ props.item.industry }}</td>
-                <td>{{ props.item.company_name }}</td>
-              </template>
             </v-data-table>
           </v-col>
         </v-row>

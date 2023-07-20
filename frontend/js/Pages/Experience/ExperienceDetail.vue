@@ -52,7 +52,7 @@
 							<v-row dense>
 								<v-col cols="6">
 									<div class="l-text-sm-2">契約形態</div>
-									<div>{{ selected.experience_content.contract_type }}</div>
+									<div>{{ selected.experience_content.contract_type | contractType }}</div>
 								</v-col>
 								<v-col cols="6">
 									<div class="l-text-sm-2">（派遣先）企業名</div>

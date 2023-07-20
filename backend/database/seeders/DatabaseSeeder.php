@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
     {
         User::create([ 'user_id' => 'j-sakata', 'name' => 'サカタ', 'email' => 'j-sakata@example.com', 'password' => Hash::make('j-sakata'), 'authority' => AuthorityType::Admin->name, 'created_id' => 'j-sakata', 'updated_id' => 'j-sakata']);
 
-        Certification::create(['user_id' => 'j-sakata', 'certification_name' => '基本情報技術者試験', 'certification_code' => '1505', 'certification_expiration' => '100', 'certification_memo' => 'レベル2', 'certification_category' => 'NATIONAL', 'certification_sub_category' => 'IT']);
+        Certification::create(['user_id' => 'j-sakata', 'certification_name' => '基本情報技術者試験', 'certification_code' => '1505', 'certification_memo' => 'レベル2', 'certification_category' => 1, 'certification_sub_category' => 1]);
         $certification = Certification::find(1);
         $certification->acquisition()->create(['acquisition_date' => now(), 'score' => 12]);
 
