@@ -93,8 +93,8 @@ export default {
     },
 		optionsSkillCategoryType() {
       return Object.entries(SkillCategoryType).map(([index, text]) => {
-        const value = Number(index)
-        { text, value }
+        const value = Number(index);
+        return { text, value }
       });
     },
   },
