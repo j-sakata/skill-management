@@ -95,6 +95,7 @@
                 readonly
                 v-bind="attrs"
                 v-on="on"
+                clearable
                 :error-messages="errorField('experience_content.ended_at')"
               ></v-text-field>
             </template>

@@ -36,7 +36,8 @@
 							<v-row dense>
 								<v-col>
 									<div class="l-text-sm-2">期間</div>
-									<div>{{ selected.experience_content.started_at }} ～ {{ selected.experience_content.ended_at }}</div>
+									<div v-if="selected.experience_content.ended_at">{{ selected.experience_content.started_at }} ～ {{ selected.experience_content.ended_at }}</div>
+									<div v-else>{{ selected.experience_content.started_at }} ～ 現在</div>
 								</v-col>
 							</v-row>
 							<v-row dense>
