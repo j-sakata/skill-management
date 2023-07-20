@@ -75,7 +75,7 @@
 							<v-row dense>
 								<v-col>
 									<div class="l-text-sm-2">担当フェーズ</div>
-									<div>{{ selected.experience_content.phase }}</div>
+									<div>{{ getPhaseName(selected.experience_phase) }}</div>
 								</v-col>
 							</v-row>
 							<v-row dense>
@@ -163,6 +163,7 @@
 
 <script>
 import ViewBasic from "@/Shared/view-basic";
+import { PhaseType } from "@/enums";
 export default {
   name: 'experience-detail',
   mixins: [ ViewBasic ],
@@ -213,6 +214,10 @@ export default {
 		getSkillName(category) {
 			const list = this.technicalSkill(category);
 			return list.map(e => e.skill_name).join('、')
+		},
+		getPhaseName(phase_list) {
+			const list = phase_list.map(e => e.phase_id);
+			return Object.entries(PhaseType).filter(e => list.includes(e[0])).map(n => n[1]).join('、');
 		}
   }
 }
