@@ -67,12 +67,11 @@
           :headers="headers"
           :items="certifications"
           class="elevation-1"
-          @click:row="select"
           dense
         >
           <template v-slot:body="{ items }">
             <tbody>
-              <tr v-for="item in items" :key="item.certification_name" >
+              <tr v-for="item in items" :key="item.certification_name" @click="select(item)">
                 <td>{{ item.certification_name }}</td>
                 <td>{{ item.certification_category | certificationCategoryType }}</td>
                 <td>{{ item.certification_sub_category | certificationSubCategoryType }}</td>

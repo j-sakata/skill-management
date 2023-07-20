@@ -34,7 +34,7 @@
             ></v-date-picker>
           </v-menu>
         </v-col>
-        <v-col cols="2" class="pb-0 ma-0">
+        <v-col cols="6" class="pb-0 ma-0">
           <v-text-field
             v-model.number="form.acquisition.score"
             label="スコア"

@@ -64,8 +64,8 @@ class UpdateCertification
         'certification_code' => [],
         'certification_expiration' => ['nullable', 'integer'],
         'certification_memo' => [],
-        'certification_category' => ['required'],
-        'certification_sub_category' => ['required'],
+        'certification_category' => ['required', 'integer'],
+        'certification_sub_category' => ['required', 'integer'],
       ]);
     }
 

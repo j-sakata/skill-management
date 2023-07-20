@@ -20,8 +20,8 @@ class CreateCertificationsTable extends Migration
             $table->string('certification_code')->nullable();
             $table->integer('certification_expiration')->nullable();
             $table->string('certification_memo')->nullable();
-            $table->string('certification_category');
-            $table->string('certification_sub_category');
+            $table->integer('certification_category');
+            $table->integer('certification_sub_category');
             $table->timestamps();
         });
     }

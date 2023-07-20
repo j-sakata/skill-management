@@ -36,16 +36,16 @@ export const AuthorityType = {
 
 // 資格区分1
 export const CertificationCategoryType = {
-  NATIONAL: "国家資格",
-  PUBLIC: "公的資格",
-  PRIVATE: "民間資格",
+  1: "国家資格",
+  2: "公的資格",
+  3: "民間資格",
 }
 
 // 資格区分2
 export const CertificationSubCategoryType = {
-  IT: "情報",
-  FINANCE: "金融",
-  OTHER: "その他",
+  1: "情報",
+  2: "金融",
+  99: "その他",
 }
 
 // 技術要素区分

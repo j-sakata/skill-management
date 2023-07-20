@@ -33,7 +33,8 @@
 				<v-row dense>
 					<v-col cols="3">
 						<div class="l-text-sm-2">資格コード</div>
-						<div>{{selected.certification_code}}</div>
+						<div v-if="selected.certification_code">{{selected.certification_code}}</div>
+						<div v-else>-</div>
 					</v-col>
 					<v-col cols="3">
 						<div class="l-text-sm-2">有効期限</div>
