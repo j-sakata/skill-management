@@ -1,52 +1,48 @@
 <template>
   <v-card flat>
     <v-card-title class="pa-1 pl-2 indigo lighten-1 white--text">
-      <span>取得日変更</span>
+      <span>技術要素編集</span>
     </v-card-title>
     <v-card-text class="pa-3 pt-5">
       <v-row dense>
-        <v-col>
-          <v-menu
-            ref="menu"
-            v-model="datepicker.menu"
-            :close-on-content-click="false"
-            transition="scale-transition"
-            offset-y
-            min-width="auto"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                v-model="form.acquisition.acquisition_date"
-                label="取得日"
-                prepend-icon="mdi-calendar"
-                readonly
-                v-bind="attrs"
-                v-on="on"
-                :error-messages="errorField('acquisition.acquisition_date')"
-              ></v-text-field>
-            </template>
-            <v-date-picker
-              v-model="form.acquisition.acquisition_date"
-              :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)"
-              min="1950-01-01"
-              no-title
-              @change="saveDatepicker"
-            ></v-date-picker>
-          </v-menu>
-        </v-col>
-        <v-col cols="6" class="pb-0 ma-0">
+        <v-col cols="8" class="pb-0 ma-0">
           <v-text-field
-            v-model.number="form.acquisition.score"
-            label="スコア"
-            maxlength="1000"
+            v-model="form.skill_name"
+            label="資格名"
+            counter="30"
+            maxlength="30"
             hide-details="auto"
             dense
             outlined
             persistent-placeholder
-            :error-messages="errorField('acquisition.score')"
+            :error-messages="errorField('skill_name')"
           ></v-text-field>
         </v-col>
+        <v-col cols="" class="pb-0 ma-0">
+          <v-select
+            v-model.number="form.skill_status"
+            :items="optionsStatusType"
+            label="状態"
+            hide-details="auto"
+            dense
+            persistent-placeholder
+            :error-messages="errorField('skill_status')"
+          />
+        </v-col>
       </v-row>
+			<v-row dense>
+				<v-col cols="6" class="pb-0 ma-0">
+          <v-select
+            v-model.number="form.skill_category"
+            :items="optionsSkillCategoryType"
+            label="カテゴリー"
+            hide-details="auto"
+            dense
+            persistent-placeholder
+            :error-messages="errorField('skill_category')"
+          />
+        </v-col>
+			</v-row>
     </v-card-text>
     <v-divider></v-divider>
     <v-card-actions>
@@ -73,7 +69,7 @@
             :loading="updating"
             @click="create()"
           >
-            変更
+            編集
           </v-btn>
         </v-col>
       </v-row>
@@ -83,8 +79,9 @@
 
 <script>
 import ViewBasic from "@/Shared/view-basic";
+import { SkillCategoryType, StatusType } from "@/enums";
 export default {
-  name: 'edit-certification-acquisition',
+  name: 'edit-skill',
   mixins: [ ViewBasic ],
   props:{
     active: { type: Boolean, default: false },
@@ -93,9 +90,6 @@ export default {
   data() {
     return {
       form: [],
-      datepicker: {
-        menu: false
-      }
     }
   },
   watch: {
@@ -109,24 +103,35 @@ export default {
     errorField() {
       return field => { return this.messages.columns?.[field]; }
     },
+		optionsSkillCategoryType() {
+      return Object.entries(SkillCategoryType).map(([index, text]) => {
+        const value = Number(index)
+        return { text, value }
+      });
+    },
+    optionsStatusType() {
+      return Object.entries(StatusType).map(([index, text]) => {
+        const value = Number(index)
+        return { text, value }
+      });
+    },
   },
   methods: {
     initItem() {
       return this.$inertia.form({
         id: this.item.id,
-        acquisition: {
-          acquisition_date: this.item.acquisition_date,
-          score: this.item.score,
-        }
+        skill_name: this.item.skill_name,
+        skill_status: this.item.skill_status,
+        skill_category: this.item.skill_category,
       });
     },
     create() {
-      this.form.post("/certification/change", {
+      this.form.post("/admin/system/skill/update", {
         onSuccess: page => {
           if (page.props.error) {
             this.messageError("入力情報を確認してください。", page.props.error);
           } else {
-            this.message("作成が完了しました。");
+            this.message("編集が完了しました。");
             this.hide();
           }
         },
@@ -138,9 +143,6 @@ export default {
     },
     hide() {
       this.$emit("hide")
-    },
-    saveDatepicker (date) {
-      this.$refs.menu.save(date)
     },
   }
 }

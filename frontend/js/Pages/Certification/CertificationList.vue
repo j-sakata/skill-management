@@ -67,14 +67,16 @@
           :headers="headers"
           :items="certifications"
           class="elevation-1"
-          @click:row="select"
           dense
         >
-          <template v-slot:items="props">
-            <td>{{ props.item.certification_name }}</td>
-            <td>{{ props.item.certification_category | certificationCategoryType }}</td>
-            <td>{{ props.item.certification_sub_category | certificationSubCategoryType }}</td>
-            <td>{{ props.item.created_at }}</td>
+          <template v-slot:body="{ items }">
+            <tbody>
+              <tr v-for="item in items" :key="item.certification_name" @click="select(item)">
+                <td>{{ item.certification_name }}</td>
+                <td>{{ item.certification_category | certificationCategoryType }}</td>
+                <td>{{ item.certification_sub_category | certificationSubCategoryType }}</td>
+              </tr>
+            </tbody>
           </template>
         </v-data-table>
       </v-col>
@@ -93,7 +95,6 @@
 <script>
 import ViewBasic from "@/Shared/view-basic";
 import Layout from '@/Layout/Layout.vue';
-import { CertificationCategoryType, CertificationSubCategoryType } from "@/enums";
 import CertificationDetail from "@/Pages/Certification/CertificationDetail.vue";
 import CertificationRegister from "@/Pages/Certification/CertificationRegister.vue";
 import CertificationEdit from "@/Pages/Certification/CertificationEdit.vue";
@@ -123,7 +124,6 @@ export default {
         {text: "資格名", value: "certification_name"},
         {text: "区分1", value: "certification_category"},
         {text: "区分2", value: "certification_sub_category"},
-        {text: "取得日（仮置き）", value: "created_at"}
       ]
     }
   },

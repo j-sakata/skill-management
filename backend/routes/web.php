@@ -7,6 +7,7 @@ use App\Http\Controllers\CertificationController;
 use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SystemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,5 +65,14 @@ Route::group(['middleware' => ['auth:sanctum']],  function () {
     Route::post('create',  [ExperienceController::class, 'create']);
     Route::post('update',  [ExperienceController::class, 'update']);
     Route::get('delete/{id}',  [ExperienceController::class, 'delete']);
+  });
+
+  // System
+  Route::group(['prefix' => 'admin/system', 'as' => 'admin.'],  function () {
+    Route::get('/', [SystemController::class, 'index'])->name('system');
+    Route::group(['prefix' => 'skill'], function () {
+      Route::post('create',  [SystemController::class, 'createSkill']);
+      Route::post('update',  [SystemController::class, 'updateSkill']);
+  });
   });
 });

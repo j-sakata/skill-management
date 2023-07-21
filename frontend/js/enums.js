@@ -36,14 +36,57 @@ export const AuthorityType = {
 
 // 資格区分1
 export const CertificationCategoryType = {
-  NATIONAL: "国家資格",
-  PUBLIC: "公的資格",
-  PRIVATE: "民間資格",
+  1: "国家資格",
+  2: "公的資格",
+  3: "民間資格",
 }
 
 // 資格区分2
 export const CertificationSubCategoryType = {
-  IT: "情報",
-  FINANCE: "金融",
-  OTHER: "その他",
+  1: "情報",
+  2: "金融",
+  99: "その他",
+}
+
+// 技術要素区分
+export const SkillCategoryType = {
+  1: "言語/API",
+  2: "フレームワーク",
+  3: "OS、クラウド",
+  4: "ルータ、NW技術等",
+  5: "プロジェクト支援"
+}
+
+// 契約形態
+export const ContractType = {
+  1: "請負",
+  2: "準委任(SES)",
+  3: "派遣",
+  4: "社内"
+}
+
+// 状態
+export const StatusType = {
+  0: "無効",
+  1: "有効",
+}
+
+// フェーズ
+export const PhaseType = {
+  C: "情報システム経営コンサルティング",
+  R: "要件定義",
+  A: "調査分析",
+  B: "プロジェクト計画",
+  I: "基本設計",
+  L: "論理設計",
+  S: "構造設計",
+  D: "詳細設計",
+  P: "プログラム製造",
+  T: "システムテスト",
+  O: "運用保守支援",
+  E: "環境整備",
+  F: "ファイリング・ドキュメンテーション",
+  K: "教育・研修",
+  M: "プロジェクト管理",
+  H: "その他業務支援",
 }

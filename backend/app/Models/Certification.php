@@ -8,8 +8,9 @@ use App\Models\CertificationAcquisition;
 class Certification extends CustomModel
 {
     protected $fillable = [
-        'certification_name',
         'user_id',
+        'certification_name',
+        'certification_code',
         'certification_number',
         'certification_expiration',
         'certification_memo',

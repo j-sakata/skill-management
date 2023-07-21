@@ -6,27 +6,22 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
-use App\Models\Experience;
 use App\Models\SkillMaster;
-use App\Actions\Experience\CreateExperience;
-use App\Actions\Experience\UpdateExperience;
-use App\Actions\Experience\DeleteExperience;
-use Illuminate\Support\Facades\Auth;
+use App\Actions\Skill\CreateSkill;
+use App\Actions\Skill\UpdateSkill;
 
-class ExperienceController extends Controller
+class SystemController extends Controller
 {
 
     /**
-     * Show the user management screen.
+     * Show the skill management screen.
      *
      * @return \Inertia\Response
      */
     public function index()
     {
-        $experiences = Experience::where('user_id', Auth::id())->with(['experience_summary', 'knowledge_summary', 'experience_content', 'technical_skill', 'experience_phase'])->get()->toArray();
         $skill_master = SkillMaster::all()->toArray();
-        $user_id = Auth::id();
-        return Inertia::render('Experience/ExperienceList', ['experiences' => $experiences, 'skill_master' => $skill_master, 'user_id' => $user_id]);
+        return Inertia::render('System/SystemList', ['skill_master' => $skill_master]);
     }
 
     /**
@@ -35,19 +30,19 @@ class ExperienceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Inertia\Response
      */
-    public function create(Request $request)
+    public function createSkill(Request $request)
     {
-        $creator = app(CreateExperience::class);
-        $log_massage = "職務履歴を登録する [{$request->user_id}]";
+        $creator = app(CreateSkill::class);
+        $log_massage = "技術要素を登録する [{$request->user_id}]";
 
         return $creator->create($request->all(),
             function($error) use($log_massage) {
                 Log::error($log_massage);
-                return Inertia::render('Experience/ExperienceList', ['error' => $error]);
+                return Inertia::render('System/SystemList', ['error' => $error]);
             },
             function() use($log_massage) {
                 Log::info($log_massage);
-                return redirect()->route('experience');
+                return redirect()->route('admin.system');
             },
         );
     }
@@ -58,19 +53,19 @@ class ExperienceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Inertia\Response
      */
-    public function update(Request $request)
+    public function updateSkill(Request $request)
     {
-        $creator = app(UpdateExperience::class);
-        $log_massage = "取得資格を変更する [{$request->user_id}]";
+        $creator = app(UpdateSkill::class);
+        $log_massage = "技術要素を変更する [{$request->user_id}]";
 
         return $creator->update($request->all(),
             function($error) use($log_massage) {
                 Log::error($log_massage);
-                return Inertia::render('Experience/ExperienceList', ['error' => $error]);
+                return Inertia::render('System/SystemList', ['error' => $error]);
             },
             function() use($log_massage) {
                 Log::info($log_massage);
-                return redirect()->route('experience');
+                return redirect()->route('admin.system');
             },
         );
     }
