@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use App\Models\Experience;
 use App\Models\SkillMaster;
+use App\Models\ExperienceSummary;
 use App\Actions\Experience\CreateExperience;
 use App\Actions\Experience\UpdateExperience;
 use App\Actions\Experience\DeleteExperience;
@@ -23,10 +24,11 @@ class ExperienceController extends Controller
      */
     public function index()
     {
-        $experiences = Experience::where('user_id', Auth::id())->with(['experience_summary', 'knowledge_summary', 'experience_content', 'technical_skill', 'experience_phase'])->get()->toArray();
+        $experiences = Experience::where('user_id', Auth::id())->with(['experience_content', 'technical_skill', 'experience_phase'])->get()->toArray();
+        $experience_summary = ExperienceSummary::where('user_id', Auth::id())->get()->toArray();
         $skill_master = SkillMaster::all()->toArray();
         $user_id = Auth::id();
-        return Inertia::render('Experience/ExperienceList', ['experiences' => $experiences, 'skill_master' => $skill_master, 'user_id' => $user_id]);
+        return Inertia::render('Experience/ExperienceList', ['experiences' => $experiences, 'experience_summary' => $experience_summary, 'skill_master' => $skill_master, 'user_id' => $user_id]);
     }
 
     /**
