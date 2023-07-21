@@ -8,6 +8,7 @@ use App\Models\ExperienceContent;
 class ExperiencePhase extends CustomModel
 {
     protected $fillable = [
+        'experience_content_id',
         'phase_id'
     ];
 
