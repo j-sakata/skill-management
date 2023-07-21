@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Certification;
 use App\Models\Company;
 use App\Models\Experience;
+use App\Models\ExperienceSummary;
 use App\Models\ExperienceContent;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Type\AuthorityType;
@@ -29,10 +30,8 @@ class DatabaseSeeder extends Seeder
         Experience::create(['user_id' => 'j-sakata', 'company_name' => 'test Co.']);
         Experience::create(['user_id' => 'j-sakata', 'company_name' => 'test2 Co.']);
         $experience1 = Experience::find(1);
-        $experience1->experience_summary()->create(['title' => '100字', 'status' => 0, 'summary' => 'test1']);
-        $experience1->experience_summary()->create(['title' => '200字', 'status' => 1, 'summary' => 'test1']);
-        $experience1->knowledge_summary()->create(['knowledge' => 'test1', 'category' => 1]);
-        $experience1->knowledge_summary()->create(['knowledge' => 'test2', 'category' => 2]);
+        ExperienceSummary::create(['user_id' => 'j-sakata', 'title' => '100字', 'status' => 0, 'summary' => 'test1']);
+        ExperienceSummary::create(['user_id' => 'j-sakata', 'title' => '200字', 'status' => 1, 'summary' => 'test1']);
         $experience1->experience_content()->create(['started_at' => now(), 'ended_at' => now(), 'industry' => '〇〇業界', 'project_name' => '〇〇システム', 'project_summary' => 'test', 'description' => 'test', 'achievement' => 'test', 'member_count' => 5, 'position' => 'test', 'company_name' => 'test', 'contract_type' => 1]);
         $experience1->technical_skill()->create(['skill_id' => 1]);
         $experience1->technical_skill()->create(['skill_id' => 2]);
@@ -41,8 +40,7 @@ class DatabaseSeeder extends Seeder
         $experience1_1->experience_phase()->create(['phase_id' => "P"]);
 
         $experience2 = Experience::latest('id')->first();
-        $experience2->experience_summary()->create(['title' => '100字', 'status' => 0, 'summary' => 'test1']);
-        $experience2->knowledge_summary()->create(['knowledge' => 'test1', 'category' => 3]);
+        ExperienceSummary::create(['user_id' => 'j-sakata', 'title' => '100字', 'status' => 0, 'summary' => 'test1']);
         $experience2->experience_content()->create(['started_at' => now(), 'ended_at' => now(), 'industry' => '〇〇業界3', 'project_name' => '〇〇システム3', 'project_summary' => 'test', 'description' => 'test', 'achievement' => 'test', 'member_count' => 5, 'position' => 'test', 'company_name' => 'test3', 'contract_type' => 3]);
         $experience2->technical_skill()->create(['skill_id' => 1]);
         $experience2->technical_skill()->create(['skill_id' => 20]);

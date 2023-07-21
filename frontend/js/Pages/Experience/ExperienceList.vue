@@ -80,7 +80,7 @@
           <v-col class="pa-0 ma-0">
             <v-data-table
               :headers="experienceSummaryHeaders"
-              :items="experienceSummaryItems"
+              :items="experience_summary"
               class="elevation-1"
               @click:row="select"
               dense
@@ -214,6 +214,7 @@ export default {
   components: { ExperienceDetail, ExperienceEdit, ExperienceRegister, TechnicalSkillList },
   props:{
     experiences: { type: Object, default: {} },
+    experience_summary: { type: Object, default: {} },
     skill_master: { type: Object, default: {} },
     user_id: { type: String }
   },
@@ -255,16 +256,6 @@ export default {
   computed: {
     experienceContentItems() {
       return this.experiences.map(e => e.experience_content)
-    },
-    experienceSummaryItems() {
-      const result = []
-      const experienceSummary = this.experiences.map(e => e.experience_summary)
-      experienceSummary.forEach(e => {
-        for (let j = 0; j < e.length ; j++) {
-          result.push(e[j])
-        }
-      })
-      return result
     },
     technicalSkill() {
       return this.experiences.map(e => e.technical_skill)
