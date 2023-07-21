@@ -5,6 +5,7 @@ namespace App\Actions\Experience;
 use App\Models\Experience;
 use App\Models\ExperienceContent;
 use App\Models\TechnicalSkill;
+use App\Models\ExperiencePhase;
 use Illuminate\Support\Facades\Validator;
 
 class UpdateExperience
@@ -41,12 +42,27 @@ class UpdateExperience
         ])->save();
         // 活動内容
       } elseif ($edit_type === 1) {
-        ExperienceContent::find($input['id'])->fill([
+        ExperienceContent::find($input['experience_content']['id'])->fill([
           'project_summary' => $input['experience_content']['project_summary'],
-          'phase' => $input['experience_content']['phase'],
           'description' => $input['experience_content']['description'],
           'achievement' => $input['experience_content']['achievement']
         ])->save();
+        foreach($input['experience_content']['experience_phase'] as $value) {
+          $target = ExperiencePhase::where('experience_content_id', $input['experience_content']['id'])->where('phase_id', $value);
+          if(!($target->exists())) {
+            ExperiencePhase::create([
+              'experience_content_id' => $input['experience_content']['id'],
+              'phase_id' => $value
+            ]);
+          }
+        }
+        $db_register_phase_id = array_column(ExperiencePhase::where('experience_content_id', $input['experience_content']['id'])->get()->toArray(), 'phase_id');
+        $diff_list = array_diff($db_register_phase_id, $input['experience_content']['experience_phase']);
+        if(!empty($diff_list)) {
+          foreach($diff_list as $phase_id) {
+            ExperiencePhase::where('experience_content_id', $input['experience_content']['id'])->where('phase_id', $phase_id)->delete();
+          }
+        }
         // 開発環境
       } else {
         $list = array_merge($input['skill_api'], $input['skill_fw'], $input['skill_os'], $input['skill_nw'], $input['skill_pj']);
@@ -92,7 +108,6 @@ class UpdateExperience
         case 1:
           $list = [
             'experience_content.project_summary' => [],
-            'experience_content.phase' => [],
             'experience_content.description' => [],
             'experience_content.achievement' => []
           ];

@@ -23,7 +23,7 @@ class ExperienceController extends Controller
      */
     public function index()
     {
-        $experiences = Experience::where('user_id', Auth::id())->with(['experience_summary', 'knowledge_summary', 'experience_content', 'technical_skill'])->get()->toArray();
+        $experiences = Experience::where('user_id', Auth::id())->with(['experience_summary', 'knowledge_summary', 'experience_content', 'technical_skill', 'experience_phase'])->get()->toArray();
         $skill_master = SkillMaster::all()->toArray();
         $user_id = Auth::id();
         return Inertia::render('Experience/ExperienceList', ['experiences' => $experiences, 'skill_master' => $skill_master, 'user_id' => $user_id]);

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\CustomModel;
 use App\Models\Experience;
+use App\Models\ExperiencePhase;
 
 class ExperienceContent extends CustomModel
 {
@@ -13,7 +14,6 @@ class ExperienceContent extends CustomModel
         'industry',
         'project_name',
         'project_summary',
-        'phase',
         'description',
         'achievement',
         'member_count',
@@ -25,5 +25,10 @@ class ExperienceContent extends CustomModel
     public function experience()
     {
         return $this->belongsTo(Experience::class);
+    }
+
+    public function experience_phase()
+    {
+        return $this->hasMany(ExperiencePhase::class);
     }
 }

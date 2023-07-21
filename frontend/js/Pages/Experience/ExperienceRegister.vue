@@ -92,6 +92,7 @@
                 label="終了日"
                 prepend-icon="mdi-calendar"
                 readonly
+                clearable
                 v-bind="attrs"
                 v-on="on"
                 :error-messages="errorField('experience_content.ended_at')"

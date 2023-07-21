@@ -95,6 +95,7 @@
                 readonly
                 v-bind="attrs"
                 v-on="on"
+                clearable
                 :error-messages="errorField('experience_content.ended_at')"
               ></v-text-field>
             </template>
@@ -183,20 +184,17 @@
         </v-col>
       </v-row>
       <v-row dense>
-        <v-col>
-          <v-textarea
-            v-model="form.experience_content.phase"
+        <v-col class="pb-0 ma-0">
+          <v-select
+            v-model="form.experience_content.experience_phase"
+            :items="optionsPhaseType()"
+            :menu-props="{ maxHeight: '250' }"
             label="担当フェーズ"
-            counter="200"
-            maxlength="200"
-            color="teal"
-            hide-details="auto"
-            rows="2"
+            multiple
             dense
-            outlined
-            persistent-placeholder
-            :error-messages="errorField('experience_content.phase')"
-          ></v-textarea>
+            persistent-hint
+            :error-messages="errorField('experience_content.experience_phase')"
+          ></v-select>
         </v-col>
       </v-row>
       <v-row dense>
@@ -337,7 +335,7 @@
 
 <script>
 import ViewBasic from "@/Shared/view-basic";
-import { ContractType } from "@/enums";
+import { ContractType, PhaseType } from "@/enums";
 export default {
   name: 'experience-edit',
   mixins: [ ViewBasic ],
@@ -399,7 +397,7 @@ export default {
           experience_content: {
             id: this.selected.experience_content.id,
             project_summary: this.selected.experience_content.project_summary,
-            phase: this.selected.experience_content.phase,
+            experience_phase: this.phaseItems(),
             description: this.selected.experience_content.description,
             achievement: this.selected.experience_content.achievement,
           }
@@ -437,6 +435,12 @@ export default {
     technicalSkillItems(n) {
       const list = this.skill_master.filter(e => e.skill_category === n).map(e => e.id)
       return this.selected.technical_skill.filter(e => list.includes(e.skill_id)).map(e => e.skill_id)
+    },
+    phaseItems() {
+      return this.selected.experience_phase.map(e => e.phase_id);
+    },
+    optionsPhaseType() {
+      return Object.entries(PhaseType).map(([value, text]) =>({ text, value }));
     },
     saveDatepicker (date) {
       this.$refs.menu.save(date)
