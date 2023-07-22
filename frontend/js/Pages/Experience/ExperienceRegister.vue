@@ -275,10 +275,10 @@ export default {
             this.message("作成が完了しました。");
             this.hide();
           }
-          onError: () => {
+        },
+        onError: () => {
             this.actionFailure;
           }
-        }
       })
     }
   }

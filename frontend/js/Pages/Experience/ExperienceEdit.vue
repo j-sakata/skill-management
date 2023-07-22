@@ -253,7 +253,7 @@
             v-model="form.skill_fw"
             :items="skillSelect(2)"
             :menu-props="{ maxHeight: '250' }"
-            label="フレームワーク"
+            label="フレームワーク、DB等"
             multiple
             dense
             persistent-hint
@@ -342,8 +342,8 @@ export default {
   props:{
     editType: { type: Number },
     active: { type: Boolean },
-    selected: { type: Object, default: {} },
-    skill_master: { type: Object, default: {} },
+    selected: { type: [Array, Object], default: [] },
+    skill_master: { type: [Array, Object], default: [] },
   },
   data() {
     return {
