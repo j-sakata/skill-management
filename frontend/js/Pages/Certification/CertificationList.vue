@@ -106,7 +106,7 @@ export default {
   mixins: [ ViewBasic ],
   components: { CertificationDetail, CertificationRegister, CertificationEdit, AddCertificationAcquisition, EditCertificationAcquisition },
   props:{
-    certifications: { type: Array, default: [] },
+    certifications: { type: [Array, Object], default: [] },
     user_id: { type: String }
   },
   data() {

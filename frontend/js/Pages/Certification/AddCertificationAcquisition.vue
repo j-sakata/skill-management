@@ -89,7 +89,7 @@ export default {
   mixins: [ ViewBasic ],
   props:{
     active: { type: Boolean, default: false },
-    selected: { type: Object, default: {} }
+    selected: { type: [Array, Object], default: [] }
   },
   data() {
     return {
