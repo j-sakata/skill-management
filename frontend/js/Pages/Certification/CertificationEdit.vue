@@ -142,6 +142,7 @@ export default {
     active(v) {
       if(v) {
         this.form = this.initItem();
+        this.clearMessage();
       }
     }
   },

@@ -65,7 +65,7 @@
       <v-col cols="6" class="pa-5">
         <v-data-table
           :headers="headers"
-          :items="certifications"
+          :items="cloneCertifications"
           class="elevation-1"
           dense
         >
@@ -100,6 +100,7 @@ import CertificationRegister from "@/Pages/Certification/CertificationRegister.v
 import CertificationEdit from "@/Pages/Certification/CertificationEdit.vue";
 import AddCertificationAcquisition from "@/Pages/Certification/AddCertificationAcquisition.vue";
 import EditCertificationAcquisition from "@/Pages/Certification/EditCertificationAcquisition.vue";
+import { clone } from "lodash";
 export default {
   name: 'certification-list',
   layout: Layout,
@@ -119,6 +120,7 @@ export default {
         add: false,
         change: false
       },
+      cloneCertifications: [],
       item: {},
       headers: [
         {text: "資格名", value: "certification_name"},
@@ -134,7 +136,8 @@ export default {
   },
   methods: {
     init() {
-      this.selected = this.certifications[0]
+      this.cloneCertifications = clone(this.certifications);
+      this.selected = this.cloneCertifications[0]
     },
     search() {
     },
@@ -146,7 +149,7 @@ export default {
       this.modal.change = true
     },
     updateItem() {
-      this.selected = this.certifications.find(e => e.id === this.selected.id)
+      this.selected = this.cloneCertifications.find(e => e.id === this.selected.id)
     }
   }
 }
