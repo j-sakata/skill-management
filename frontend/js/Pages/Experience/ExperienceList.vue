@@ -80,7 +80,7 @@
           <v-col class="pa-0 ma-0">
             <v-data-table
               :headers="experienceSummaryHeaders"
-              :items="experience_summary"
+              :items="cloneExperienceSummaries"
               class="elevation-1"
               @click:row="select"
               dense
@@ -88,7 +88,7 @@
             >
               <template v-slot:items="props">
                 <td>{{ props.item.title }}</td>
-                <td>{{ props.item.status }}</td>
+                <td>{{ props.item.status | statusType }}</td>
               </template>
             </v-data-table>
           </v-col>
@@ -215,7 +215,7 @@ export default {
   components: { ExperienceDetail, ExperienceEdit, ExperienceRegister, TechnicalSkillList },
   props:{
     experiences: { type: Array, default: [] },
-    experience_summary: { type: Array, default: [] },
+    experience_summaries: { type: Array, default: [] },
     skill_master: { type: Array, default: [] },
     user_id: { type: String }
   },
@@ -248,7 +248,8 @@ export default {
       technicalHeaders: [
         {text: "技術", value: "skill_name"},
       ],
-      cloneExperiences: []
+      cloneExperiences: [],
+      cloneExperienceSummaries: []
     }
   },
   mounted() {
@@ -266,6 +267,7 @@ export default {
   methods: {
     init() {
       this.cloneExperiences = clone(this.experiences);
+      this.cloneExperienceSummaries = clone(this.experience_summaries)
       this.selected = this.cloneExperiences[0];
       this.mode.keyName = "jobCareer";
       this.mode.valueName = "職務経歴"
@@ -277,10 +279,19 @@ export default {
       this.selected = experience
     },
     search() {
-      if (!this.keyword) {
-        this.cloneExperiences = clone(this.experiences);
-      } else {
-        this.cloneExperiences = this.experiences.filter(e => e.experience_content.project_name.includes(this.keyword));
+      if (this.mode.keyName == 'jobCareer') {
+        if (!this.keyword) {
+          this.cloneExperiences = clone(this.experiences);
+        } else {
+          this.cloneExperiences = clone(this.experiences.filter(e => e.experience_content.project_name.includes(this.keyword)));
+        }
+      }
+      if (this.mode.keyName == 'jodSummary') {
+        if (!this.keyword) {
+          this.cloneExperienceSummaries = clone(this.experience_summaries);
+        } else {
+          this.cloneExperienceSummaries = clone(this.experience_summaries.filter(e => e.title.includes(this.keyword)));
+        }
       }
     },
     edit(item) {
