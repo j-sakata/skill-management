@@ -51,8 +51,8 @@ export const CertificationSubCategoryType = {
 // 技術要素区分
 export const SkillCategoryType = {
   1: "言語/API",
-  2: "フレームワーク",
-  3: "OS、クラウド",
+  2: "フレームワーク、DB等",
+  3: "OS、クラウド等",
   4: "ルータ、NW技術等",
   5: "プロジェクト支援"
 }
