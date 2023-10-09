@@ -30,7 +30,7 @@
     <v-row no-gutters>
       <v-col cols="6">
         <v-row no-gutters class="pa-4 pb-0">
-          <v-col>
+          <v-col cols="8">
             <v-text-field
               v-model="keyword"
               label="キーワード"
@@ -123,7 +123,7 @@
                   言語/API
                 </v-tab>
                 <v-tab>
-                  フレームワーク
+                  フレームワーク、DB等
                 </v-tab>
                 <v-tab>
                   OS、クラウド等
@@ -143,7 +143,7 @@
                         class="elevation-1"
                         dense
                         disable-sort
-                        items-per-page=4
+                        :items-per-page="4"
                         hide-default-footer
                       >
                         <template v-slot:items="props">
@@ -207,15 +207,16 @@ import ExperienceDetail from "@/Pages/Experience/ExperienceDetail.vue";
 import ExperienceEdit from "@/Pages/Experience/ExperienceEdit.vue";
 import ExperienceRegister from "@/Pages/Experience/ExperienceRegister.vue";
 import TechnicalSkillList from "@/Pages/Experience/TechnicalSkillList.vue";
+import { clone } from "lodash";
 export default {
   name: 'experience-list',
   layout: Layout,
   mixins: [ ViewBasic ],
   components: { ExperienceDetail, ExperienceEdit, ExperienceRegister, TechnicalSkillList },
   props:{
-    experiences: { type: Object, default: {} },
-    experience_summary: { type: Object, default: {} },
-    skill_master: { type: Object, default: {} },
+    experiences: { type: Array, default: [] },
+    experience_summary: { type: Array, default: [] },
+    skill_master: { type: Array, default: [] },
     user_id: { type: String }
   },
   data() {
@@ -246,7 +247,8 @@ export default {
       ],
       technicalHeaders: [
         {text: "技術", value: "skill_name"},
-      ]
+      ],
+      cloneExperiences: []
     }
   },
   mounted() {
@@ -255,7 +257,7 @@ export default {
   },
   computed: {
     experienceContentItems() {
-      return this.experiences.map(e => e.experience_content)
+      return this.cloneExperiences.map(e => e.experience_content)
     },
     technicalSkill() {
       return this.experiences.map(e => e.technical_skill)
@@ -263,15 +265,23 @@ export default {
   },
   methods: {
     init() {
-      this.selected = this.experiences[0];
+      this.cloneExperiences = clone(this.experiences);
+      this.selected = this.cloneExperiences[0];
       this.mode.keyName = "jobCareer";
       this.mode.valueName = "職務経歴"
     },
     select(item) {
-      const experience = this.experiences.find(e => {
+      const experience = this.cloneExperiences.find(e => {
         return e.id === item.experience_id
       })
       this.selected = experience
+    },
+    search() {
+      if (!this.keyword) {
+        this.cloneExperiences = clone(this.experiences);
+      } else {
+        this.cloneExperiences = this.experiences.filter(e => e.experience_content.project_name.includes(this.keyword));
+      }
     },
     edit(item) {
       this.editType = item
@@ -300,7 +310,7 @@ export default {
       return this.skill_master.filter(e => e.skill_category === n && result.map(s => s.skill_id).includes(e.id))
     },
     updateItem() {
-      this.selected = this.experiences.find(e => e.id === this.selected.id)
+      this.selected = this.cloneExperiences.find(e => e.id === this.selected.id)
     }
   }
 }

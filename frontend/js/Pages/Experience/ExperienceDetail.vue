@@ -106,7 +106,7 @@
 							</v-row>
 							<v-row dense>
 								<v-col>
-									<div class="l-text-sm-2">フレームワーク</div>
+									<div class="l-text-sm-2">フレームワーク、DB等</div>
 									<div>{{ getSkillName(2) }}</div>
 								</v-col>
 							</v-row>
@@ -169,8 +169,8 @@ export default {
   name: 'experience-detail',
   mixins: [ ViewBasic ],
   props:{
-    selected: { type: Object, default: {} },
-		skillMaster: { type: Object, default: {} },
+    selected: { type: [Array, Object], default: [] },
+		skillMaster: { type: [Array, Object], default: [] },
 		detailType: { type: String }
   },
   data() {

@@ -229,6 +229,7 @@ export default {
     active(v) {
       if(v) {
         this.form = this.initItem();
+        this.clearMessage();
       }
     },
   },
@@ -275,10 +276,10 @@ export default {
             this.message("作成が完了しました。");
             this.hide();
           }
-          onError: () => {
+        },
+        onError: () => {
             this.actionFailure;
           }
-        }
       })
     }
   }
