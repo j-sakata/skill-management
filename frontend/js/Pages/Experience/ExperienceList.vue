@@ -4,7 +4,7 @@
       <experience-register
         :active="modal.register"
         :user_id="user_id"
-        :registerType="mode.keyName"
+        :registerMode="mode.keyName"
         @hide="modal.register = false"
         @send="receive($event)"
       ></experience-register>
@@ -13,6 +13,7 @@
       <experience-edit
         :active="modal.edit"
         :editType="editType"
+        :editMode="mode.keyName"
         :selected="selected"
         :skill_master="skill_master"
         @hide="modal.edit = false; updateItem()"
@@ -273,10 +274,11 @@ export default {
       this.mode.valueName = "職務経歴"
     },
     select(item) {
-      const experience = this.cloneExperiences.find(e => {
-        return e.id === item.experience_id
-      })
-      this.selected = experience
+      if (this.mode.keyName === 'jobCareer') {
+        this.selected = this.cloneExperiences.find(e => { return e.id === item.experience_id })
+      } else if (this.mode.keyName === 'jodSummary') {
+        this.selected = this.cloneExperienceSummaries.find(e => { return e.id === item.id })
+      }
     },
     search() {
       if (this.mode.keyName == 'jobCareer') {
@@ -309,6 +311,11 @@ export default {
       this.mode.keyName = this.mode.key[number]
       this.mode.valueName = this.mode.value[number]
       this.setModeName()
+      if (this.mode.keyName == 'jobCareer') {
+        this.selected = this.cloneExperiences[0];
+      }else if (this.mode.keyName == 'jodSummary') {
+        this.selected = this.cloneExperienceSummaries[0];
+      }
     },
     technicalSkillItems(n) {
       // ユーザーのテクニカルスキルを同階層の配列に格納する
@@ -321,7 +328,11 @@ export default {
       return this.skill_master.filter(e => e.skill_category === n && result.map(s => s.skill_id).includes(e.id))
     },
     updateItem() {
-      this.selected = this.cloneExperiences.find(e => e.id === this.selected.id)
+      if (this.mode.keyName == 'jobCareer') {
+        this.selected = this.cloneExperiences.find(e => e.id === this.selected.id)
+      } else if (this.mode.keyName == 'jobCareer') {
+        this.selected = this.cloneExperienceSummaries.find(e => e.id === this.selected.id)
+      }
     }
   }
 }

@@ -1,7 +1,7 @@
 <style>
-	.v-expansion-panel-content{
-		max-height:310px;
-	}
+.v-expansion-panel-content{
+	max-height:310px;
+}
 </style>
 <template>
   <v-container fluid>
@@ -133,7 +133,22 @@
 				</v-expansion-panels>
 			</v-card-text>
 			<v-card-text v-if="detailType === 'jodSummary'">
-				職務要約/TBD
+				<v-row dense>
+					<v-col cols="9">
+						<div class="l-text-sm-2">タイトル</div>
+						<div>{{ selected.title }}</div>
+					</v-col>
+					<v-col cols="3">
+						<div class="l-text-sm-2">有効期限</div>
+						<div>{{ selected.status | statusType }}</div>
+					</v-col>
+				</v-row>
+				<v-row>
+					<v-col>
+						<div class="l-text-sm-2">本文</div>
+						<div>{{ selected.summary }}</div>
+					</v-col>
+				</v-row>
 			</v-card-text>
 			<v-card-text v-if="detailType === 'jobKnowledge'">
 				活かせる経験・知識/TBD
@@ -170,8 +185,8 @@ export default {
   mixins: [ ViewBasic ],
   props:{
     selected: { type: [Array, Object], default: [] },
-		skillMaster: { type: [Array, Object], default: [] },
-		detailType: { type: String }
+	skillMaster: { type: [Array, Object], default: [] },
+	detailType: { type: String }
   },
   data() {
     return {
