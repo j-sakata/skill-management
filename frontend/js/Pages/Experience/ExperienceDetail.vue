@@ -139,7 +139,7 @@
 						<div>{{ selected.title }}</div>
 					</v-col>
 					<v-col cols="3">
-						<div class="l-text-sm-2">有効期限</div>
+						<div class="l-text-sm-2">状態</div>
 						<div>{{ selected.status | statusType }}</div>
 					</v-col>
 				</v-row>
