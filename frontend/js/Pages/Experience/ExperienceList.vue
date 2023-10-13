@@ -4,7 +4,7 @@
       <experience-register
         :active="modal.register"
         :user_id="user_id"
-        :registerType="mode.keyName"
+        :registerMode="mode.keyName"
         @hide="modal.register = false"
         @send="receive($event)"
       ></experience-register>
@@ -13,6 +13,7 @@
       <experience-edit
         :active="modal.edit"
         :editType="editType"
+        :editMode="mode.keyName"
         :selected="selected"
         :skill_master="skill_master"
         @hide="modal.edit = false; updateItem()"
@@ -80,7 +81,7 @@
           <v-col class="pa-0 ma-0">
             <v-data-table
               :headers="experienceSummaryHeaders"
-              :items="experience_summary"
+              :items="cloneExperienceSummaries"
               class="elevation-1"
               @click:row="select"
               dense
@@ -88,7 +89,7 @@
             >
               <template v-slot:items="props">
                 <td>{{ props.item.title }}</td>
-                <td>{{ props.item.status }}</td>
+                <td>{{ props.item.status | statusType }}</td>
               </template>
             </v-data-table>
           </v-col>
@@ -215,7 +216,7 @@ export default {
   components: { ExperienceDetail, ExperienceEdit, ExperienceRegister, TechnicalSkillList },
   props:{
     experiences: { type: Array, default: [] },
-    experience_summary: { type: Array, default: [] },
+    experience_summaries: { type: Array, default: [] },
     skill_master: { type: Array, default: [] },
     user_id: { type: String }
   },
@@ -248,7 +249,8 @@ export default {
       technicalHeaders: [
         {text: "技術", value: "skill_name"},
       ],
-      cloneExperiences: []
+      cloneExperiences: [],
+      cloneExperienceSummaries: []
     }
   },
   mounted() {
@@ -266,21 +268,32 @@ export default {
   methods: {
     init() {
       this.cloneExperiences = clone(this.experiences);
+      this.cloneExperienceSummaries = clone(this.experience_summaries)
       this.selected = this.cloneExperiences[0];
       this.mode.keyName = "jobCareer";
       this.mode.valueName = "職務経歴"
     },
     select(item) {
-      const experience = this.cloneExperiences.find(e => {
-        return e.id === item.experience_id
-      })
-      this.selected = experience
+      if (this.mode.keyName === 'jobCareer') {
+        this.selected = this.cloneExperiences.find(e => { return e.id === item.experience_id })
+      } else if (this.mode.keyName === 'jodSummary') {
+        this.selected = this.cloneExperienceSummaries.find(e => { return e.id === item.id })
+      }
     },
     search() {
-      if (!this.keyword) {
-        this.cloneExperiences = clone(this.experiences);
-      } else {
-        this.cloneExperiences = this.experiences.filter(e => e.experience_content.project_name.includes(this.keyword));
+      if (this.mode.keyName == 'jobCareer') {
+        if (!this.keyword) {
+          this.cloneExperiences = clone(this.experiences);
+        } else {
+          this.cloneExperiences = clone(this.experiences.filter(e => e.experience_content.project_name.includes(this.keyword)));
+        }
+      }
+      if (this.mode.keyName == 'jodSummary') {
+        if (!this.keyword) {
+          this.cloneExperienceSummaries = clone(this.experience_summaries);
+        } else {
+          this.cloneExperienceSummaries = clone(this.experience_summaries.filter(e => e.title.includes(this.keyword)));
+        }
       }
     },
     edit(item) {
@@ -298,6 +311,11 @@ export default {
       this.mode.keyName = this.mode.key[number]
       this.mode.valueName = this.mode.value[number]
       this.setModeName()
+      if (this.mode.keyName == 'jobCareer') {
+        this.selected = this.cloneExperiences[0];
+      }else if (this.mode.keyName == 'jodSummary') {
+        this.selected = this.cloneExperienceSummaries[0];
+      }
     },
     technicalSkillItems(n) {
       // ユーザーのテクニカルスキルを同階層の配列に格納する
@@ -310,7 +328,11 @@ export default {
       return this.skill_master.filter(e => e.skill_category === n && result.map(s => s.skill_id).includes(e.id))
     },
     updateItem() {
-      this.selected = this.cloneExperiences.find(e => e.id === this.selected.id)
+      if (this.mode.keyName == 'jobCareer') {
+        this.selected = this.cloneExperiences.find(e => e.id === this.selected.id)
+      } else if (this.mode.keyName == 'jobCareer') {
+        this.selected = this.cloneExperienceSummaries.find(e => e.id === this.selected.id)
+      }
     }
   }
 }

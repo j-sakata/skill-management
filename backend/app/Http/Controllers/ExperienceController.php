@@ -12,6 +12,8 @@ use App\Models\ExperienceSummary;
 use App\Actions\Experience\CreateExperience;
 use App\Actions\Experience\UpdateExperience;
 use App\Actions\Experience\DeleteExperience;
+use App\Actions\Experience\CreateExperienceSummary;
+use App\Actions\Experience\UpdateExperienceSummary;
 use Illuminate\Support\Facades\Auth;
 
 class ExperienceController extends Controller
@@ -25,10 +27,10 @@ class ExperienceController extends Controller
     public function index()
     {
         $experiences = Experience::where('user_id', Auth::id())->with(['experience_content', 'technical_skill', 'experience_phase'])->get()->toArray();
-        $experience_summary = ExperienceSummary::where('user_id', Auth::id())->get()->toArray();
+        $experience_summaries = ExperienceSummary::where('user_id', Auth::id())->get()->toArray();
         $skill_master = SkillMaster::all()->toArray();
         $user_id = Auth::id();
-        return Inertia::render('Experience/ExperienceList', ['experiences' => $experiences, 'experience_summary' => $experience_summary, 'skill_master' => $skill_master, 'user_id' => $user_id]);
+        return Inertia::render('Experience/ExperienceList', ['experiences' => $experiences, 'experience_summaries' => $experience_summaries, 'skill_master' => $skill_master, 'user_id' => $user_id]);
     }
 
     /**
@@ -39,7 +41,11 @@ class ExperienceController extends Controller
      */
     public function create(Request $request)
     {
-        $creator = app(CreateExperience::class);
+        if ($request->register_mode == 'jobCareer') {
+            $creator = app(CreateExperience::class);
+        }elseif ($request->register_mode == 'jodSummary') {
+            $creator = app(CreateExperienceSummary::class);
+        }
         $log_massage = "職務履歴を登録する [{$request->user_id}]";
 
         return $creator->create($request->all(),
@@ -62,8 +68,12 @@ class ExperienceController extends Controller
      */
     public function update(Request $request)
     {
-        $creator = app(UpdateExperience::class);
-        $log_massage = "取得資格を変更する [{$request->user_id}]";
+        if ($request->edit_mode == 'jobCareer') {
+            $creator = app(UpdateExperience::class);
+        }elseif ($request->edit_mode == 'jodSummary') {
+            $creator = app(UpdateExperienceSummary::class);
+        }
+        $log_massage = "職務履歴を変更する [{$request->user_id}]";
 
         return $creator->update($request->all(),
             function($error) use($log_massage) {
@@ -86,7 +96,7 @@ class ExperienceController extends Controller
     public function delete($id)
     {
         $creator = app(DeleteUser::class);
-        $log_massage = "取得資格を削除する [$id]";
+        $log_massage = "職務履歴を削除する [$id]";
 
         return $creator->delete($id,
             function($error) use($log_massage) {
