@@ -186,8 +186,8 @@
           </v-col>
           <v-col cols="3" class="pb-0 ma-0">
             <v-text-field
-              v-model="form.title"
-              label="タイトル"
+              v-model="form.status"
+              label="状態"
               counter="30"
               maxlength="30"
               hide-details="auto"
@@ -307,6 +307,7 @@ export default {
     initItem() {
       if (this.registerMode === 'jobCareer') {
         return this.$inertia.form({
+          register_mode: this.registerMode,
           user_id: this.user_id,
           company_name: null,
           experience_content: {
@@ -322,6 +323,7 @@ export default {
         });
       } else if (this.registerMode === 'jodSummary') {
         return this.$inertia.form({
+          register_mode: this.registerMode,
           title: null,
           status: 1,
           summary: null

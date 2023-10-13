@@ -323,8 +323,8 @@
           </v-col>
           <v-col cols="3" class="pb-0 ma-0">
             <v-text-field
-              v-model="form.title"
-              label="タイトル"
+              v-model="form.status"
+              label="状態"
               counter="30"
               maxlength="30"
               hide-details="auto"
@@ -447,6 +447,7 @@ export default {
       if (this.editMode === 'jobCareer') {
         if(this.editType === 0) {
           return this.$inertia.form({
+            edit_mode: this.editMode,
             edit_type: this.editType,
             company_name: this.selected.company_name,
             experience_content: {
@@ -464,6 +465,7 @@ export default {
           });
         } else if(this.editType === 1) {
           return this.$inertia.form({
+            edit_mode: this.editMode,
             edit_type: this.editType,
             experience_content: {
               id: this.selected.experience_content.id,
@@ -475,6 +477,7 @@ export default {
           });
         } else {
           return this.$inertia.form({
+            edit_mode: this.editMode,
             edit_type: this.editType,
             id: this.selected.id,
             skill_api: this.technicalSkillItems(1),
@@ -486,6 +489,8 @@ export default {
         }
       } else if (this.editMode === 'jodSummary') {
         return this.$inertia.form({
+          edit_mode: this.editMode,
+          id: this.selected.id,
           title: this.selected.title,
           status: this.selected.status,
           summary: this.selected.summary
