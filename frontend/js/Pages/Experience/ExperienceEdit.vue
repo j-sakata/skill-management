@@ -322,32 +322,30 @@
             ></v-text-field>
           </v-col>
           <v-col cols="3" class="pb-0 ma-0">
-            <v-text-field
-              v-model="form.status"
+            <v-select
+              v-model.number="form.status"
+              :items="optionsStatusType"
               label="状態"
-              counter="30"
-              maxlength="30"
               hide-details="auto"
               dense
-              outlined
               persistent-placeholder
               :error-messages="errorField('status')"
-            ></v-text-field>
+            />
           </v-col>
         </v-row>
         <v-row dense>
-          <v-col cols="9" class="pb-0 ma-0">
-            <v-text-field
+          <v-col class="pb-0 ma-0">
+            <v-textarea
               v-model="form.summary"
               label="職務要約"
-              counter="30"
-              maxlength="30"
+              counter="400"
+              maxlength="400"
               hide-details="auto"
               dense
               outlined
               persistent-placeholder
-              :error-messages="errorField('title')"
-            ></v-text-field>
+              :error-messages="errorField('summary')"
+            ></v-textarea>
           </v-col>
         </v-row>
       </v-card-text>
@@ -403,7 +401,7 @@
 
 <script>
 import ViewBasic from "@/Shared/view-basic";
-import { ContractType, PhaseType } from "@/enums";
+import { ContractType, PhaseType, StatusType } from "@/enums";
 export default {
   name: 'experience-edit',
   mixins: [ ViewBasic ],
@@ -434,6 +432,12 @@ export default {
   computed: {
     optionsContractType() {
       return Object.entries(ContractType).map(([index, text]) => {
+        const value = Number(index)
+        return { text, value }
+      });
+    },
+    optionsStatusType() {
+      return Object.entries(StatusType).map(([index, text]) => {
         const value = Number(index)
         return { text, value }
       });
@@ -506,7 +510,7 @@ export default {
           if (page.props.error) {
             this.messageError("入力情報を確認してください。", page.props.error);
           } else {
-            this.message("作成が完了しました。");
+            this.message("変更が完了しました。");
             this.hide();
           }
         },

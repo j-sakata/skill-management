@@ -68,9 +68,9 @@ class ExperienceController extends Controller
      */
     public function update(Request $request)
     {
-        if ($request->register_mode == 'jobCareer') {
+        if ($request->edit_mode == 'jobCareer') {
             $creator = app(UpdateExperience::class);
-        }elseif ($request->register_mode == 'jodSummary') {
+        }elseif ($request->edit_mode == 'jodSummary') {
             $creator = app(UpdateExperienceSummary::class);
         }
         $log_massage = "職務履歴を変更する [{$request->user_id}]";
@@ -96,7 +96,7 @@ class ExperienceController extends Controller
     public function delete($id)
     {
         $creator = app(DeleteUser::class);
-        $log_massage = "取得資格を削除する [$id]";
+        $log_massage = "職務履歴を削除する [$id]";
 
         return $creator->delete($id,
             function($error) use($log_massage) {
