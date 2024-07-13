@@ -74,6 +74,7 @@ import ViewBasic from "@/Shared/view-basic";
 import Layout from '@/Layout/Layout.vue';
 import AddSkill from "@/Pages/System/AddSkill.vue";
 import EditSkill from "@/Pages/System/EditSkill.vue";
+import { clone } from "lodash";
 export default {
   name: 'system-list',
   layout: Layout,
@@ -94,11 +95,15 @@ export default {
         { text: '', value: 'action', sortable: false }
       ],
       item: {},
+      cloneSkillMaster: []
     }
+  },
+  mounted() {
+    this.cloneSkillMaster = clone(this.skill_master);
   },
   computed: {
     technicalSkillItems() {
-      return n => { return this.skill_master.filter(e => e.skill_category === n) }
+      return n => { return this.cloneSkillMaster.filter(e => e.skill_category === n) }
     },
   },
   methods: {

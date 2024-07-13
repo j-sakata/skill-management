@@ -88,7 +88,7 @@ export default {
   mixins: [ ViewBasic ],
   props:{
     active: { type: Boolean, default: false },
-    item: { type: Object, default: {} }
+    item: { type: [Array, Object], default: [] }
   },
   data() {
     return {
@@ -102,6 +102,7 @@ export default {
     active(v) {
       if(v) {
         this.form = this.initItem();
+        this.clearMessage();
       }
     }
   },

@@ -118,7 +118,7 @@ export default {
   name: 'certification-detail',
   mixins: [ ViewBasic ],
   props:{
-    selected: { type: Object, default: {} }
+    selected: { type: [Array, Object], default: [] }
   },
   data() {
     return {

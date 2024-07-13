@@ -193,7 +193,9 @@ return [
 
         // skill_master table
         'skill_name' => '技術要素名',
-        'skill_category' => 'カテゴリー'
+        'skill_category' => 'カテゴリー',
+
+        'title' => 'タイトル'
     ],
 
 ];

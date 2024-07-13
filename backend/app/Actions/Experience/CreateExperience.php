@@ -22,11 +22,11 @@ class CreateExperience
         return $validationFails($validator->errors());
       }
 
-      $certification = Experience::create([
+      $experience = Experience::create([
           'user_id' => $input['user_id'],
           'company_name' => $input['company_name']
       ]);
-      $certification->experience_content()->create([
+      $experience->experience_content()->create([
         'project_name' => $input['experience_content']['project_name'],
         'industry'=> $input['experience_content']['industry'],
         'started_at'=> $input['experience_content']['started_at'],
