@@ -50,12 +50,12 @@ seed:
 	@make dml
 cache:
 	docker-compose exec app composer dump-autoload -o
-	@make optimize
+	docker-compose exec app php artisan optimize
 	docker-compose exec app php artisan event:cache
 	docker-compose exec app php artisan view:cache
 cache-clear:
 	docker-compose exec app composer clear-cache
-	@make optimize-clear
+	docker-compose exec app php artisan optimize:clear
 	docker-compose exec app php artisan event:clear
 npm:
 	@make npm-install
