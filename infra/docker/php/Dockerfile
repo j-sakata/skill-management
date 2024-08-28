@@ -1,4 +1,4 @@
-FROM php:8.1-fpm-buster
+FROM php:8.2-fpm-buster
 LABEL maintainer="j-sakata"
 SHELL ["/bin/bash", "-oeux", "pipefail", "-c"]
 
@@ -12,7 +12,7 @@ ENV TZ=Asia/Tokyo \
   COMPOSER_ALLOW_SUPERUSER=1 \
   COMPOSER_HOME=/composer
 
-COPY --from=composer:2.0 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
 
 RUN apt-get update && \
   apt-get -y install git libicu-dev libonig-dev libzip-dev unzip locales && \
