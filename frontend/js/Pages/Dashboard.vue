@@ -4,8 +4,7 @@
       <v-col cols="9">
         未実装 demo
       </v-col>
-      <v-spacer></v-spacer>
-      <v-col cols="auto">
+      <v-col cols="3">
         <v-row dense>
           <v-col>
             <calendar
@@ -14,6 +13,42 @@
               :width="300"
               :height="330"
             ></calendar>
+          </v-col>
+        </v-row>
+        <v-row dense>
+          <v-col>
+            <v-card　outlined flat height='250'>
+              <v-toolbar
+                flat
+                color="indigo lighten-1"
+                dark
+                dense
+                height="35"
+              >
+                <v-toolbar-title>Geminiに質問</v-toolbar-title>
+              </v-toolbar>
+              <v-card-text>
+                <v-row dense>
+                  <v-col>
+                    <v-text-field
+                      v-model="gemini.keysentence"
+                      label=""
+                      outlined
+                      persistent-placeholder
+                      dense
+                      hide-details="auto"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row dense>
+                  <v-col>
+                    <v-card flat outlined>
+                      {{ gemini.answer }}
+                    </v-card>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </v-card>
           </v-col>
         </v-row>
       </v-col>
@@ -35,9 +70,28 @@ export default {
   },
   data() {
     return {
+      gemini: {
+        keysentence: 'こんにちは',
+        answer: null
+      }
+      
     }
   },
+  mounted() {
+    this.searchGemini()
+  },
   methods: {
+    searchGemini() {
+      this.$inertia.post('/dashboard/gemini', this.gemini, {
+        onSuccess: page => {
+          this.gemini.answer = page.props.gemini_answer;
+        },
+        onError: () => {
+          this.actionFailure;
+        },
+        preserveState: true,
+      })
+    }
   }
 }
 </script>
