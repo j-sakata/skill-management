@@ -37,6 +37,7 @@ init-for-mac:
 	docker-compose exec web ln -s resources/webpack.mix.js webpack.mix.js
 	docker-compose exec app cp -r vendor vendor-copy
 	rm -rf ${MAKEFILE_DIR_FOR_MAC}exclude/vendor-copy
+	sudo chmod -R 777 ${MAKEFILE_DIR_FOR_MAC}backend/vendor-copy
 	mv ${MAKEFILE_DIR_FOR_MAC}backend/vendor-copy ${MAKEFILE_DIR_FOR_MAC}exclude
 	@make migrate
 	@make yarn
