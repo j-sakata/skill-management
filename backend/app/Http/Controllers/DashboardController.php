@@ -49,7 +49,7 @@ class DashboardController extends Controller
             'key' => $api_key,
             'timeMin' => $start,
             'timeMax' => $end,
-            'maxResults' => 50,
+            'maxResults' => null,
             'orderBy' => 'startTime',
             'singleEvents' => 'true'
         ];
@@ -94,7 +94,7 @@ class DashboardController extends Controller
         $option = [
             'timeMin' => $start,
             'timeMax' => $end,
-            'maxResults' => 50,
+            'maxResults' => null,
             'orderBy' => 'startTime',
             'singleEvents' => 'true'
         ];
