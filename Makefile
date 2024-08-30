@@ -1,4 +1,5 @@
 MAKEFILE_DIR:=$(subst /,\,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+MAKEFILE_DIR_FOR_MAC:=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 up:
 	docker-compose up -d
@@ -21,6 +22,23 @@ init:
 	cmd /c move ${MAKEFILE_DIR}backend\vendor-copy ${MAKEFILE_DIR}exclude
 	@make migrate
 	@make dml
+	@make yarn
+	@make yarn-dev
+init-for-mac:
+	docker-compose up -d --build
+	cp -r ${MAKEFILE_DIR_FOR_MAC}exclude/init ${MAKEFILE_DIR_FOR_MAC}backend
+	docker-compose exec app cp -r init/app init/framework storage
+	rm -rf ${MAKEFILE_DIR_FOR_MAC}backend/init
+	docker-compose exec app chmod -R 777 storage bootstrap/cache
+	docker-compose exec app composer install
+	docker-compose exec app php artisan key:generate
+	docker-compose exec app php artisan storage:link
+	docker-compose exec web rm -rf webpack.mix.js
+	docker-compose exec web ln -s resources/webpack.mix.js webpack.mix.js
+	docker-compose exec app cp -r vendor vendor-copy
+	rm -rf ${MAKEFILE_DIR_FOR_MAC}exclude/vendor-copy
+	mv ${MAKEFILE_DIR_FOR_MAC}backend/vendor-copy ${MAKEFILE_DIR_FOR_MAC}exclude
+	@make migrate
 	@make yarn
 	@make yarn-dev
 remake:
