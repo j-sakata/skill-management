@@ -10,7 +10,6 @@ use Google_Service_Calendar;
 use DateTime;
 use DateTimeZone;
 use Gemini\Laravel\Facades\Gemini;
-
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -37,9 +36,9 @@ class DashboardController extends Controller
     public function gemini(Request $request)
     {
         $sentence = $request->keysentence;
-        $gemini = Gemini::geminiPro()->generateContent('こんにちは');
+        $gemini = Gemini::geminiPro()->generateContent($sentence);
         $gemini_answer = $gemini->text();
-        return Inertia::render('Dashboard', ['gemini_answer' => $gemini_answer]);
+        return response()->json(['gemini_answer' => $gemini_answer], 200);
     }
 
     /**
