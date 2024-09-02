@@ -72,6 +72,11 @@ db:
 	docker compose exec db bash
 sql:
 	docker compose exec db bash -c 'mysql -u $$MYSQL_USER -p$$MYSQL_PASSWORD $$MYSQL_DATABASE'
+create-jenkins:
+	sudo apt-get update
+	sudo apt-get upgrade
+	sudo apt-get install jenkins
+	sed -ei '$aJAVA_ARGS="-Xmx256m -Djava.awt.headless=true -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8"' /etc/default/jenkins
 dml:
 	docker compose exec db bash -c 'mysql -u $$MYSQL_ROOT_USER -p$$MYSQL_PASSWORD --local_infile=1 $$MYSQL_DATABASE -e"source /tmp/dml/import_inital_data.sql;"'
 version-up:

@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Google_Client;
 use Google_Service_Calendar;
 use DateTime;
 use DateTimeZone;
-
+use Gemini\Laravel\Facades\Gemini;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -25,6 +26,19 @@ class DashboardController extends Controller
         $holidays = $this->get_holiday_from_google_calendar();
         $schedules = $this->get_schedule_from_google_calendar();
         return Inertia::render('Dashboard', ['user_id' => $user_id, 'holidays' => $holidays, 'schedules' => $schedules]);
+    }
+
+    /**
+     * Show the dashboard screen(with Gemini).
+     *
+     * @return \Inertia\Response
+     */
+    public function gemini(Request $request)
+    {
+        $sentence = $request->keysentence;
+        $gemini = Gemini::geminiPro()->generateContent($sentence);
+        $gemini_answer = $gemini->text();
+        return response()->json(['gemini_answer' => $gemini_answer], 200);
     }
 
     /**
@@ -49,7 +63,7 @@ class DashboardController extends Controller
             'key' => $api_key,
             'timeMin' => $start,
             'timeMax' => $end,
-            'maxResults' => 50,
+            'maxResults' => null,
             'orderBy' => 'startTime',
             'singleEvents' => 'true'
         ];
@@ -94,7 +108,7 @@ class DashboardController extends Controller
         $option = [
             'timeMin' => $start,
             'timeMax' => $end,
-            'maxResults' => 50,
+            'maxResults' => null,
             'orderBy' => 'startTime',
             'singleEvents' => 'true'
         ];
