@@ -47,6 +47,7 @@ Route::group(['middleware' => ['auth:sanctum']],  function () {
   // dashboard
   Route::group(['prefix' => 'dashboard'],  function () {
     Route::get('/',  [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('gemini', [DashboardController::class, 'gemini']);
   });
 
   // Certification
